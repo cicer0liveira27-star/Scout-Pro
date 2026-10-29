@@ -17,9 +17,12 @@ App web de scout e planejamento de elenco, feito para o Departamento de Análise
 
 Tudo recalcula na hora.
 
-## Banco de dados (público, como o Capelota)
-O app usa **Firebase Firestore** (projeto `scout-pro-736bc`, região São Paulo): todos que abrem o site veem os mesmos dados em tempo real, em modo leitura. Só **editores** alteram, entrando com a conta Google. Salários e teto de folha ficam num documento separado que só editores leem.
+## Acesso e banco de dados
+O app só abre com login. Cada pessoa entra com o **nickname** ou o **CPF** e a senha. Os dados ficam no **Firebase Firestore** (projeto `scout-pro-736bc`, região São Paulo) e sincronizam em tempo real entre quem está conectado.
 
-**Adicionar um editor:** no console do Firebase → Firestore → Regras, inclua o e-mail Google da pessoa na lista da função `editor()` e publique.
+**Adicionar uma pessoa:**
+1. Firebase → Authentication → Usuários → Adicionar usuário: e-mail `NICKNAME@scoutpro.app` e a senha.
+2. Firestore → Regras: inclua `NICKNAME@scoutpro.app` na lista da função `editor()` e publique.
+3. No `index.html`, inclua o nickname em `USUARIOS` (e o hash do CPF em `CPF_HASH`, se a pessoa for entrar pelo CPF).
 
 Arquivo único: `index.html` (React 18 + htm + SheetJS via CDN).

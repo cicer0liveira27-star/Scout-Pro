@@ -1,14 +1,12 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Editores: troque a lista pelos e-mails Google autorizados (a versão publicada fica no console do Firebase).
+    // Só usuários cadastrados (login por nickname ou CPF) leem e gravam.
     function editor() {
-      return request.auth != null && request.auth.token.email_verified == true
-        && request.auth.token.email in ['EMAIL_DO_EDITOR@gmail.com'];
+      return request.auth != null
+        && request.auth.token.email in ['ciceroav@scoutpro.app', 'phsouzaleao@scoutpro.app'];
     }
-    // Dados do app: todos leem, só editores gravam.
-    match /scoutpro/estado { allow read: if true; allow write: if editor(); }
-    // Salários e teto de folha: só editores leem e gravam.
+    match /scoutpro/estado { allow read, write: if editor(); }
     match /scoutpro_privado/financeiro { allow read, write: if editor(); }
     match /{document=**} { allow read, write: if false; }
   }

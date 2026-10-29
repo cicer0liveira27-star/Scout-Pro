@@ -59,6 +59,19 @@ body.ro select.cell{appearance:none;-webkit-appearance:none}
 .modal form{background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:20px;width:min(380px,100%);display:flex;flex-direction:column;gap:12px}
 .modal label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mute)}
 .err{color:var(--bad);font-size:12px}
+.gate{min-height:100vh;display:grid;place-items:center;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));background:radial-gradient(ellipse at 50% 0%,var(--red-soft),transparent 60%),var(--bg)}
+.gate-box{width:min(380px,100%);display:flex;flex-direction:column;gap:22px}
+.gate-brand{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.gate-brand .logo{width:64px;height:64px}
+.gate-brand b{display:block;font-family:var(--f-display);font-weight:800;font-size:34px;letter-spacing:.04em;line-height:1}
+.gate-brand b em{font-style:normal;color:var(--red-ink)}
+.gate-brand small{color:var(--mute);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.gate form{display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:20px}
+.gate form label{font-size:12px;color:var(--mute);font-weight:500;margin-top:4px}
+.gate form .field{padding:10px 12px;font-size:15px}
+.gate form .btn.primary{margin-top:8px}
+.gate-club{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--mute);font-size:11.5px}
+.gate-club img{width:20px}
 .mtheme{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 6px;font-size:12px}
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -364,6 +377,16 @@ function gravarLocal(s){ try{ localStorage.setItem(LS_KEY, JSON.stringify(s)); }
 function migrar(s){ const d=padrao(); if(!s||typeof s!=="object") return d; return {...d, ...s, bench:Array.isArray(s.bench)?s.bench:d.bench, elenco:Array.isArray(s.elenco)?s.elenco:d.elenco, alvos:Array.isArray(s.alvos)?s.alvos:[], comissao:Array.isArray(s.comissao)?s.comissao:[], decisoes:s.decisoes||{}}; }
 
 const FBV = "https://www.gstatic.com/firebasejs/10.12.2/";
+// Acesso: login por nickname ou CPF. O CPF não fica escrito no código, só o hash dele aponta para o nickname.
+const DOMINIO = "@scoutpro.app";
+const USUARIOS = {ciceroav:"Cícero", phsouzaleao:"Paulinho"};
+const CPF_HASH = {"f0c51d87a4c2309df9822c9f87b028517bbdcbffcd08c589b92dcff1c006ee7c":"ciceroav"};
+async function sha256(t){ const b=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join(""); }
+async function resolverLogin(ident){
+  const t=String(ident||"").trim().toLowerCase(); const d=t.replace(/\D/g,"");
+  if(d.length===11 && /^[\d.\-\s]+$/.test(t)) return CPF_HASH[await sha256("scoutpro|"+d)] || null;
+  return USUARIOS[t] ? t : null;
+}
 // Na nuvem pública, valores financeiros ficam num documento separado que só editores leem.
 function separar(s){
   const sal={};
@@ -411,7 +434,7 @@ function useStore(){
           const app = appM.initializeApp(cfg), db = fsM.getFirestore(app), auth = authM.getAuth(app);
           fb.current = {authM, auth};
           const pubRef = fsM.doc(db, "scoutpro", "estado"), privRef = fsM.doc(db, "scoutpro_privado", "financeiro");
-          let lastPub = null, lastPriv = null, unsubPriv = null;
+          let lastPub = null, lastPriv = null, subs = [];
           const aplicar = () => { if(!lastPub) return; const s = migrar(juntar(lastPub, lastPriv)); setState(s); gravarLocal(s); };
           writer.current = async st => {
             const {pub, priv} = separar(st); const m = meta();
@@ -426,17 +449,19 @@ function useStore(){
             try{ const v = JSON.parse(d.json); if(qual==="pub") lastPub = v; else lastPriv = v; aplicar(); }catch(e){}
             setSync("online");
           };
+          const erro = e => setSync(/permission/i.test((e&&e.code)||"") ? "leitura" : "erro");
           authM.onAuthStateChanged(auth, u => {
-            setUser(u ? {email:u.email} : null);
-            if(unsubPriv){ unsubPriv(); unsubPriv = null; }
-            if(u){ unsubPriv = fsM.onSnapshot(privRef, sn => ouvir(sn,"priv"), () => {}); }
-            else { lastPriv = null; aplicar(); }
+            subs.forEach(f=>f()); subs = [];
+            setUser(u ? {email:u.email, nick:(u.email||"").split("@")[0]} : null);
+            if(u){ setSync("conectando");
+              subs.push(fsM.onSnapshot(pubRef, sn => ouvir(sn,"pub"), erro));
+              subs.push(fsM.onSnapshot(privRef, sn => ouvir(sn,"priv"), ()=>{}));
+            } else { lastPub = null; lastPriv = null; }
           });
           setModo("nuvem");
-          const u1 = fsM.onSnapshot(pubRef, sn => ouvir(sn,"pub"), () => setSync("erro"));
-          unsub = () => { u1(); if(unsubPriv) unsubPriv(); };
+          unsub = () => subs.forEach(f=>f());
           return;
-        }catch(e){ console.warn("Firebase indisponível, seguindo sem nuvem", e); }
+        }catch(e){ console.warn("Firebase indisponível", e); if(alive){ setModo("offline"); setSync("erro"); } return; }
       }
       let d = null;
       try{ d = window.claude && window.claude.use ? await window.claude.use("db") : null; }catch(e){ d = null; }
@@ -457,10 +482,36 @@ function useStore(){
       return next;
     });
   },[]);
-  const entrar = async () => { const f=fb.current; if(!f) throw new Error("sem nuvem"); const p=new f.authM.GoogleAuthProvider(); p.setCustomParameters({prompt:"select_account"}); await f.authM.signInWithPopup(f.auth, p); setSync("online"); };
-  const sair = async () => { const f=fb.current; if(f) await f.authM.signOut(f.auth); };
+  const entrar = async (ident, senha) => {
+    const f=fb.current; if(!f) throw {code:"sem-nuvem"};
+    const nick = await resolverLogin(ident); if(!nick) throw {code:"usuario-desconhecido"};
+    await f.authM.signInWithEmailAndPassword(f.auth, nick+DOMINIO, senha);
+  };
+  const sair = async () => { const f=fb.current; if(f) await f.authM.signOut(f.auth); try{ localStorage.removeItem(LS_KEY); }catch(e){} setState(padrao()); };
   const podeEditar = modo==="nuvem" ? (!!user && sync!=="leitura") : (modo!=="conectando" && sync!=="leitura");
   return {state, update, sync, modo, user, entrar, sair, podeEditar};
+}
+
+function TelaLogin({entrar, modo}){
+  const [id,setId]=useState(""); const [senha,setSenha]=useState(""); const [ver,setVer]=useState(false); const [erro,setErro]=useState(""); const [busy,setBusy]=useState(false);
+  const enviar=async e=>{ e.preventDefault(); setBusy(true); setErro("");
+    try{ await entrar(id,senha); }
+    catch(err){ const c=(err&&err.code)||""; setErro(c==="usuario-desconhecido"?"Usuário não encontrado. Use seu nickname ou CPF.":/invalid|wrong|credential|not-found/.test(c)?"Usuário ou senha incorretos.":/too-many/.test(c)?"Muitas tentativas. Aguarde alguns minutos.":/network/.test(c)?"Sem conexão. Verifique a internet.":"Não foi possível entrar ("+(c||"erro")+")."); }
+    setBusy(false); };
+  return html`<div class="gate"><div class="gate-box">
+    <div class="gate-brand">${LOGO}<div><b>SCOUT<em>PRO</em></b><small>Análise & mercado</small></div></div>
+    ${modo==="offline"?html`<div class="alert bad"><div><b>Sem conexão com o banco</b><span>Verifique a internet e recarregue a página.</span></div></div>`:
+    html`<form onSubmit=${enviar}>
+      <label for="login-id">Nickname ou CPF</label>
+      <input class="field" id="login-id" autocomplete="username" autocapitalize="none" spellcheck="false" required value=${id} onInput=${e=>setId(e.target.value)} placeholder="ex.: ciceroav ou 000.000.000-00"/>
+      <label for="login-senha">Senha</label>
+      <div style=${{position:"relative"}}><input class="field" id="login-senha" type=${ver?"text":"password"} autocomplete="current-password" required value=${senha} onInput=${e=>setSenha(e.target.value)} style=${{paddingRight:"64px"}}/>
+        <button type="button" class="btn sm ghost" style=${{position:"absolute",right:"4px",top:"50%",transform:"translateY(-50%)",border:0}} onClick=${()=>setVer(!ver)}>${ver?"Ocultar":"Mostrar"}</button></div>
+      ${erro?html`<div class="err" role="alert">${erro}</div>`:null}
+      <button class="btn primary" type="submit" disabled=${busy||modo!=="nuvem"} style=${{justifyContent:"center",padding:"11px"}}>${modo!=="nuvem"?"Conectando…":busy?"Entrando…":"Entrar"}</button>
+    </form>`}
+    <div class="gate-club"><img src=${CREST} alt=""/><span>Departamento de Análise · Santa Cruz F.C.</span></div>
+  </div></div>`;
 }
 
 /* ---------- Ícones ---------- */
@@ -1038,7 +1089,7 @@ function useTema(){
 function App(){
   const store=useStore();
   const {state:st, sync, modo, user, entrar, sair, podeEditar}=store;
-  const doLogin=async()=>{ try{ await entrar(); toast("Conectado. Se a conta for de editor, você já pode alterar."); }catch(e){ const c=(e&&e.code)||""; if(/popup-closed|cancelled/.test(c)) return; toast(/popup-blocked/.test(c)?"O navegador bloqueou a janela do Google. Libere pop-ups e tente de novo.":/unauthorized-domain/.test(c)?"Domínio não autorizado no Firebase.":"Não foi possível entrar ("+(c||"erro")+")"); } };
+
   const [tema,setTema]=useTema();
   const ler=()=>{ const h=(location.hash||"").slice(1); return TITULOS[h]?h:"painel"; };
   const [tab,setTab]=useState(ler);
@@ -1048,9 +1099,8 @@ function App(){
   const roT=useRef(0);
   const up=useCallback(fn=>{ if(!podeEditar){ const now=Date.now(); if(now-roT.current>2500){ roT.current=now; toast(modo==="nuvem"?"Modo leitura: entre como editor para alterar":"Sem permissão para editar"); } return; } store.update(fn); },[podeEditar,modo,store.update,toast]);
   useEffect(()=>{ document.body.classList.toggle("ro", !podeEditar && modo!=="conectando"); },[podeEditar,modo]);
-  const acesso = modo==="nuvem" ? (user
-      ? html`<div class="lock"><span>${sync==="leitura"?"Conta sem permissão de editor":"Editor conectado"}</span><b>${user.email}</b><button class="btn sm ghost" onClick=${()=>{sair();toast("Você saiu. Modo leitura.")}}>Sair</button></div>`
-      : html`<button class="btn sm" onClick=${doLogin}>Entrar com Google (editor)</button>`) : null;
+  const acesso = modo==="nuvem" && user ? html`<div class="lock"><span>${sync==="leitura"?"Conta sem permissão":"Conectado como"}</span><b>${USUARIOS[user.nick]||user.nick} · ${user.nick}</b><button class="btn sm ghost" onClick=${()=>sair()}>Sair</button></div>` : null;
+  if(modo==="offline" || (modo==="nuvem" && !user) || (modo==="conectando" && window.SCOUTPRO_FIREBASE && window.SCOUTPRO_FIREBASE.apiKey)) return html`<${TelaLogin} entrar=${entrar} modo=${modo}/>`;
   const [e,t,s]=TITULOS[tab];
   const brand=html`<div class="brand">${LOGO}<div><b>SCOUT<em>PRO</em></b><small>Análise & mercado</small></div></div>`;
   return html`<${EDIT.Provider} value=${podeEditar}><div class="shell">
@@ -1062,7 +1112,7 @@ function App(){
         <div class="themes" role="group" aria-label="Tema">${TEMAS.map(x=>html`<button key=${x.k} class=${tema===x.k?"on":""} aria-pressed=${tema===x.k} onClick=${()=>setTema(x.k)}><i style=${{background:x.c}}></i>${x.n}</button>`)}</div></div>
     </aside>
     <div style=${{minWidth:0}}>
-      <div class="mhead">${brand}<div style=${{display:"flex",gap:"6px",alignItems:"center"}}>${modo==="nuvem"?html`<button class="btn sm" onClick=${()=>user?(sair(),toast("Você saiu. Modo leitura.")):doLogin()}>${user?"Sair":"Editar"}</button>`:null}<select class="mtheme" id="tema-m" aria-label="Tema" value=${tema} onChange=${e=>setTema(e.target.value)}>${TEMAS.map(x=>html`<option key=${x.k} value=${x.k}>${x.n}</option>`)}</select></div></div>
+      <div class="mhead">${brand}<div style=${{display:"flex",gap:"6px",alignItems:"center"}}>${modo==="nuvem"&&user?html`<button class="btn sm" onClick=${()=>sair()}>Sair</button>`:null}<select class="mtheme" id="tema-m" aria-label="Tema" value=${tema} onChange=${e=>setTema(e.target.value)}>${TEMAS.map(x=>html`<option key=${x.k} value=${x.k}>${x.n}</option>`)}</select></div></div>
       <main class="main">
         <div class="top"><div><div class="eyebrow">${e}</div><h1>${t}</h1><p class="sub">${s}</p></div></div>
         ${tab==="painel"?html`<${Painel} st=${st}/>`:null}
