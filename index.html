@@ -904,6 +904,26 @@ function ClubMark({t,onSet}){
   </span>`;
 }
 
+/* Importação de vários escudos de uma vez: o nome do arquivo identifica o clube */
+const normNome = t => String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\.(png|jpe?g|webp|svg|gif)$/,"").replace(/\b(fc|ec|sc|ac|futebol clube|esporte clube)\b/g,"").replace(/[^a-z0-9]+/g," ").trim();
+function ImportarEscudos({up,toast}){
+  const ref=useRef(); const [busy,setBusy]=useState(false);
+  const pick=async e=>{
+    const fs=[...(e.target.files||[])]; e.target.value=""; if(!fs.length) return; setBusy(true);
+    const lidos=[]; for(const f of fs){ try{ lidos.push({nome:f.name.replace(/\.[^.]+$/,""), img:await lerEscudo(f)}); }catch(err){} }
+    let nb=0, na=0, nn=0;
+    up(s=>{
+      const bench=s.bench.map(t=>{ const m=lidos.find(l=>normNome(l.nome)===normNome(t.nome)); if(m){nb++; return {...t,escudo:m.img};} return t; });
+      let adv=s.adversarios.map(a=>{ const m=lidos.find(l=>normNome(l.nome)===normNome(a.nome)); if(m){na++; return {...a,escudo:m.img};} return a; });
+      lidos.filter(l=>normNome(l.nome)!=="santa cruz" && !adv.some(a=>normNome(a.nome)===normNome(l.nome))).forEach(l=>{ nn++; adv.push({id:uid("adversarios"),nome:l.nome,sigla:l.nome.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase(),escudo:l.img,sistema:"",fortes:"",fracos:"",obs:""}); });
+      return {...s,bench,adversarios:adv};
+    });
+    setBusy(false);
+    setTimeout(()=>toast(`${lidos.length} escudos lidos · ${nb} no estudo da Série C · ${na} adversários atualizados · ${nn} adversários criados`),50);
+  };
+  return html`<span class="ro-hide"><button class="btn" disabled=${busy} onClick=${()=>ref.current.click()}>${I.export}${busy?"Lendo…":"Importar escudos"}</button><input type="file" id="imp-escudos" accept="image/*" multiple hidden ref=${ref} onChange=${pick}/></span>`;
+}
+
 /* ---------- Benchmark ---------- */
 function Scatter({data,xl,yl,invY}){
   const W=560,H=340,L=46,R=16,Tp=16,B=40;
@@ -971,6 +991,7 @@ function Benchmark({st,up,toast}){
   return html`<div class="grid" style=${{gap:"16px"}}>
     <div class="toolbar" style=${{marginBottom:0}}>
       <div class="seg">${["","2023","2024","2025"].map(a=>html`<button key=${a} class=${fa===a?"on":""} onClick=${()=>setFa(a)}>${a||"2023–2025"}</button>`)}</div>
+      <${ImportarEscudos} up=${up} toast=${toast}/>
       <span class="note">${bench.length} campanhas de acesso · valores editáveis na tabela · escudos ${comEsc}/${clubes}: toque na sigla do clube para enviar a imagem</span>
     </div>
     <div class="grid g-2">
@@ -1619,7 +1640,7 @@ function AnaliseDesemp({st,up,toast}){
   return html`<div class="grid" style=${{gap:"14px"}}>
     <${Abas} tabs=${["Adversários","Calendário","Estatística de jogos"]} v=${aba} set=${setAba}/>
     ${aba==="Adversários"?html`<div class="grid" style=${{gap:"10px"}}>
-      <div class="toolbar" style=${{marginBottom:0}}><button class="btn primary ro-hide" onClick=${()=>ad.add({nome:"",sigla:"",escudo:"",sistema:"",fortes:"",fracos:"",obs:""})}>${I.plus}Adicionar clube</button><span class="note">Toque na sigla para enviar o escudo do clube.</span></div>
+      <div class="toolbar" style=${{marginBottom:0}}><button class="btn primary ro-hide" onClick=${()=>ad.add({nome:"",sigla:"",escudo:"",sistema:"",fortes:"",fracos:"",obs:""})}>${I.plus}Adicionar clube</button><${ImportarEscudos} up=${up} toast=${toast}/><span class="note">Toque na sigla para trocar um escudo, ou importe vários arquivos de uma vez: o nome do arquivo identifica o clube.</span></div>
       ${st.adversarios.length?html`<div class="acards">${st.adversarios.map(a=>html`<div key=${a.id} class="acard">
         <div style=${{display:"flex",gap:"8px",alignItems:"center"}}><${ClubMark} t=${{...a,sigla:a.sigla||iniciais(a.nome)||"?"}} onSet=${setEsc(a)}/><input class="cell" id=${"adn-"+a.id} placeholder="Nome do clube" value=${a.nome} onInput=${e2=>ad.set(a.id,"nome",e2.target.value)} style=${{fontWeight:700,fontSize:"15px"}}/><${Del} onYes=${()=>ad.del(a.id)}/></div>
         <div style=${{display:"flex",gap:"6px"}}><input class="cell" id=${"ads-"+a.id} placeholder="Sigla" value=${a.sigla} onInput=${e2=>ad.set(a.id,"sigla",e2.target.value.toUpperCase().slice(0,4))} style=${{width:"70px"}}/><input class="cell" id=${"adsis-"+a.id} placeholder="Sistema (ex.: 4-3-3)" value=${a.sistema} onInput=${e2=>ad.set(a.id,"sistema",e2.target.value)}/></div>
