@@ -1273,7 +1273,7 @@ function Hub({st,go}){
     </div>
     <div class="card">
       <div class="card-h"><div><h2>Algoritmo de prontidão</h2><p>Último PSR (sono, fadiga, dor, humor, recuperação) + ACWR da carga (PSE × minutos) + status médico</p></div>
-        <div class="legend"><span><i style=${{background:"var(--good)"}}></i>≥ 75</span><span><i style=${{background:"var(--warn)"}}></i>55–74</span><span><i style=${{background:"var(--bad)"}}></i>< 55</span></div></div>
+        <div class="legend"><span><i style=${{background:"var(--good)"}}></i>≥ 75</span><span><i style=${{background:"var(--warn)"}}></i>55–74</span><span><i style=${{background:"var(--bad)"}}></i>${"< 55"}</span></div></div>
       ${pr.some(x=>x.sc!=null)||pr.some(x=>x.a!=null) ? html`<div class="pront">${pr.map(({j,sc,a,ps})=>html`<div key=${j.id} class="pront-i">
           <span class="av" style=${{borderColor:corPront(sc)}}>${iniciais(j.nome)}</span>
           <div style=${{minWidth:0,flex:1}}><div class="nm">${j.nome}</div><div class="meta">${POSN[j.pos]?.s} · ${ps?"PSR "+fmtD(ps.data):"sem PSR"} · ACWR <span style=${{color:corAcwr(a)}}>${a==null?"—":f2(a)}</span></div><${Barra} v=${sc} cor=${corPront(sc)}/></div>
@@ -1688,7 +1688,7 @@ function Contratos({st,up}){
   const cont=k=>atual.filter(x=>x._s.k===k).length;
   return html`<div class="grid" style=${{gap:"14px"}}>
     <${Abas} tabs=${["Jogadores","Staff","Alertas e renovações"]} v=${aba} set=${setAba}/>
-    <div class="grid g-kpi"><${Kpi} l="Total" v=${atual.length}/><${Kpi} l="OK (> 6 meses)" v=${cont("OK (>6m)")}/><${Kpi} l="Atenção (3–6 meses)" v=${cont("Atenção (3–6m)")}/><${Kpi} l="Crítico (< 3 meses)" v=${cont("Crítico (<3m)")}/><${Kpi} l="Expirado" v=${cont("Expirado")} d=${cont("Sem data")+" sem data"}/></div>
+    <div class="grid g-kpi"><${Kpi} l="Total" v=${atual.length}/><${Kpi} l="OK (mais de 6 meses)" v=${cont("OK (>6m)")}/><${Kpi} l="Atenção (3–6 meses)" v=${cont("Atenção (3–6m)")}/><${Kpi} l="Crítico (menos de 3 meses)" v=${cont("Crítico (<3m)")}/><${Kpi} l="Expirado" v=${cont("Expirado")} d=${cont("Sem data")+" sem data"}/></div>
     <input class="field" id="busca-ctr" placeholder="Buscar" value=${q} onInput=${e=>setQ(e.target.value)} style=${{maxWidth:"360px"}}/>
     ${atual.length?html`<div class="tablewrap"><table><thead><tr><th>Nome</th><th>Função / posição</th><th>Término (ano ou data)</th><th class="r">Dias restantes</th><th>Situação</th></tr></thead><tbody>
       ${atual.sort((a,b)=>(a._s.dias??99999)-(b._s.dias??99999)).map(x=>html`<tr key=${x._key+x.id}><td style=${{fontWeight:600,padding:"8px"}}>${x.nome||"(sem nome)"}</td><td class="note">${x._papel}</td>
