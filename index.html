@@ -301,6 +301,11 @@ select.cell{cursor:pointer}
 .card-am,.card-vm{width:12px;height:16px;border-radius:2px;display:inline-block}
 .card-am{background:var(--warn)}.card-vm{background:var(--bad)}
 .chip{white-space:nowrap}
+.clubes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:10px}
+.clube{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.clube b{font-size:13px;line-height:1.2}
+.clube.nosso{border-color:var(--red);background:var(--red-soft)}
+.club img{border-radius:3px}
 @media (max-width:860px){input,select,textarea,.field,.cell,.gate form .field{font-size:16px!important}}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .tablewrap td input.cell,.tablewrap td select.cell{border-color:var(--line);background:color-mix(in srgb,var(--panel2) 70%,transparent)}
@@ -421,7 +426,7 @@ function padrao(){
   elenco.forEach(j=>{ decisoes[j.id] = j.status==="Emprestado" ? "Avaliar" : "Manter"; });
   return {v:3, temporada:2026, elenco, bench:benchPadrao(), decisoes, alvos:[], comissao:[], orc2026:"", orc2027:"", comp2027:"Série C", incluirNeg:false,
     eventos:[], psr:[], pse:[], cmj:[], gps:[], atend:[], lesoes:[], sessoes:[], modelos:[], nutri:[], hidrat:[], planos:[],
-    tarefas:[], relatorios:[], adversarios:[], jogos:[], arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C"}};
+    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:[], arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true}};
 }
 const SAUDE = ["Liberado","Sob observação","Em transição","Não liberado"];
 const SAUDE_COR = {"Liberado":"var(--good)","Sob observação":"var(--warn)","Em transição":"var(--info)","Não liberado":"var(--bad)"};
@@ -459,7 +464,9 @@ function migrar(s){
   const d=padrao(); if(!s||typeof s!=="object") return d;
   const o={...d, ...s};
   Object.keys(d).forEach(k=>{ if(Array.isArray(d[k]) && !Array.isArray(o[k])) o[k]=d[k]; if(d[k] && typeof d[k]==="object" && !Array.isArray(d[k]) && (!o[k]||typeof o[k]!=="object")) o[k]=d[k]; });
-  o.config={...d.config, ...(o.config||{})};
+  const jaSemeado = s.config && s.config.advSeed;
+  o.config={...d.config, ...(o.config||{}), advSeed:true};
+  if(!jaSemeado && !(s.adversarios||[]).length) o.adversarios=adversariosPadrao();
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
 }
@@ -896,16 +903,76 @@ function Comissao({st,up,toast}){
 function ClubMark({t,onSet}){
   const ref=useRef();
   const pick=async e=>{ const f=e.target.files&&e.target.files[0]; e.target.value=""; if(!f) return; try{ onSet(await lerEscudo(f)); }catch(err){ onSet(null,"Não foi possível ler essa imagem. Use PNG, JPG ou SVG."); } };
-  const body = t.escudo ? html`<img src=${t.escudo} alt=${"Escudo "+t.nome}/>` : t.sigla;
-  if(!onSet) return html`<span class=${"club"+(t.escudo?" has":"")}>${body}</span>`;
+  const esc = escudoDe(t);
+  const body = esc ? html`<img src=${esc} alt=${"Escudo "+t.nome} referrerpolicy="no-referrer"/>` : t.sigla;
+  if(!onSet) return html`<span class=${"club"+(esc?" has":"")}>${body}</span>`;
   return html`<span style=${{display:"inline-flex",alignItems:"center",gap:"2px"}}>
-    <button class=${"club up"+(t.escudo?" has":"")} title=${t.escudo?"Trocar escudo":"Enviar escudo"} aria-label=${"Escudo de "+t.nome} onClick=${()=>ref.current.click()}>${body}</button>
+    <button class=${"club up"+(esc?" has":"")} title=${t.escudo?"Trocar escudo":"Enviar escudo"} aria-label=${"Escudo de "+t.nome} onClick=${()=>ref.current.click()}>${body}</button>
     <input type="file" id=${"esc-"+t.id} accept="image/*" hidden ref=${ref} onChange=${pick}/>
   </span>`;
 }
 
+/* ---------- Catálogo de clubes do Brasileiro 2026 (escudos do escudosfc.com.br, carregados por link) ---------- */
+const ESC_BASE = "https://escudosfc.com.br/images/";
+// [série, nome, arquivo do escudo, outros nomes separados por |]
+const CLUBES = [
+  ["A","Athletico Paranaense","atlpr.png","athletico|athletico pr|atletico pr"],["A","Atlético Mineiro","atletico.png","atletico mg|galo"],["A","Bahia","bahia.png",""],["A","Botafogo","botafogo.gif","botafogo rj"],["A","Chapecoense","chapeco.png",""],["A","Corinthians","corinthians.png",""],["A","Coritiba","coritiba.png",""],["A","Cruzeiro","cruzeiro.png",""],["A","Flamengo","fla.png",""],["A","Fluminense","fluminense.png","fluminense rj"],["A","Grêmio","gremio.png",""],["A","Internacional","interrs.png","inter|internacional rs"],["A","Mirassol","mirassol.jpg",""],["A","Palmeiras","palmeiras.png",""],["A","Red Bull Bragantino","bragantino.png","bragantino"],["A","Remo","remo.png","clube do remo"],["A","Santos","santos.png",""],["A","São Paulo","saopaulo.png",""],["A","Vasco da Gama","vasco.png","vasco"],["A","Vitória","vitoria.png","vitoria ba"],
+  ["B","América Mineiro","ammg.png","america mg"],["B","Athletic","aletico_del_rey_mg.png","athletic club|athletic mg"],["B","Atlético Goianiense","atlego.png","atletico go"],["B","Avaí","avai.gif",""],["B","Botafogo-SP","botasp.png","botafogo sp"],["B","Ceará","ceara.png",""],["B","CRB","crb.gif",""],["B","Criciúma","criciuma.png",""],["B","Cuiabá","cuiaba_mt.png",""],["B","Goiás","goias.png",""],["B","Novorizontino","novorizontino_novo.jpg","gremio novorizontino"],["B","Fortaleza","fortaleza.png",""],["B","Juventude","juventude.png",""],["B","Londrina","londrina_pr.png",""],["B","Náutico","nautico.png",""],["B","Operário-PR","operario_pr.png","operario pr|operario ferroviario|operario"],["B","Ponte Preta","pontepreta.gif",""],["B","São Bernardo","sao_bernarndo_sp.png","sao bernardo fc"],["B","Sport","sport.gif","sport recife"],["B","Vila Nova","vilanova.png",""],
+  ["C","Amazonas","amazonas_fc_am.png","amazonas fc"],["C","Anápolis","anapolis.png",""],["C","Barra","barra_sc.png","barra sc"],["C","Botafogo-PB","botapb.png","botafogo pb"],["C","Brusque","brusque.png",""],["C","Caxias","caxias.gif",""],["C","Confiança","confianca_se.png",""],["C","Ferroviária","ferroviaria.png",""],["C","Figueirense","figue.gif",""],["C","Floresta-CE","floresta_ce.png","floresta"],["C","Guarani","guarani.gif",""],["C","Inter de Limeira","intl.png","internacional limeira"],["C","Itabaiana","itabaiana.gif","ao itabaiana"],["C","Ituano","ituano.png",""],["C","Maranhão","maranhao.png",""],["C","Maringá","gremio_maringa.png","gremio maringa"],["C","Paysandu","paysandu_pa.png",""],["C","Santa Cruz","santacruz.png",""],["C","Volta Redonda","volta.png",""],["C","Ypiranga-RS","ypiranga_rs.png","ypiranga"],
+  ["D","GAS","gas_rr.png",""],["D","Manauara","manauara_am.png",""],["D","Manaus","manaus_fc.png",""],["D","Monte Roraima","monteroraima_rr.png",""],["D","Nacional-AM","nacionalam.png","nacional"],["D","São Raimundo-RR","saoraimundo_rr.jpg","sao raimundo"],
+  ["D","Araguaína","araguaina.jpg",""],["D","Galvez","galvez_ac.png",""],["D","Guaporé","guapore_ro.png",""],["D","Humaitá","humaita_ac.png",""],["D","Independência","independencia_ac.png",""],["D","Porto Velho","porto_velho_ro.png",""],
+  ["D","Aparecidense","aparecidense_go.png",""],["D","Brasiliense","brasiliense.png",""],["D","Gama","gama.png",""],["D","Inhumas","inhumas_ec.jpg",""],["D","Luverdense","uverdense_mt.png",""],["D","Primavera-MT","primavera_ac_mt.jpg","primavera ac|primavera"],
+  ["D","Capital-DF","capital_df.png","capital"],["D","Ceilândia","ceilandia_df.jpg",""],["D","CEOV","ceov_mt.jpg",""],["D","Goiatuba","goiatuba.png","goiatuba ec"],["D","Mixto","mixto.gif",""],["D","União Rondonópolis","rondonopolis.jpg","uniao rondonopolis"],
+  ["D","Águia de Marabá","aguia_pa.png","aguia maraba"],["D","Imperatriz","imperatriz_ma.png",""],["D","Oratório","oratorio_ap.png",""],["D","Tocantinópolis","tocantinopolis.png",""],["D","Trem","trem_ap.jpg",""],["D","Tuna Luso","tuna.jpg",""],
+  ["D","IAPE","iape_ma.gif",""],["D","Iguatu","iguatu_ce.png",""],["D","Maracanã","maracanau.png",""],["D","Moto Club","moto.jpg",""],["D","Parnahyba","parnaiba_pi.png","parnaiba"],["D","Sampaio Corrêa","sampaio.png","sampaio correa"],
+  ["D","Altos","altos_pi.png",""],["D","Atlético Cearense","uniclinic.jpg",""],["D","CEFAT","gremio_pague_ce.jpg",""],["D","Ferroviário","ferroviario.gif","ferroviario ce"],["D","Fluminense-PI","fluminense_pi.png","fluminense pi"],["D","Piauí","piaui.png",""],
+  ["D","ABC","abc.jpg",""],["D","América de Natal","america.png","america rn"],["D","Central","central_pe.png",""],["D","Laguna","laguna_rn.jpg",""],["D","Maguary","pe_maguary.png","maguary pe"],["D","Sousa","sousa_pb3.png",""],
+  ["D","Decisão","decisao_pe.png",""],["D","Lagarto","lagarto_se.png",""],["D","Retrô","retro_pe.png",""],["D","Sergipe","sergipe.png",""],["D","Serra Branca","paraiba_pb.png",""],["D","Treze","treze.jpg",""],
+  ["D","ASA","asa_al.png",""],["D","Atlético-BA","atletico_ba.png","atletico de alagoinhas"],["D","CSA","csa.png",""],["D","CSE","cse_al.png",""],["D","Jacuipense","jacuipense_ba.jpg",""],["D","Juazeirense","juazeirense_ba.png",""],
+  ["D","ABECAT","abecat_go.png",""],["D","AMDH","betim2_mg.png",""],["D","CRAC","crac_go.png",""],["D","Ivinhema","ivinhema_ms.gif",""],["D","Operário-MS","operario_ms.png","operario ms"],["D","Uberlândia","uberlandia.png",""],
+  ["D","Democrata","democrata_gv.png",""],["D","Porto-BA","porto_ba.png",""],["D","Real Noroeste","real_noroeste_es.png",""],["D","Rio Branco","riobranco.png",""],["D","Tombense","tombense_mg.png",""],["D","Vitória-ES","vitoria_es.png","vitoria es"],
+  ["D","Água Santa","agua_santa_sp.png",""],["D","America-RJ","america_rj.gif","america rj"],["D","Madureira","madureira.jpg",""],["D","Portuguesa-RJ","portuguesa_rj.png","portuguesa rj"],["D","Portuguesa","portuguesa.png","portuguesa sp"],["D","Pouso Alegre","pouso_alegre_mg.png",""],
+  ["D","Maricá","marica_rj.png",""],["D","Noroeste","noroeste.png",""],["D","Nova Iguaçu","novaiguacu_rj.jpg",""],["D","Sampaio Corrêa-RJ","sampaio_correa_rj.png","sampaio correa rj"],["D","Velo Clube","veloclube.png",""],["D","XV de Piracicaba","xv.png","xv piracicaba"],
+  ["D","Cascavel","fc_cascavel_pr.png",""],["D","Cianorte","cianorte.jpg",""],["D","Guarany de Bagé","gbage_rs.jpg","guarany"],["D","Joinville","jec.gif","joinvile|jec"],["D","Santa Catarina","santacatarina.png",""],["D","São Luiz","saoluiz_rs.png",""],
+  ["D","Azuriz","azuriz_pr.png",""],["D","Blumenau","blumenau_sc.png",""],["D","Brasil de Pelotas","gebrasil.gif","brasil"],["D","Independente-PR","independente_pr.png","independente"],["D","Marcílio Dias","marcilio_dias_sc.png",""],["D","São José-RS","saojose_rs.png","sao jose"],
+];
+const normNome = t => String(t||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/\.(png|jpe?g|webp|svg|gif)$/,"").replace(/\b(fc|ec|sc|ac|futebol clube|esporte clube)\b/g,"").replace(/[^a-z0-9]+/g," ").trim();
+const IDX_CLUBES = (()=>{ const m={}; CLUBES.forEach(c=>{ [c[1],...String(c[3]).split("|")].filter(Boolean).forEach(a=>{ const k=normNome(a); if(k && !m[k]) m[k]=c; }); }); return m; })();
+const clubeDe = nome => IDX_CLUBES[normNome(nome)] || null;
+const escudoDe = t => (t && t.escudo) || (clubeDe(t && t.nome) ? ESC_BASE + clubeDe(t.nome)[2] : "");
+const siglaDe = nome => String(nome||"").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z]/g,"").slice(0,3).toUpperCase() || "?";
+function EscImg({src,alt,size=22}){
+  const [erro,setErro]=useState(false);
+  if(!src||erro) return null;
+  return html`<img src=${src} alt=${alt||""} loading="lazy" referrerpolicy="no-referrer" onError=${()=>setErro(true)} style=${{width:size+"px",height:size+"px",objectFit:"contain"}}/>`;
+}
+function Clube({nome,size=22}){
+  const src=escudoDe({nome});
+  return html`<span style=${{display:"inline-flex",alignItems:"center",gap:"6px",minWidth:0}}>${src?html`<${EscImg} src=${src} alt="" size=${size}/>`:null}<span style=${{overflow:"hidden",textOverflow:"ellipsis"}}>${nome}</span></span>`;
+}
+// Adversários da Série C 2026 já cadastrados com o escudo
+function adversariosPadrao(){ return CLUBES.filter(c=>c[0]==="C"&&c[1]!=="Santa Cruz").map(c=>({id:"adv-"+normNome(c[1]).replace(/ /g,"-"),nome:c[1],sigla:siglaDe(c[1]),escudo:"",serie:"Série C",sistema:"",fortes:"",fracos:"",obs:""})); }
+
+function CatalogoClubes({st,up,toast}){
+  const [serie,setSerie]=useState("C"); const [q,setQ]=useState("");
+  const tem=new Set(st.adversarios.map(a=>normNome(a.nome)));
+  const add=c=>{ if(tem.has(normNome(c[1]))){toast(c[1]+" já está nos adversários");return;} up(s=>({...s,adversarios:[...s.adversarios,{id:uid("adversarios"),nome:c[1],sigla:siglaDe(c[1]),escudo:"",serie:"Série "+c[0],sistema:"",fortes:"",fracos:"",obs:""}]})); toast(c[1]+" adicionado aos adversários"); };
+  const lista=CLUBES.filter(c=>(!serie||c[0]===serie)&&(!q||normNome(c[1]).includes(normNome(q))));
+  return html`<div class="grid" style=${{gap:"12px"}}>
+    <div class="toolbar" style=${{marginBottom:0}}>
+      <div class="seg">${[["A","Série A"],["B","Série B"],["C","Série C"],["D","Série D"],["","Todos"]].map(([k,l])=>html`<button key=${l} class=${serie===k?"on":""} onClick=${()=>setSerie(k)}>${l}</button>`)}</div>
+      <input class="field grow" id="busca-clubes" placeholder="Buscar clube" value=${q} onInput=${e=>setQ(e.target.value)}/>
+      <span class="note">${CLUBES.length} clubes do Brasileiro 2026 · escudos do escudosfc.com.br</span>
+    </div>
+    <div class="clubes">${lista.map(c=>html`<div key=${c[1]} class=${"clube"+(c[1]==="Santa Cruz"?" nosso":"")}>
+      <${EscImg} src=${ESC_BASE+c[2]} alt=${"Escudo "+c[1]} size=${44}/>
+      <b>${c[1]}</b><span class="note">Série ${c[0]}</span>
+      ${c[1]==="Santa Cruz"?html`<span class="chip" style=${{color:"var(--red-ink)"}}>Nosso clube</span>`:tem.has(normNome(c[1]))?html`<span class="chip" style=${{color:"var(--good)"}}>Adversário</span>`:html`<button class="btn sm ro-hide" onClick=${()=>add(c)}>${I.plus}Adversário</button>`}
+    </div>`)}</div>
+  </div>`;
+}
+
 /* Importação de vários escudos de uma vez: o nome do arquivo identifica o clube */
-const normNome = t => String(t||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\.(png|jpe?g|webp|svg|gif)$/,"").replace(/\b(fc|ec|sc|ac|futebol clube|esporte clube)\b/g,"").replace(/[^a-z0-9]+/g," ").trim();
 function ImportarEscudos({up,toast}){
   const ref=useRef(); const [busy,setBusy]=useState(false);
   const pick=async e=>{
@@ -960,7 +1027,7 @@ function UsoChart({bench}){
         <rect x=${x} y=${Y(u)} width=${w} height=${H-B-Y(u)} rx="2" fill="var(--panel2)" stroke="var(--line2)"/>
         <rect x=${x} y=${Y(ti+ro)} width=${w} height=${H-B-Y(ro)} rx="0" fill="var(--mute)" opacity=".7"/>
         <rect x=${x} y=${Y(ti)} width=${w} height=${H-B-Y(ti)} rx="0" fill="var(--red)"/>
-        ${t.escudo?html`<image href=${t.escudo} x=${x+w/2-8} y=${H-B+3} width="16" height="16" preserveAspectRatio="xMidYMid meet"/>`
+        ${escudoDe(t)?html`<image href=${escudoDe(t)} x=${x+w/2-8} y=${H-B+3} width="16" height="16" preserveAspectRatio="xMidYMid meet"/>`
           :html`<text x=${x+w/2} y=${H-B+14} text-anchor="middle" font-size="10.5" fill="var(--fg)" style=${{fontFamily:"Barlow Condensed,Arial Narrow,sans-serif",fontWeight:700}}>${t.sigla}</text>`}
         <text x=${x+w/2} y=${H-B+27} text-anchor="middle" font-size="9.5" fill="var(--mute)">${String(t.ano).slice(-2)}</text>
       </g>`; })}
@@ -981,11 +1048,11 @@ function Benchmark({st,up,toast}){
   const [par,setPar]=useState("gf"); const [fa,setFa]=useState("");
   const pr=PARES.find(p=>p.k===par);
   const bench=st.bench.filter(t=>!fa||String(t.ano)===fa);
-  const pts=bench.map(t=>({x:n(t[pr.x]),y:n(t[pr.y]),label:t.sigla,esc:t.escudo})).filter(d=>d.x!==null&&d.y!==null);
+  const pts=bench.map(t=>({x:n(t[pr.x]),y:n(t[pr.y]),label:t.sigla,esc:escudoDe(t)})).filter(d=>d.x!==null&&d.y!==null);
   const r=pearson(pts.map(d=>d.x),pts.map(d=>d.y));
   const set=(id,k,v)=>up(s=>({...s, bench:s.bench.map(t=>t.id===id?{...t,[k]:v}:t)}));
   const setEsc=t=>(img,erro)=>{ if(erro){toast(erro);return;} up(s=>({...s, bench:s.bench.map(b=>b.nome===t.nome?{...b,escudo:img}:b)})); toast("Escudo do "+t.nome+" salvo"); };
-  const comEsc=new Set(st.bench.filter(t=>t.escudo).map(t=>t.nome)).size, clubes=new Set(st.bench.map(t=>t.nome)).size;
+  const comEsc=new Set(st.bench.filter(t=>escudoDe(t)).map(t=>t.nome)).size, clubes=new Set(st.bench.map(t=>t.nome)).size;
   const cols=[["usados","Utiliz."],["idade","Idade"],["tit","+50%"],["rot","25–50%"],["p30",">30%"],["total","Total"],["pts","Pts"],["gf","GM"],["ga","GS"],["xg","xG"],["xga","xGA"]];
   const medias=Object.fromEntries(cols.map(([k])=>[k,avg(bench.map(t=>n(t[k])))]));
   return html`<div class="grid" style=${{gap:"16px"}}>
@@ -1573,7 +1640,7 @@ function Relatorios({st,up}){
   return html`<div class="grid" style=${{gap:"14px"}}>
     <div class="grid g-kpi"><${Kpi} l="Total de relatórios" v=${st.relatorios.length}/><${Kpi} l="Este mês" v=${st.relatorios.filter(r=>(r.data||"").startsWith(mes)).length}/><${Kpi} l="Com PDF" v=${st.relatorios.filter(r=>r.pdf).length}/><${Kpi} l="Com vídeo" v=${st.relatorios.filter(r=>r.video).length}/></div>
     <div class="toolbar" style=${{marginBottom:0}}><input class="field grow" id="busca-rel" placeholder="Buscar partida, competição ou observação" value=${q} onInput=${e=>setQ(e.target.value)}/><button class="btn primary ro-hide" onClick=${()=>rl.add({data:hoje(),adversario:"",competicao:st.config.competicao,mando:"Casa",placar:"",pdf:"",video:"",obs:""})}>${I.plus}Novo relatório</button></div>
-    <${Tabela} st=${st} rows=${lista} api=${rl} vazio="Nenhum relatório. Toque em “Novo relatório” para adicionar o PDF e o vídeo de uma partida." cols=${[{k:"data",l:"Data",t:"date"},{k:"adversario",l:"Adversário",w:"140px"},{k:"competicao",l:"Competição",w:"110px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"placar",l:"Placar",w:"60px",ph:"2x1"},{k:"pdf",l:"PDF (link)",t:"link"},{k:"video",l:"Vídeo (link)",t:"link"},{k:"obs",l:"Resumo",w:"200px"}]}/>
+    <${Tabela} st=${st} rows=${lista} api=${rl} vazio="Nenhum relatório. Toque em “Novo relatório” para adicionar o PDF e o vídeo de uma partida." cols=${[{k:"data",l:"Data",t:"date"},{k:"_esc",l:"",t:"calc",f:r=>html`<${EscImg} src=${escudoDe({nome:r.adversario})} size=${22}/>`},{k:"adversario",l:"Adversário",w:"140px"},{k:"competicao",l:"Competição",w:"110px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"placar",l:"Placar",w:"60px",ph:"2x1"},{k:"pdf",l:"PDF (link)",t:"link"},{k:"video",l:"Vídeo (link)",t:"link"},{k:"obs",l:"Resumo",w:"200px"}]}/>
   </div>`;
 }
 
@@ -1607,7 +1674,7 @@ function Mercado({st,up,toast}){
     ${aba==="Dashboard"?html`<div>
       <p class="note">${st.alvos.length} jogadores no mercado · ${st.alvos.filter(a=>a.status==="Em negociação").length} em negociação · ${st.alvos.filter(a=>a.status==="Fechado").length} fechados · ${st.alvos.filter(a=>(overall(a)||0)>=75).length} acima de 75</p>
       ${lista.length?html`<div class="acards">${lista.map(a=>{ const ov=overall(a); return html`<div key=${a.id} class="acard">
-        <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><span class="av" style=${{width:"42px",height:"42px"}}>${iniciais(a.nome)}</span><div style=${{minWidth:0}}><div class="nm" style=${{fontSize:"15px"}}>${a.nome||"(sem nome)"}</div><div class="meta">${POSN[a.pos]?.s}${a.posEsp?" ("+a.posEsp+")":""} · ${a.clube||"clube não informado"}${n(a.nasc)?" · "+(new Date().getFullYear()-n(a.nasc))+" anos":""}</div></div></div>
+        <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><span class="av" style=${{width:"42px",height:"42px"}}>${iniciais(a.nome)}</span><div style=${{minWidth:0}}><div class="nm" style=${{fontSize:"15px"}}>${a.nome||"(sem nome)"}</div><div class="meta" style=${{display:"flex",gap:"4px",alignItems:"center",flexWrap:"wrap"}}>${POSN[a.pos]?.s}${a.posEsp?" ("+a.posEsp+")":""} · ${a.clube?html`<${Clube} nome=${a.clube} size=${16}/>`:"clube não informado"}${n(a.nasc)?" · "+(new Date().getFullYear()-n(a.nasc))+" anos":""}</div></div></div>
         <div class="acard-f"><div><span class="note">Overall</span><b class="num" style=${{color:corOv(ov),fontSize:"26px"}}>${ov??"—"}</b></div><div><span class="note">Nível</span><b style=${{fontSize:"12px"}}>${a.nivel||"—"}</b></div><div><span class="note">Situação</span><b style=${{fontSize:"12px",color:ALVO_COR[a.status]}}>${a.status}</b></div></div>
         <div class="atr">${ATR.map(([k,l])=>html`<div key=${k}><span class="note">${l}</span><${Barra} v=${n(a[k])} cor="var(--info)"/></div>`)}</div>
         ${tagsDe(a).length?html`<div style=${{display:"flex",gap:"4px",flexWrap:"wrap"}}>${tagsDe(a).map(t=>html`<span key=${t} class="chip">${t}</span>`)}</div>`:null}
@@ -1638,20 +1705,21 @@ function AnaliseDesemp({st,up,toast}){
   const js=st.jogos.filter(j=>n(j.gp)!=null&&n(j.gc)!=null).sort((a,b)=>(a.data||"").localeCompare(b.data||""));
   const v=js.filter(j=>n(j.gp)>n(j.gc)).length, e=js.filter(j=>n(j.gp)===n(j.gc)).length, d=js.length-v-e;
   return html`<div class="grid" style=${{gap:"14px"}}>
-    <${Abas} tabs=${["Adversários","Calendário","Estatística de jogos"]} v=${aba} set=${setAba}/>
+    <${Abas} tabs=${["Adversários","Clubes 2026","Calendário","Estatística de jogos"]} v=${aba} set=${setAba}/>
+    ${aba==="Clubes 2026"?html`<${CatalogoClubes} st=${st} up=${up} toast=${toast}/>`:null}
     ${aba==="Adversários"?html`<div class="grid" style=${{gap:"10px"}}>
       <div class="toolbar" style=${{marginBottom:0}}><button class="btn primary ro-hide" onClick=${()=>ad.add({nome:"",sigla:"",escudo:"",sistema:"",fortes:"",fracos:"",obs:""})}>${I.plus}Adicionar clube</button><${ImportarEscudos} up=${up} toast=${toast}/><span class="note">Toque na sigla para trocar um escudo, ou importe vários arquivos de uma vez: o nome do arquivo identifica o clube.</span></div>
       ${st.adversarios.length?html`<div class="acards">${st.adversarios.map(a=>html`<div key=${a.id} class="acard">
-        <div style=${{display:"flex",gap:"8px",alignItems:"center"}}><${ClubMark} t=${{...a,sigla:a.sigla||iniciais(a.nome)||"?"}} onSet=${setEsc(a)}/><input class="cell" id=${"adn-"+a.id} placeholder="Nome do clube" value=${a.nome} onInput=${e2=>ad.set(a.id,"nome",e2.target.value)} style=${{fontWeight:700,fontSize:"15px"}}/><${Del} onYes=${()=>ad.del(a.id)}/></div>
+        <div style=${{display:"flex",gap:"8px",alignItems:"center"}}><${ClubMark} t=${{...a,sigla:a.sigla||siglaDe(a.nome)}} onSet=${setEsc(a)}/><input class="cell" id=${"adn-"+a.id} placeholder="Nome do clube" value=${a.nome} onInput=${e2=>ad.set(a.id,"nome",e2.target.value)} style=${{fontWeight:700,fontSize:"15px"}}/><${Del} onYes=${()=>ad.del(a.id)}/></div>
         <div style=${{display:"flex",gap:"6px"}}><input class="cell" id=${"ads-"+a.id} placeholder="Sigla" value=${a.sigla} onInput=${e2=>ad.set(a.id,"sigla",e2.target.value.toUpperCase().slice(0,4))} style=${{width:"70px"}}/><input class="cell" id=${"adsis-"+a.id} placeholder="Sistema (ex.: 4-3-3)" value=${a.sistema} onInput=${e2=>ad.set(a.id,"sistema",e2.target.value)}/></div>
         <label class="note">Pontos fortes<textarea class="cell" rows="2" id=${"adf-"+a.id} value=${a.fortes} onInput=${e2=>ad.set(a.id,"fortes",e2.target.value)}></textarea></label>
         <label class="note">Pontos fracos<textarea class="cell" rows="2" id=${"adfr-"+a.id} value=${a.fracos} onInput=${e2=>ad.set(a.id,"fracos",e2.target.value)}></textarea></label>
-        <div class="meta">${st.jogos.filter(j=>j.adversario===a.nome).length} jogo(s) registrados</div>
+        <div class="meta">${a.serie?a.serie+" · ":""}${st.jogos.filter(j=>j.adversario===a.nome).length} jogo(s) registrados</div>
       </div>`)}</div>`:html`<div class="empty">Nenhum adversário cadastrado. Adicione clubes para analisar suas equipes.</div>`}
     </div>`:null}
     ${aba==="Calendário"?html`<div class="grid" style=${{gap:"10px"}}>
       <div class="toolbar" style=${{marginBottom:0}}><button class="btn primary ro-hide" onClick=${()=>jg.add({data:hoje(),adversario:"",competicao:st.config.competicao,mando:"Casa",gp:"",gc:"",xg:"",xga:"",posse:"",fin:""})}>${I.plus}Adicionar jogo</button></div>
-      <${Tabela} st=${st} rows=${st.jogos.slice().sort((a,b)=>(b.data||"").localeCompare(a.data||""))} api=${jg} vazio="Nenhum jogo registrado." cols=${[{k:"data",l:"Data",t:"date"},{k:"adversario",l:"Adversário",t:"select",opts:st.adversarios.map(a=>a.nome).filter(Boolean),vazio:true,w:"140px"},{k:"competicao",l:"Competição",w:"100px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"gp",l:"Gols pró",t:"num",w:"44px"},{k:"gc",l:"Gols contra",t:"num",w:"44px"},{k:"xg",l:"xG",t:"num",w:"48px"},{k:"xga",l:"xGA",t:"num",w:"48px"},{k:"posse",l:"Posse %",t:"num",w:"48px"},{k:"fin",l:"Finaliz.",t:"num",w:"44px"},{k:"_r",l:"Resultado",t:"calc",f:r=>n(r.gp)==null||n(r.gc)==null?"—":n(r.gp)>n(r.gc)?"V":n(r.gp)<n(r.gc)?"D":"E",cor:r=>n(r.gp)>n(r.gc)?"var(--good)":n(r.gp)<n(r.gc)?"var(--bad)":"var(--warn)"}]}/>
+      <${Tabela} st=${st} rows=${st.jogos.slice().sort((a,b)=>(b.data||"").localeCompare(a.data||""))} api=${jg} vazio="Nenhum jogo registrado." cols=${[{k:"data",l:"Data",t:"date"},{k:"_esc",l:"",t:"calc",f:r=>html`<${EscImg} src=${escudoDe(st.adversarios.find(a=>a.nome===r.adversario)||{nome:r.adversario})} size=${22}/>`},{k:"adversario",l:"Adversário",t:"select",opts:st.adversarios.map(a=>a.nome).filter(Boolean),vazio:true,w:"140px"},{k:"competicao",l:"Competição",w:"100px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"gp",l:"Gols pró",t:"num",w:"44px"},{k:"gc",l:"Gols contra",t:"num",w:"44px"},{k:"xg",l:"xG",t:"num",w:"48px"},{k:"xga",l:"xGA",t:"num",w:"48px"},{k:"posse",l:"Posse %",t:"num",w:"48px"},{k:"fin",l:"Finaliz.",t:"num",w:"44px"},{k:"_r",l:"Resultado",t:"calc",f:r=>n(r.gp)==null||n(r.gc)==null?"—":n(r.gp)>n(r.gc)?"V":n(r.gp)<n(r.gc)?"D":"E",cor:r=>n(r.gp)>n(r.gc)?"var(--good)":n(r.gp)<n(r.gc)?"var(--bad)":"var(--warn)"}]}/>
     </div>`:null}
     ${aba==="Estatística de jogos"?html`<div class="grid" style=${{gap:"14px"}}>
       <div class="grid g-kpi"><${Kpi} l="Jogos" v=${js.length}/><${Kpi} l="V · E · D" v=${`${v}·${e}·${d}`}/><${Kpi} l="Aproveitamento" v=${js.length?Math.round((v*3+e)/(js.length*3)*100)+"%":"—"}/><${Kpi} l="Gols pró · contra" v=${`${sum(js.map(j=>j.gp))}·${sum(js.map(j=>j.gc))}`}/><${Kpi} l="xG médio" v=${f2(avg(js.map(j=>n(j.xg))))} d=${"xGA "+f2(avg(js.map(j=>n(j.xga))))}/></div>
