@@ -302,6 +302,21 @@ select.cell{cursor:pointer}
 .card-am,.card-vm{width:12px;height:16px;border-radius:2px;display:inline-block}
 .card-am{background:var(--warn)}.card-vm{background:var(--bad)}
 .chip{white-space:nowrap}
+.res{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:5px;color:#fff;font-size:11px;font-weight:700;font-family:var(--f-mono)}
+.res.big{width:30px;height:30px;font-size:14px;border-radius:7px}
+.jogos{display:flex;flex-direction:column;gap:8px}
+.jogo{display:grid;grid-template-columns:70px auto 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-left:4px solid;border-radius:10px;background:var(--panel2);padding:10px 12px}
+.jogo-d{display:flex;flex-direction:column;line-height:1.2}.jogo-d b{font-family:var(--f-display);font-size:18px}.jogo-d span{font-size:11px;color:var(--mute)}
+.jogo-m{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.jogo-p{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;min-width:0}
+.jogo-t{display:flex;align-items:center;gap:8px;min-width:0}.jogo-t b{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.jogo-t.adv{flex-direction:row-reverse;text-align:right}
+.placar{font-family:var(--f-display);font-size:24px;font-weight:800;display:flex;gap:6px;align-items:center}.placar i{font-style:normal;color:var(--mute);font-size:16px}
+.jogo-r{display:flex;flex-direction:column;align-items:center;gap:2px}
+@media (max-width:760px){.jogo{grid-template-columns:1fr auto;}.jogo-p{grid-column:1/-1;order:3}.jogo-m{flex-direction:row;flex-wrap:wrap}.jogo-d{flex-direction:row;gap:6px;align-items:baseline}}
+.h2h{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:8px}
+.h2h-i{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2)}
+.h2h-i b{font-size:13px}
 /* Celular: tabelas viram fichas com rótulo em cada campo */
 @media (max-width:760px){
   .tablewrap{border:0;background:transparent;overflow:visible;border-radius:0}
@@ -447,7 +462,7 @@ function padrao(){
   elenco.forEach(j=>{ decisoes[j.id] = j.status==="Emprestado" ? "Avaliar" : "Manter"; });
   return {v:3, temporada:2026, elenco, bench:benchPadrao(), decisoes, alvos:[], comissao:[], orc2026:"", orc2027:"", comp2027:"Série C", incluirNeg:false,
     eventos:[], psr:[], pse:[], cmj:[], gps:[], atend:[], lesoes:[], sessoes:[], modelos:[], nutri:[], hidrat:[], planos:[],
-    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:[], arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true}};
+    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true}};
 }
 const SAUDE = ["Liberado","Sob observação","Em transição","Não liberado"];
 const SAUDE_COR = {"Liberado":"var(--good)","Sob observação":"var(--warn)","Em transição":"var(--info)","Não liberado":"var(--bad)"};
@@ -490,6 +505,8 @@ function migrar(s){
   const jaSemeado = s.config && s.config.advSeed;
   o.config={...d.config, ...(o.config||{}), advSeed:true};
   if(!jaSemeado && !(s.adversarios||[]).length) o.adversarios=adversariosPadrao();
+  if(!(s.config&&s.config.jogosSeed)){ const tem=new Set((o.jogos||[]).map(j=>j.data+"|"+normNome(j.adversario))); o.jogos=[...(o.jogos||[]), ...jogosPadrao().filter(j=>!tem.has(j.data+"|"+normNome(j.adversario)))]; }
+  o.config.jogosSeed=true;
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
 }
@@ -995,6 +1012,145 @@ function CatalogoClubes({st,up,toast}){
   </div>`;
 }
 
+/* Jogos do Santa Cruz em 2026 (fonte: ogol.com.br, consulta em 29/10/2026) */
+const JOGOS_2026 = [
+  ["2026-10-10","17:00","Série C","C","Fora","Botafogo-PB",0,1,""],
+  ["2026-10-03","17:00","Série C","C","Casa","Maringá",1,1,""],
+  ["2026-09-26","17:00","Série C","C","Fora","Floresta-CE",1,1,""],
+  ["2026-09-20","16:00","Série C","C","Casa","Floresta-CE",1,0,""],
+  ["2026-09-12","19:30","Série C","C","Fora","Maringá",1,0,""],
+  ["2026-09-06","18:30","Série C","C","Casa","Botafogo-PB",1,0,""],
+  ["2026-08-29","17:00","Série C","1F","Fora","Anápolis",1,1,""],
+  ["2026-08-22","19:30","Série C","1F","Casa","Caxias",2,0,""],
+  ["2026-08-15","19:30","Série C","1F","Casa","Maranhão",0,1,""],
+  ["2026-08-08","17:00","Série C","1F","Fora","Botafogo-PB",2,2,""],
+  ["2026-07-25","17:00","Série C","1F","Casa","Figueirense",0,1,""],
+  ["2026-07-12","11:00","Série C","1F","Fora","Barra-SC",2,1,""],
+  ["2026-07-04","19:30","Série C","1F","Casa","Ituano",1,0,""],
+  ["2026-06-27","17:00","Série C","1F","Fora","Paysandu",3,1,""],
+  ["2026-06-20","19:00","Série C","1F","Casa","Ypiranga-RS",0,1,""],
+  ["2026-06-14","11:00","Série C","1F","Fora","Brusque",1,0,""],
+  ["2026-05-31","16:00","Série C","1F","Casa","Ferroviária",1,1,""],
+  ["2026-05-23","19:30","Série C","1F","Fora","Maringá",1,1,""],
+  ["2026-05-16","17:00","Série C","1F","Casa","Volta Redonda",2,0,""],
+  ["2026-05-11","20:00","Série C","1F","Fora","Inter de Limeira",2,1,""],
+  ["2026-05-02","17:00","Série C","1F","Fora","Guarani",0,1,""],
+  ["2026-04-26","16:00","Série C","1F","Casa","Amazonas",0,1,""],
+  ["2026-04-18","16:00","Série C","1F","Fora","Confiança",0,1,""],
+  ["2026-04-11","17:00","Série C","1F","Fora","Floresta-CE",1,1,""],
+  ["2026-04-06","20:00","Série C","1F","Casa","Itabaiana",1,0,""],
+  ["2026-03-05","21:30","Copa do Brasil","2F","Casa","Sousa",0,0,"2-4"],
+  ["2026-02-22","18:00","Pernambucano","SF","Fora","Náutico",0,2,""],
+  ["2026-02-11","20:00","Pernambucano","SF","Casa","Náutico",0,1,""],
+  ["2026-02-08","18:00","Pernambucano","2F","Casa","Decisão",1,0,""],
+  ["2026-02-05","16:30","Pernambucano","2F","Fora","Decisão",2,1,""],
+  ["2026-01-31","16:30","Pernambucano","1F","Fora","Sport",1,2,""],
+  ["2026-01-28","16:00","Pernambucano","1F","Casa","Jaguar",6,0,""],
+  ["2026-01-25","18:00","Pernambucano","1F","Casa","Náutico",0,4,""],
+  ["2026-01-21","21:30","Pernambucano","1F","Fora","Retrô",0,1,""],
+  ["2026-01-17","17:00","Pernambucano","1F","Casa","Vitória das Tabocas",1,0,""],
+  ["2026-01-14","15:00","Pernambucano","1F","Fora","Maguary",1,1,""],
+  ["2026-01-11","18:00","Pernambucano","1F","Casa","Decisão",3,0,""]
+];
+const FASE_JOGO = {"1F":"1ª fase","2F":"2ª fase","SF":"Semifinal","C":"Quadrangular"};
+const COMP_INFO = {
+  "Série C":{nome:"Brasileirão Série C 2026",status:"Na fase de quadrangulares",cartoes:"67 amarelos · 1 segundo amarelo · 3 vermelhos"},
+  "Copa do Brasil":{nome:"Copa do Brasil 2026",status:"Eliminado na 2ª fase, nos pênaltis",cartoes:"—"},
+  "Pernambucano":{nome:"Campeonato Pernambucano 2026",status:"Eliminado na semifinal",cartoes:"29 amarelos · 1 segundo amarelo · 1 vermelho"},
+};
+function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})); }
+const COMPS = ["Série C","Copa do Brasil","Pernambucano"];
+const resJ = j => n(j.gp)==null||n(j.gc)==null ? null : n(j.gp)>n(j.gc)?"V":n(j.gp)<n(j.gc)?"D":"E";
+const COR_RES = {V:"var(--good)",E:"var(--warn)",D:"var(--bad)"};
+function resumoJogos(lista){
+  const js=lista.filter(j=>resJ(j)).sort((a,b)=>(a.data||"").localeCompare(b.data||""));
+  const c=k=>js.filter(j=>resJ(j)===k).length;
+  const V=c("V"),E=c("E"),D=c("D"),gp=sum(js.map(j=>j.gp)),gc=sum(js.map(j=>j.gc));
+  let seq={V:0,inv:0,semV:0,D:0}, cur={V:0,inv:0,semV:0,D:0};
+  js.forEach(j=>{ const r=resJ(j); cur.V=r==="V"?cur.V+1:0; cur.D=r==="D"?cur.D+1:0; cur.inv=r!=="D"?cur.inv+1:0; cur.semV=r!=="V"?cur.semV+1:0; Object.keys(seq).forEach(k=>seq[k]=Math.max(seq[k],cur[k])); });
+  return {js,J:js.length,V,E,D,gp,gc,sg:gp-gc,pts:V*3+E,aprov:js.length?Math.round((V*3+E)/(js.length*3)*100):null,
+    marcou:js.length?Math.round(js.filter(j=>n(j.gp)>0).length/js.length*100):null, sofreu:js.length?Math.round(js.filter(j=>n(j.gc)>0).length/js.length*100):null,
+    forma:js.slice(-5).map(resJ), seq};
+}
+function Forma({f}){ return html`<span style=${{display:"inline-flex",gap:"3px"}}>${f.map((r,i)=>html`<span key=${i} class="res" style=${{background:COR_RES[r]}}>${r}</span>`)}</span>`; }
+function JogoCard({st,j}){
+  const r=resJ(j); const adv=st.adversarios.find(a=>a.nome===j.adversario)||{nome:j.adversario};
+  return html`<div class="jogo" style=${{borderLeftColor:r?COR_RES[r]:"var(--line2)"}}>
+    <div class="jogo-d"><b>${fmtD(j.data)}</b><span>${j.hora||""}</span></div>
+    <div class="jogo-m"><span class="chip">${j.competicao}${j.fase?" · "+(FASE_JOGO[j.fase]||j.fase):""}</span><span class="chip">${j.mando==="Casa"?"Casa":"Fora"}</span></div>
+    <div class="jogo-p">
+      <span class="jogo-t"><img src=${CREST} alt="" width="26" height="26"/><b>Santa Cruz</b></span>
+      <span class="placar num">${j.gp===""?"–":j.gp}<i>×</i>${j.gc===""?"–":j.gc}</span>
+      <span class="jogo-t adv">${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${26}/>`:html`<span class="club">${siglaDe(j.adversario)}</span>`}<b>${j.adversario||"A definir"}</b></span>
+    </div>
+    <div class="jogo-r">${r?html`<span class="res big" style=${{background:COR_RES[r]}}>${r}</span>`:html`<span class="chip">A jogar</span>`}${j.pen?html`<span class="note">pên. ${j.pen}</span>`:null}</div>
+  </div>`;
+}
+function CalendarioJogos({st,up}){
+  const [comp,setComp]=useState(""); const [mando,setMando]=useState(""); const [res,setRes]=useState(""); const [edit,setEdit]=useState(false);
+  const jg=crud(up,"jogos");
+  const lista=st.jogos.filter(j=>(!comp||j.competicao===comp)&&(!mando||j.mando===mando)&&(!res||resJ(j)===res)).sort((a,b)=>(b.data||"").localeCompare(a.data||""));
+  const grupos=[...new Set(lista.map(j=>j.competicao||"Outros"))];
+  return html`<div class="grid" style=${{gap:"12px"}}>
+    <div class="toolbar" style=${{marginBottom:0}}>
+      <div class="seg">${[["","Todas"],...COMPS.map(c=>[c,c])].map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)}>${l}</button>`)}</div>
+      <select class="field" id="j-mando" style=${{width:"auto"}} value=${mando} onChange=${e=>setMando(e.target.value)}><option value="">Casa e fora</option><option>Casa</option><option>Fora</option></select>
+      <select class="field" id="j-res" style=${{width:"auto"}} value=${res} onChange=${e=>setRes(e.target.value)}><option value="">Todos os resultados</option><option value="V">Vitórias</option><option value="E">Empates</option><option value="D">Derrotas</option></select>
+      <button class="btn ro-hide" onClick=${()=>setEdit(!edit)}>${edit?"Ver calendário":"Editar jogos"}</button>
+      <button class="btn primary ro-hide" onClick=${()=>{ jg.add({data:hoje(),hora:"",adversario:"",competicao:comp||"Série C",fase:"",mando:"Casa",gp:"",gc:"",pen:"",xg:"",xga:"",posse:"",fin:""}); setEdit(true); }}>${I.plus}Adicionar jogo</button>
+    </div>
+    ${edit?html`<${Tabela} st=${st} rows=${lista} api=${jg} vazio="Nenhum jogo." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"competicao",l:"Competição",t:"select",opts:[...new Set([...COMPS,...st.jogos.map(j=>j.competicao).filter(Boolean)])],w:"130px"},{k:"fase",l:"Fase",w:"60px",ph:"1F"},{k:"_esc",l:"",t:"calc",f:r=>html`<${EscImg} src=${escudoDe(st.adversarios.find(a=>a.nome===r.adversario)||{nome:r.adversario})} size=${22}/>`},{k:"adversario",l:"Adversário",w:"140px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"gp",l:"Gols SC",t:"num",w:"44px"},{k:"gc",l:"Gols adv.",t:"num",w:"44px"},{k:"pen",l:"Pênaltis",w:"60px",ph:"4-2"},{k:"xg",l:"xG",t:"num",w:"48px"},{k:"xga",l:"xGA",t:"num",w:"48px"},{k:"posse",l:"Posse %",t:"num",w:"48px"},{k:"fin",l:"Finaliz.",t:"num",w:"44px"}]}/>`
+    : grupos.length? grupos.map(g=>{ const js=lista.filter(j=>(j.competicao||"Outros")===g), r=resumoJogos(js), info=COMP_INFO[g];
+        return html`<section key=${g} class="card">
+          <div class="card-h"><div><h2>${info?info.nome:g}</h2><p>${info?info.status+" · ":""}${r.J} jogos · ${r.V}V ${r.E}E ${r.D}D · ${r.gp}–${r.gc} · ${r.aprov??"—"}% de aproveitamento</p></div><${Forma} f=${r.forma}/></div>
+          <div class="jogos">${js.map(j=>html`<${JogoCard} key=${j.id} st=${st} j=${j}/>`)}</div>
+        </section>`; })
+    : html`<div class="empty">Nenhum jogo com esses filtros.</div>`}
+    <p class="note">Jogos de 2026 importados do ogol.com.br em 29/10/2026. Placar sempre com os gols do Santa Cruz primeiro. Use “Editar jogos” para corrigir, incluir xG e posse ou lançar os próximos jogos.</p>
+  </div>`;
+}
+function EstatJogos({st}){
+  const [comp,setComp]=useState("");
+  const base=st.jogos.filter(j=>!comp||j.competicao===comp);
+  const r=resumoJogos(base), casa=resumoJogos(base.filter(j=>j.mando==="Casa")), fora=resumoJogos(base.filter(j=>j.mando==="Fora"));
+  const comps=[...new Set(st.jogos.map(j=>j.competicao).filter(Boolean))];
+  let acc=0; const pontos=r.js.map(j=>{ const x=resJ(j); acc+=x==="V"?3:x==="E"?1:0; return {x:fmtD(j.data),y:acc}; });
+  const h2h=Object.values(r.js.reduce((o,j)=>{ const k=j.adversario||"?"; o[k]=o[k]||{nome:k,js:[]}; o[k].js.push(j); return o; },{})).map(x=>({...x,r:resumoJogos(x.js)})).sort((a,b)=>b.r.J-a.r.J||b.r.pts-a.r.pts);
+  const sp=(l,v,d)=>html`<div class="mini"><span class="note">${l}</span><b class="num">${v}</b>${d?html`<span class="note">${d}</span>`:null}</div>`;
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div class="seg" style=${{alignSelf:"start",flexWrap:"wrap"}}>${[["","Temporada 2026"],...comps.map(c=>[c,c])].map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)}>${l}</button>`)}</div>
+    <div class="grid g-kpi">
+      <${Kpi} l="Jogos" v=${r.J} d=${html`<${Forma} f=${r.forma}/>`}/>
+      <${Kpi} l="V · E · D" v=${`${r.V}·${r.E}·${r.D}`} d=${r.J?`${Math.round(r.V/r.J*100)}% · ${Math.round(r.E/r.J*100)}% · ${Math.round(r.D/r.J*100)}%`:""}/>
+      <${Kpi} l="Aproveitamento" v=${r.aprov==null?"—":r.aprov+"%"} d=${r.pts+" pontos"}/>
+      <${Kpi} l="Gols pró" v=${r.gp} d=${r.J?f2(r.gp/r.J)+" por jogo · marcou em "+r.marcou+"%":""}/>
+      <${Kpi} l="Gols sofridos" v=${r.gc} d=${r.J?f2(r.gc/r.J)+" por jogo · sofreu em "+r.sofreu+"%":""}/>
+      <${Kpi} l="Saldo" v=${(r.sg>0?"+":"")+r.sg}/>
+    </div>
+    <div class="grid g-3">
+      <div class="card"><div class="card-h"><div><h2>Casa × fora</h2></div></div>
+        <div class="tablewrap"><table><thead><tr><th>Mando</th><th class="r">J</th><th class="r">V</th><th class="r">E</th><th class="r">D</th><th class="r">Gols</th><th class="r">Aprov.</th></tr></thead><tbody>
+          ${[["Casa",casa],["Fora",fora]].map(([l,x])=>html`<tr key=${l}><td style=${{padding:"8px",fontWeight:600}}>${l}</td><td class="r num">${x.J}</td><td class="r num">${x.V}</td><td class="r num">${x.E}</td><td class="r num">${x.D}</td><td class="r num">${x.gp}–${x.gc}</td><td class="r num">${x.aprov??"—"}%</td></tr>`)}
+        </tbody></table></div></div>
+      <div class="card"><div class="card-h"><div><h2>Sequências</h2><p>Maiores da temporada</p></div></div>
+        <div class="grid" style=${{gridTemplateColumns:"1fr 1fr",gap:"8px"}}>${sp("Vitórias seguidas",r.seq.V)}${sp("Invencibilidade",r.seq.inv,"jogos sem perder")}${sp("Sem vencer",r.seq.semV,"jogos")}${sp("Derrotas seguidas",r.seq.D)}</div></div>
+      <div class="card"><div class="card-h"><div><h2>Por competição</h2></div></div>
+        <div class="alerts">${comps.map(c=>{ const x=resumoJogos(st.jogos.filter(j=>j.competicao===c)), info=COMP_INFO[c]; return html`<div key=${c} class="need" style=${{flexDirection:"column",alignItems:"stretch",gap:"4px"}}>
+          <div style=${{display:"flex",justifyContent:"space-between",gap:"8px"}}><b>${c}</b><${Forma} f=${x.forma}/></div>
+          <span class="note">${x.J}J · ${x.V}V ${x.E}E ${x.D}D · ${x.gp}–${x.gc} · ${x.aprov??"—"}%</span>
+          ${info?html`<span class="note">${info.status}${info.cartoes&&info.cartoes!=="—"?" · cartões: "+info.cartoes:""}</span>`:null}</div>`; })}</div></div>
+    </div>
+    <div class="grid g-2">
+      <div class="card"><div class="card-h"><div><h2>Gols por jogo</h2><p>Gols do Santa Cruz, cor pelo resultado</p></div></div><${Serie} pts=${r.js.map(j=>({x:fmtD(j.data),y:n(j.gp),cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
+      <div class="card"><div class="card-h"><div><h2>Pontos acumulados</h2><p>${comp||"Todas as competições"}</p></div></div><${Serie} tipo="linha" pts=${pontos} fmt=${v=>Math.round(v)}/></div>
+    </div>
+    <div class="card"><div class="card-h"><div><h2>Confrontos</h2><p>Retrospecto contra cada adversário em 2026</p></div></div>
+      <div class="h2h">${h2h.map(x=>{ const adv=st.adversarios.find(a=>a.nome===x.nome)||{nome:x.nome}; return html`<div key=${x.nome} class="h2h-i">
+        ${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${30}/>`:html`<span class="club">${siglaDe(x.nome)}</span>`}
+        <div style=${{minWidth:0,flex:1}}><b>${x.nome}</b><div class="note">${x.r.J}J · ${x.r.V}V ${x.r.E}E ${x.r.D}D · ${x.r.gp}–${x.r.gc}</div></div><${Forma} f=${x.js.slice().sort((a,b)=>a.data.localeCompare(b.data)).map(resJ)}/></div>`; })}</div></div>
+  </div>`;
+}
+
 /* Importação de vários escudos de uma vez: o nome do arquivo identifica o clube */
 function ImportarEscudos({up,toast}){
   const ref=useRef(); const [busy,setBusy]=useState(false);
@@ -1307,7 +1463,9 @@ function Inicio({st,up,user,go}){
   const prim=new Date(y,m-1,1), ini=addDias(`${mes}-01`, -prim.getDay());
   const dias = vis==="Mês" ? Array.from({length:42},(_,i)=>addDias(ini,i)) : Array.from({length:7},(_,i)=>addDias(addDias(dia,-new Date(dia+"T12:00:00").getDay()),i));
   const doDia=d=>st.eventos.filter(e=>e.data===d).sort((a,b)=>(a.hora||"").localeCompare(b.hora||""));
-  const prox=st.eventos.filter(e=>e.data && diasEntre(hoje(),e.data)>=0 && diasEntre(hoje(),e.data)<7).sort((a,b)=>(a.data+(a.hora||"")).localeCompare(b.data+(b.hora||"")));
+  const jogosDia=d=>st.jogos.filter(j=>j.data===d).map(j=>({id:j.id,hora:j.hora,tipo:"Jogo",titulo:`${j.mando==="Fora"?"@":"x"} ${j.adversario}${resJ(j)?` ${j.gp}-${j.gc}`:""}`,local:j.competicao,jogo:j}));
+  const tudoDia=d=>[...jogosDia(d),...doDia(d)].sort((a,b)=>(a.hora||"").localeCompare(b.hora||""));
+  const prox=[...st.eventos,...st.jogos.map(j=>({id:j.id,data:j.data,hora:j.hora,tipo:"Jogo",titulo:`${j.mando==="Fora"?"@":"x"} ${j.adversario}`,local:j.competicao}))].filter(e=>e.data && diasEntre(hoje(),e.data)>=0 && diasEntre(hoje(),e.data)<7).sort((a,b)=>(a.data+(a.hora||"")).localeCompare(b.data+(b.hora||"")));
   const mudaMes=k=>{ const d=new Date(y,m-1+k,1); setMes(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`); };
   const at=ativos(st);
   const disp={Liberado:0,"Sob observação":0,"Em transição":0,"Não liberado":0}; at.forEach(j=>disp[j.saude||"Liberado"]++);
@@ -1316,6 +1474,9 @@ function Inicio({st,up,user,go}){
   const novo=d=>{ setDia(d); ev.add({data:d,hora:"",tipo:"Treino",titulo:"",local:""}); };
   return html`<div class="grid" style=${{gap:"16px"}}>
     <div><h2 class="saud">${sauda}, ${USUARIOS[user?.nick]||user?.nick||"equipe"}</h2><p class="sub" style=${{margin:"2px 0 0"}}>${fmtDL(hoje())}</p></div>
+    ${(()=>{ const ult=st.jogos.filter(j=>resJ(j)).sort((a,b)=>b.data.localeCompare(a.data))[0]; const prox=st.jogos.filter(j=>!resJ(j)&&j.data>=hoje()).sort((a,b)=>a.data.localeCompare(b.data))[0]; const r=resumoJogos(st.jogos);
+      return ult?html`<div class="grid g-2"><div class="card"><div class="card-h"><div><h2>Último jogo</h2><p>Temporada: ${r.J} jogos · ${r.V}V ${r.E}E ${r.D}D · ${r.aprov}%</p></div><button class="btn sm ghost" onClick=${()=>go("analise-desempenho")}>Jogos →</button></div><${JogoCard} st=${st} j=${ult}/></div>
+        <div class="card"><div class="card-h"><div><h2>Próximo jogo</h2><p>Lançado em Análise Desemp. › Calendário</p></div></div>${prox?html`<${JogoCard} st=${st} j=${prox}/>`:html`<p class="note">Nenhum jogo futuro cadastrado. Adicione a próxima partida em “Editar jogos”.</p>`}</div></div>`:null; })()}
     <div class="card">
       <div class="card-h"><div><h2>Calendário de eventos</h2><p>${st.eventos.length} eventos no total</p></div>
         <div class="actions"><div class="seg">${["Mês","Semana"].map(x=>html`<button key=${x} class=${vis===x?"on":""} onClick=${()=>setVis(x)}>${x}</button>`)}</div>
@@ -1324,7 +1485,7 @@ function Inicio({st,up,user,go}){
       <div class="cal-wrap">
         <div class="cal">
           ${SEMANA.map(d=>html`<div key=${d} class="cal-h">${d}</div>`)}
-          ${dias.map(d=>{ const es=doDia(d); const fora=vis==="Mês"&&d.slice(0,7)!==mes;
+          ${dias.map(d=>{ const es=tudoDia(d); const fora=vis==="Mês"&&d.slice(0,7)!==mes;
             return html`<button key=${d} class=${"cal-d"+(fora?" fora":"")+(d===hoje()?" hoje":"")+(d===dia?" sel":"")} onClick=${()=>setDia(d)}>
               <span class="cal-n">${Number(d.slice(8))}</span>
               ${es.slice(0,3).map(e=>html`<span key=${e.id} class="cal-e" style=${{borderLeftColor:EVT_COR[e.tipo]}}>${e.hora?e.hora+" ":""}${e.titulo||e.tipo}</span>`)}
@@ -1338,7 +1499,8 @@ function Inicio({st,up,user,go}){
       <div class="legend" style=${{marginTop:"10px"}}>${EVT.map(t=>html`<span key=${t}><i style=${{background:EVT_COR[t]}}></i>${t}</span>`)}</div>
       <div style=${{marginTop:"14px"}}>
         <div class="card-h" style=${{marginBottom:"8px"}}><div><h2 style=${{fontSize:"16px"}}>${fmtDL(dia)}</h2></div><button class="btn sm ro-hide" onClick=${()=>novo(dia)}>${I.plus}Adicionar neste dia</button></div>
-        <${Tabela} st=${st} rows=${doDia(dia)} api=${ev} vazio="Nenhum evento neste dia." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"tipo",l:"Tipo",t:"select",opts:EVT,cor:v=>EVT_COR[v]},{k:"titulo",l:"Título",w:"180px",ph:"ex.: Treino tático"},{k:"local",l:"Local",ph:"ex.: CT"}]}/>
+        ${jogosDia(dia).map(x=>html`<div key=${x.id} style=${{marginBottom:"8px"}}><${JogoCard} st=${st} j=${x.jogo}/></div>`)}
+        <${Tabela} st=${st} rows=${doDia(dia)} api=${ev} vazio=${jogosDia(dia).length?"Nenhum outro evento neste dia.":"Nenhum evento neste dia."} cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"tipo",l:"Tipo",t:"select",opts:EVT,cor:v=>EVT_COR[v]},{k:"titulo",l:"Título",w:"180px",ph:"ex.: Treino tático"},{k:"local",l:"Local",ph:"ex.: CT"}]}/>
       </div>
     </div>
     <div class="grid g-3">
@@ -1741,17 +1903,8 @@ function AnaliseDesemp({st,up,toast}){
         <div class="meta">${a.serie?a.serie+" · ":""}${st.jogos.filter(j=>j.adversario===a.nome).length} jogo(s) registrados</div>
       </div>`)}</div>`:html`<div class="empty">Nenhum adversário cadastrado. Adicione clubes para analisar suas equipes.</div>`}
     </div>`:null}
-    ${aba==="Calendário"?html`<div class="grid" style=${{gap:"10px"}}>
-      <div class="toolbar" style=${{marginBottom:0}}><button class="btn primary ro-hide" onClick=${()=>jg.add({data:hoje(),adversario:"",competicao:st.config.competicao,mando:"Casa",gp:"",gc:"",xg:"",xga:"",posse:"",fin:""})}>${I.plus}Adicionar jogo</button></div>
-      <${Tabela} st=${st} rows=${st.jogos.slice().sort((a,b)=>(b.data||"").localeCompare(a.data||""))} api=${jg} vazio="Nenhum jogo registrado." cols=${[{k:"data",l:"Data",t:"date"},{k:"_esc",l:"",t:"calc",f:r=>html`<${EscImg} src=${escudoDe(st.adversarios.find(a=>a.nome===r.adversario)||{nome:r.adversario})} size=${22}/>`},{k:"adversario",l:"Adversário",t:"select",opts:st.adversarios.map(a=>a.nome).filter(Boolean),vazio:true,w:"140px"},{k:"competicao",l:"Competição",w:"100px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"gp",l:"Gols pró",t:"num",w:"44px"},{k:"gc",l:"Gols contra",t:"num",w:"44px"},{k:"xg",l:"xG",t:"num",w:"48px"},{k:"xga",l:"xGA",t:"num",w:"48px"},{k:"posse",l:"Posse %",t:"num",w:"48px"},{k:"fin",l:"Finaliz.",t:"num",w:"44px"},{k:"_r",l:"Resultado",t:"calc",f:r=>n(r.gp)==null||n(r.gc)==null?"—":n(r.gp)>n(r.gc)?"V":n(r.gp)<n(r.gc)?"D":"E",cor:r=>n(r.gp)>n(r.gc)?"var(--good)":n(r.gp)<n(r.gc)?"var(--bad)":"var(--warn)"}]}/>
-    </div>`:null}
-    ${aba==="Estatística de jogos"?html`<div class="grid" style=${{gap:"14px"}}>
-      <div class="grid g-kpi"><${Kpi} l="Jogos" v=${js.length}/><${Kpi} l="V · E · D" v=${`${v}·${e}·${d}`}/><${Kpi} l="Aproveitamento" v=${js.length?Math.round((v*3+e)/(js.length*3)*100)+"%":"—"}/><${Kpi} l="Gols pró · contra" v=${`${sum(js.map(j=>j.gp))}·${sum(js.map(j=>j.gc))}`}/><${Kpi} l="xG médio" v=${f2(avg(js.map(j=>n(j.xg))))} d=${"xGA "+f2(avg(js.map(j=>n(j.xga))))}/></div>
-      <div class="grid g-2">
-        <div class="card"><div class="card-h"><div><h2>Gols marcados</h2><p>Por jogo · o estudo mostra que o ataque é o motor do acesso</p></div></div><${Serie} pts=${js.map(j=>({x:fmtD(j.data),y:n(j.gp),cor:n(j.gp)>n(j.gc)?"var(--good)":"var(--red)"}))}/></div>
-        <div class="card"><div class="card-h"><div><h2>xG × xGA</h2><p>Gols esperados a favor (vermelho) e contra (azul)</p></div></div><${Serie} tipo="linha" pts=${js.map(j=>({x:fmtD(j.data),y:n(j.xg)}))}/><${Serie} tipo="linha" cor="var(--info)" h=${120} pts=${js.map(j=>({x:fmtD(j.data),y:n(j.xga)}))}/></div>
-      </div>
-    </div>`:null}
+    ${aba==="Calendário"?html`<${CalendarioJogos} st=${st} up=${up}/>`:null}
+    ${aba==="Estatística de jogos"?html`<${EstatJogos} st=${st}/>`:null}
   </div>`;
 }
 
