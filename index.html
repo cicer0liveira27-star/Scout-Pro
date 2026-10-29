@@ -260,7 +260,7 @@ select.cell{cursor:pointer}
 .cal-d.hoje .cal-n{background:var(--red);color:#fff;border-radius:999px;width:22px;height:22px;display:grid;place-items:center}
 .cal-n{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
 .cal-e{font-size:10.5px;border-left:3px solid;padding-left:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg)}
-@media (max-width:560px){.cal-d{min-height:46px}.cal-e{display:none}}
+@media (max-width:560px){.cal-d{min-height:46px}.cal-e{display:none}.cal-e.cal-j{display:flex;justify-content:center;border-left:0;padding:0}.cal-j span{display:none}}
 .cal-side{border:1px solid var(--line);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--panel2)}
 .evt{border-left:3px solid;padding:4px 8px;display:flex;flex-direction:column}
 .evt b{font-size:12.5px}.evt span{font-size:11px;color:var(--mute)}
@@ -313,6 +313,28 @@ select.cell{cursor:pointer}
 .placar{font-family:var(--f-display);font-size:24px;font-weight:800;display:flex;gap:6px;align-items:center}.placar i{font-style:normal;color:var(--mute);font-size:16px}
 .jogo-r{display:flex;align-items:center;gap:8px;margin-left:auto}
 .jogos{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:8px}
+.jogo-g{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:11.5px;color:var(--mute)}.jogo-g>div{display:flex;flex-direction:column;gap:1px;min-width:0}.jogo-g .r{text-align:right}
+.jogo-mais{all:unset;cursor:pointer;display:flex;justify-content:center;gap:6px;font-size:12px;font-weight:600;color:var(--mute);padding:6px;border-top:1px dashed var(--line);margin-top:2px}.jogo-mais:hover{color:var(--fg)}.jogo-mais:focus-visible{outline:2px solid var(--red);border-radius:6px}
+.jdet{display:flex;flex-direction:column;gap:12px;padding-top:4px}
+.jdet-info{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px}.jdet-info b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.jstats{display:flex;flex-direction:column;gap:8px}
+.jst{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;gap:2px 8px;font-size:12px}.jst span{text-align:center;color:var(--mute)}.jst .r{text-align:right}
+.jst-bar{grid-column:1/-1;display:flex;gap:3px;height:6px}.jst-bar i{display:block;border-radius:3px;background:var(--red)}.jst-bar i+i{background:var(--line2)}
+.jdet-as{display:flex;flex-direction:column;gap:6px}.jas{display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:8px;align-items:center;font-size:12px}
+.tl{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tl-h,.tl-r{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center;gap:6px;padding:5px 8px;font-size:12px}
+.tl-h{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600;background:var(--panel)}.tl-h .r{text-align:right}
+.tl-r+.tl-r{border-top:1px solid var(--line)}.tl-r.g{background:color-mix(in srgb,var(--good) 9%,transparent)}
+.tl-m{text-align:center;color:var(--mute);font-size:11px}
+.tl-s{display:flex;justify-content:flex-end;align-items:center;gap:6px;text-align:right;min-width:0}.tl-a{display:flex;align-items:center;gap:6px;min-width:0}
+.tl-r small{color:var(--mute);font-size:10.5px}
+.evi{display:inline-grid;place-items:center;flex:none;font-size:12px;line-height:1}
+.evi.card-a,.evi.card-v{width:9px;height:12px;border-radius:2px;background:#f5c518}.evi.card-v{background:#e5383b}
+.evi.card-2a{position:relative;width:12px;height:13px}.evi.card-2a i{position:absolute;width:9px;height:12px;border-radius:2px;background:#f5c518;left:0;top:0}.evi.card-2a i+i{background:#e5383b;left:3px;top:1px}
+.evi.sub{color:var(--good);font-weight:700}.evi.pp{color:var(--bad);font-weight:700}
+.fx{display:flex;flex-direction:column;gap:6px}.fx-r{display:grid;grid-template-columns:52px 1fr 22px 1fr 22px;align-items:center;gap:6px}.fx-r b{font-size:12px;text-align:right}
+.fx-b{height:10px;border-radius:5px;background:var(--panel2);overflow:hidden}.fx-b i{display:block;height:100%;border-radius:5px}
+.cal-j{display:flex;align-items:center;gap:4px}.cal-j img{flex:none}.cal-j span{overflow:hidden;text-overflow:ellipsis}
 .h2h{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:8px}
 .h2h-i{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2)}
 .h2h-i b{font-size:13px}
@@ -476,7 +498,7 @@ function padrao(){
   elenco.forEach(j=>{ decisoes[j.id] = j.status==="Emprestado" ? "Avaliar" : "Manter"; });
   return {v:3, temporada:2026, elenco, bench:benchPadrao(), decisoes, alvos:[], comissao:[], orc2026:"", orc2027:"", comp2027:"Série C", incluirNeg:false,
     eventos:[], psr:[], pse:[], cmj:[], gps:[], atend:[], lesoes:[], sessoes:[], modelos:[], nutri:[], hidrat:[], planos:[],
-    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true}};
+    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true}};
 }
 const SAUDE = ["Liberado","Sob observação","Em transição","Não liberado"];
 const SAUDE_COR = {"Liberado":"var(--good)","Sob observação":"var(--warn)","Em transição":"var(--info)","Não liberado":"var(--bad)"};
@@ -521,6 +543,8 @@ function migrar(s){
   if(!jaSemeado && !(s.adversarios||[]).length) o.adversarios=adversariosPadrao();
   if(!(s.config&&s.config.jogosSeed)){ const tem=new Set((o.jogos||[]).map(j=>j.data+"|"+normNome(j.adversario))); o.jogos=[...(o.jogos||[]), ...jogosPadrao().filter(j=>!tem.has(j.data+"|"+normNome(j.adversario)))]; }
   o.config.jogosSeed=true;
+  if(!(s.config&&s.config.statsSeed)) o.jogos=(o.jogos||[]).map(comFS);
+  o.config.statsSeed=true;
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
 }
@@ -569,7 +593,7 @@ function useStore(){
           const [appM,authM,fsM] = await comTempo(Promise.all([import(FBV+"firebase-app.js"),import(FBV+"firebase-auth.js"),import(FBV+"firebase-firestore.js")]), 12000);
           if(!alive) return;
           const app = appM.initializeApp(cfg), db = fsM.getFirestore(app), auth = authM.getAuth(app);
-          try{ await authM.setPersistence(auth, authM.browserSessionPersistence); }catch(e){}
+          try{ await authM.setPersistence(auth, authM.browserLocalPersistence); }catch(e){}
           fb.current = {authM, auth};
           const col = fsM.collection(db, "scoutpro_dados");
           const ultimo = {}; let subs = [];
@@ -1026,6 +1050,8 @@ function CatalogoClubes({st,up,toast}){
   </div>`;
 }
 
+/* Estatísticas por jogo (fonte: flashscore.com, consulta em 29/10/2026). ev: [lado 1=Santa Cruz 0=adversário, tipo, minuto, jogador, extra] */
+const FS_2026 = {"2026-10-10":{"fs":"Q7QkUIwB","st":{"posse":[49,51],"fin":[7,2],"alvo":[1,1],"fora":[6,1]},"ev":[[0,"A","39","Saimon"],[0,"S","46","Patric Calmon","Bull"],[1,"S","61","Joao Pedro","Willian Junior"],[0,"S","61","Gustavo","Diego Tavares"],[1,"S","62","Matheus Cadorini","Eron"],[0,"S","62","Dudu Hatamoto","Kayon"],[1,"A","65","Everaldo"],[1,"S","66","Alex Ruan","Ronald"],[1,"S","66","Andrey","Everaldo"],[0,"S","74","Giovanni","Thallyson"],[0,"S","74","Lucas Candido","Caio Garcia"],[1,"S","82","Arilson","Silva"],[0,"G","83","Dudu Hatamoto"],[1,"A","88","Edson Miranda"]],"arb":"Arleu B.","est":"Jose Americo de Almeida Filho (Almeidao)","pub":1518},"2026-10-03":{"fs":"h2UjL2wq","st":{"posse":[53,47],"fin":[11,15],"alvo":[3,7],"fora":[8,8]},"ev":[[0,"G","2","Adeilson"],[1,"A","2","Everaldo"],[1,"S","41","Edson Miranda","Eurico"],[1,"A","45+2","Matheus Vinicius"],[1,"S","46","Willian Junior","Thiago Ennes"],[1,"G","51","Pedro Favela"],[0,"S","59","Julio Rodrigues","Caique Calito"],[0,"A","61","Wendel Lomar"],[1,"A","61","Edson Miranda"],[1,"S","65","Joao Pedro","Ronald"],[1,"S","74","Matheus Cadorini","Eron"],[1,"S","74","Arilson","Everaldo"],[0,"S","76","Serginho","Ronald Camarao"],[0,"S","76","Gabriel Souza","Jhow Alecxander"],[1,"S","90+3","Fabinho","Silva"]],"arb":"Claus R.","est":"Estádio José do Rego Maciel","pub":45500},"2026-09-26":{"fs":"lnkJ63Ok","st":{"posse":[52,48],"fin":[8,15],"alvo":[3,6],"fora":[5,9]},"ev":[[0,"G","16","Rafinha"],[0,"A","39","Jhony Douglas","banco"],[0,"A","42","Rafinha"],[1,"A","45","Matheus Vinicius"],[1,"S","46","Vini Hora","Joao Pedro"],[1,"S","46","Alex Ruan","Thiago Ennes"],[1,"A","58","Pedro Favela"],[1,"S","59","Matheus Melo","Matheus Vinicius"],[0,"A","62","Dheimison"],[0,"S","64","Thalisson","Garraty"],[0,"S","64","Diego Matos","Caique"],[1,"S","67","Willian Junior","Silva"],[0,"S","75","Matheus Lima","Rafinha"],[0,"S","80","Baianinho","Jhony Douglas"],[0,"S","80","Danrley","Rafa Marcos"],[1,"S","81","Tiago Marques","Everaldo"],[1,"G","85","Renato"],[0,"A","90+1","Baianinho","banco"],[0,"A","90+4","Matheus Lima"],[1,"V","90+9","Alex Ruan"]],"est":"Domingão","pub":2963},"2026-09-20":{"fs":"Cn5oh49d","st":{"posse":[46,54],"fin":[11,13],"alvo":[2,4],"fora":[9,9]},"ev":[[1,"G","11","Renato"],[0,"S","61","Cedric","Eliandro"],[0,"S","61","Rafa Marcos","Rafinha"],[1,"S","66","Willian Junior","Everaldo"],[1,"S","66","Matheus Cadorini","Eron"],[1,"S","72","Alex Ruan","Renato"],[1,"S","72","Cassiano","Joao Pedro"],[0,"S","72","Matheus Lima","Baianinho"],[0,"S","73","Jhony Douglas","Nonato"],[0,"S","79","Thalisson","Garraty"],[1,"S","82","Arilson","Silva"]],"arb":"Vitor Gobi J.","est":"Estádio José do Rego Maciel","pub":44951},"2026-09-12":{"fs":"Ot3tdDAU","st":{"posse":[41,59],"fin":[8,19],"alvo":[4,9],"fora":[4,10]},"ev":[[1,"A","12","Pedro Favela"],[1,"S","46","Arilson","Alex Ruan"],[1,"S","54","Vini Hora","Renato"],[0,"A","55","Paulinho"],[0,"S","57","Iago Santana","Paulinho"],[0,"S","58","Serginho","Jhow Alecxander"],[1,"S","67","Matheus Cadorini","Eron"],[1,"S","67","Joao Pedro","Everaldo"],[1,"S","73","Fabinho","Pedro Favela"],[0,"S","74","Guilherme Pira","Ronald Camarao"],[0,"S","74","Bruno Cheron","Caique Calito"],[1,"A","74","Arilson"],[0,"A","81","Wendel Lomar"],[1,"A","82","Matheus Cadorini"],[0,"S","87","Gabriel Souza","Thiago Rosa"],[1,"G","90+5","Matheus Vinicius"]],"arb":"Goncalves A.","est":"Estádio Willie Davids","pub":4215},"2026-09-06":{"fs":"jeqJ1Htg","st":{"posse":[43,57]},"ev":[[1,"GP","13","Eron"],[0,"A","55","Henrique Dourado"],[0,"S","55","Kayon","Henrique Dourado"],[0,"S","55","Thallyson","Lucas Candido"],[1,"S","69","Matheus Cadorini","Eron"],[1,"S","69","Willian Junior","Everaldo"],[1,"S","72","Cassiano","Ronald"],[0,"S","73","Diego Tavares","Dudu Hatamoto"],[0,"S","82","Giovanni","Bastos R."],[0,"S","82","Jonas Toro","Jhonata Varela"],[1,"S","82","Arilson","Silva"],[1,"S","82","Alex Ruan","Renato"],[1,"A","84","Cristian Souza","banco"],[1,"A","86","Cassiano"],[0,"V","86","Igor Morais"],[1,"A","90+7","Arilson"]],"arb":"Serafim D.","est":"Arena Pernambuco","pub":27479},"2026-08-29":{"fs":"WpHNEOr2","st":{"posse":[37,63],"fin":[7,15],"alvo":[2,3],"fora":[5,12]},"ev":[[0,"A","4","Samuel"],[1,"A","14","Eron"],[0,"S","37","Gustavo Henrique","Matheus Lagoa"],[1,"G","39","Eurico"],[0,"S","46","Fernandinho","Helder"],[0,"S","46","Lucas Mila","Samuel"],[0,"S","63","Fernando Viana","Vitinho"],[1,"S","63","Ze Mario","Alex Ruan"],[1,"S","63","Fabinho","Everaldo"],[0,"S","70","Felipe Para","Gharib"],[1,"S","71","Tiago Marques","Eron"],[0,"G","74","Fernando Viana"],[1,"A","84","Fabinho"],[1,"S","89","Edson Miranda","Arilson"],[1,"S","89","Cassiano","Ronald"],[0,"A","90","Gonzalo Fornari"]],"arb":"Furtado A.","est":"Estadio Jonas Duarte","pub":3179},"2026-08-22":{"fs":"rPv49T6M","st":{"posse":[54,46],"fin":[10,10],"alvo":[4,3],"fora":[6,7]},"ev":[[0,"A","13","Breno Santos"],[1,"G","42","Eron"],[1,"A","45+1","William Alves"],[0,"2A","45+2","Breno Santos"],[1,"S","46","Edson Miranda","William Alves"],[1,"G","56","Matheus Vinicius"],[0,"S","60","Gaspar","Dentinho"],[0,"S","67","Joao Lucas","Marcelo Freitas"],[1,"A","71","Pedro Favela"],[1,"S","73","Arilson","Pedro Favela"],[1,"S","77","Patrick Allan","Everaldo"],[1,"S","79","Cassiano","Ronald"],[1,"S","79","Thiago Ennes","Renato"],[0,"S","79","Victor Sa","Roberto"],[0,"S","79","Vitor Feijao","Quirino"],[0,"S","79","Calyson","Jhonatan Ribeiro"],[0,"A","90+3","Calyson"]],"arb":"Ferreira J.","est":"Estádio José do Rego Maciel","pub":13774},"2026-08-15":{"fs":"8ASscaHa","st":{"posse":[66,34],"fin":[28,11],"alvo":[8,5],"fora":[20,6]},"ev":[[1,"A","8","Vitinho"],[1,"A","22","Everaldo"],[0,"G","34","Felipe Cruz"],[0,"A","38","Vander"],[1,"S","46","Ze Mario","Alex Ruan"],[1,"S","46","Cassiano","Vitinho"],[1,"A","47","Edson Miranda"],[0,"A","55","Jean"],[1,"S","61","Patrick Allan","Edson Miranda"],[0,"S","63","Richarles","Luis Gustavo"],[1,"S","67","Tiago Marques","Eron"],[0,"S","72","Rafael Teixeira","Jorge Rocha"],[0,"S","72","Mauricio","Will"],[1,"S","76","Jhoninha","Everaldo"],[1,"A","77","Pedro Favela"],[0,"S","80","Erverson","Felipe Cruz"],[0,"A","82","Rafael Teixeira"]],"est":"Estádio José do Rego Maciel","pub":17306},"2026-08-08":{"fs":"fTkVVMI0","st":{"posse":[46,54],"fin":[10,8],"alvo":[5,3],"fora":[5,5]},"ev":[[0,"G","16","Dudu Hatamoto"],[0,"A","29","Patric Calmon"],[0,"A","30","Nene"],[1,"S","46","Eron","Tiago Marques"],[0,"S","61","Diego Tavares","Kayon"],[0,"S","61","Lucas Candido","Jhonata Varela"],[1,"G","63","Ronald"],[0,"G","64","Lucas Candido"],[1,"S","70","Renato","Thiago Ennes"],[1,"S","70","Jhoninha","Silva"],[1,"G","72","Eron"],[1,"S","77","Fabinho","Everaldo"],[0,"S","80","Giovanni","Dudu Hatamoto"],[0,"A","86","Yan Souto"],[1,"S","89","Ze Mario","Vitinho"],[0,"S","89","Jonas Toro","Bastos R."],[0,"S","89","Henrique Dourado","Nene"]],"arb":"Silva E.","est":"Jose Americo de Almeida Filho (Almeidao)","pub":8940},"2026-07-25":{"fs":"nHFvu6vH","st":{"posse":[57,43]},"ev":[[0,"A","29","Raul Cabral","banco"],[0,"A","32","Dudu"],[1,"A","35","Alex Ruan"],[0,"GP","40","Emerson Galego"],[1,"A","42","Matheus Vinicius"],[1,"S","46","Renato","Matheus Vinicius"],[1,"A","50","Pedro Favela"],[1,"S","51","Nilton","Alex Ruan"],[0,"A","54","Emerson Galego"],[0,"S","54","Hyuri","Emerson Galego"],[1,"A","61","William Alves"],[1,"S","65","Eron","Tiago Marques"],[1,"S","65","Ze Mario","Everaldo"],[0,"S","74","Leo Maia","Jhonnathan"],[0,"S","74","Felipe Santiago","Lucas Dias"],[0,"A","75","Raynan"],[1,"S","77","Patrick Allan","Vitinho"],[1,"S","77","Fabinho","Ronald"],[1,"A","79","Edson Miranda"],[0,"S","84","Joao Marcos","Igor Bolt"],[0,"S","84","Renan Areias","Breno"],[0,"S","84","Jose Carlos","Mailson"],[0,"A","90+5","Joao Marcos"]],"arb":"Goncalves K.","est":"Estádio José do Rego Maciel","pub":27393},"2026-07-12":{"fs":"hdyCHBtg","st":{"posse":[48,52],"fin":[14,10],"alvo":[7,1],"fora":[7,9]},"ev":[[1,"G","24","Matheus Vinicius"],[1,"G","37","Quirino"],[0,"S","46","Betinho","Natan Costa"],[0,"S","46","Renan Bernabe","Vinicius Popo"],[0,"G","53","Renan Bernabe"],[0,"A","55","Marcelinho"],[0,"A","55","Cleo Silva"],[1,"S","62","Eron","Quirino"],[1,"S","62","Nilton","Ronald"],[0,"S","66","Matheuzinho","Cleo Silva"],[0,"S","66","Da Rocha","Vava Franca"],[1,"S","71","Fabinho","Everaldo"],[0,"A","75","Da Rocha"],[1,"S","77","Silva","Renato"],[1,"S","77","Thiago Ennes","Alex Ruan"],[0,"S","78","Lucas Vargas","Marcelinho"],[1,"A","83","William Alves"],[0,"A","90","Lucas Vargas"]],"arb":"de Morais A.","est":"Estádio Doutor Hercílio Luz","pub":1540},"2026-07-04":{"fs":"4bNc3LLr","st":{"posse":[46,54],"fin":[7,14],"alvo":[3,4],"fora":[4,10]},"ev":[[1,"A","23","Edson Miranda"],[0,"A","37","Richard"],[1,"A","40","William Alves"],[0,"S","46","Alason Carioca","Neto Berola"],[1,"S","46","Quirino","Tiago Marques"],[1,"S","46","Renato","Thiago Ennes"],[1,"G","56","Renato"],[1,"S","59","Silva","Vitinho"],[0,"S","64","Leo Passos","Richard"],[0,"S","64","Bruno Mezenga","Gabriel Razera"],[1,"S","68","Nilton","Ronald"],[0,"A","71","Gabriel William"],[1,"A","72","Cristian Souza","banco"],[0,"S","75","Felipe Muranga","Guilherme Xavier"],[0,"S","81","Guilherme Dal Pian","Tiaguinho"],[1,"S","81","Fabinho","Everaldo"]],"arb":"Souza W.","est":"Estádio José do Rego Maciel","pub":10935},"2026-06-27":{"fs":"M1fFs5aM","st":{"posse":[34,66],"fin":[11,21],"alvo":[7,4],"fora":[4,17]},"ev":[[1,"GC","27","Juninho"],[1,"A","33","Edson Miranda"],[1,"A","33","Gabriel Souza"],[1,"G","45+2","Everaldo"],[0,"S","46","Italo Carvalho","Thayllon"],[1,"S","56","Leo Costa","Ronald"],[0,"S","63","Thalyson","Edilson"],[0,"S","63","Lucas Cardoso","Henrico"],[1,"S","66","Fabinho","Silva"],[1,"S","66","Tiago Marques","Quirino"],[1,"G","69","Fabinho"],[0,"G","74","Juninho"],[1,"S","80","Robinho","Everaldo"],[1,"S","80","Rodrigues","Vitinho"],[0,"A","85","Lucas Cardoso"],[0,"S","89","Kaua Hinkel","Kleiton Pego"],[0,"S","89","larley Brito","Castro"],[1,"A","90+3","Eurico"]],"arb":"Vitor Gobi J.","est":"Leonidas Sodre de Castro (Curuzu)","pub":7305},"2026-06-20":{"fs":"ClhhVzAa","st":{"posse":[66,34],"fin":[14,7],"alvo":[4,4],"fora":[10,3]},"ev":[[0,"G","21","Estevao"],[0,"A","30","Renan Gorne"],[1,"A","45","Alex Ruan"],[1,"S","46","Renato","Patrick Allan"],[1,"S","46","Eron","Tiago Marques"],[0,"A","50","Marcelinho"],[0,"S","61","Rian","Cleiton"],[0,"S","61","Mago","Marcelinho"],[1,"S","67","Ze Mario","Alex Ruan"],[1,"S","67","Thiago Ennes","Edson Miranda"],[0,"S","69","Leo Rafael","Estevao"],[0,"S","69","Vini Charopem","Renan Gorne"],[1,"PP","79","Everaldo"],[1,"S","80","Quirino","Vitinho"],[1,"A","81","Eurico"],[0,"S","81","Walce","Dionisio"],[1,"A","85","William Alves"],[1,"V","87","Renato"],[1,"A","90","Everaldo"],[0,"A","90+5","Leo Gobo"]],"arb":"Willers Lorenzatto L.","est":"Estádio José do Rego Maciel","pub":12310},"2026-06-14":{"fs":"A3rHGGw9","st":{"posse":[44,56],"fin":[7,9],"alvo":[1,5],"fora":[6,4]},"ev":[[0,"A","35","Bernardo"],[1,"S","46","Andrey","Fabinho"],[1,"S","46","Marcos Andre","Ronald"],[1,"A","60","Andrey"],[1,"S","63","Patrick Allan","Everaldo"],[1,"A","67","Edson Miranda"],[0,"S","68","Clinton","Adrianinho"],[1,"A","68","Eron"],[1,"S","68","Tiago Marques","Eron"],[1,"A","72","Alex Ruan"],[0,"S","73","Joao Prado","Petterson Novaes"],[0,"S","73","Alvaro","Macario"],[1,"S","76","Ze Mario","Alex Ruan"],[0,"S","82","Jonatan Lucca","Joao Pedro"],[0,"S","82","Guga","Bernardo"],[1,"A","90+6","William Alves"],[1,"A","90+7","Tiago Marques"],[1,"G","90+9","Edson Miranda"]],"arb":"Freitas da Silva D.","est":"Estádio Augusto Bauer","pub":2033},"2026-05-31":{"fs":"ITRsF324","st":{"posse":[36,64],"fin":[8,15],"alvo":[4,3],"fora":[4,12]},"ev":[[1,"V","9","Thiago Coelho"],[1,"S","12","Gabriel Souza","Everaldo"],[0,"G","25","Denilson Chaves"],[1,"A","45","Ronald"],[0,"A","45+3","Vitor Barreto"],[0,"S","46","Thiago M.","Vitor Barreto"],[1,"S","46","Renato","Fabinho"],[1,"S","46","Alex Ruan","Ze Mario"],[1,"G","55","Eurico"],[0,"S","57","Rafael Carillho","Ricardinho"],[0,"S","57","Fabio Soares","Allison"],[1,"S","65","Andrey","Jefferson Bahia"],[0,"A","66","Denilson Chaves"],[0,"S","72","Douglas Skilo","Alencar"],[0,"A","77","Albano"],[0,"S","78","Rhuan","Eduardo Oliveira"],[1,"S","86","Eron","Tiago Marques"],[1,"A","86","Gabriel Souza"]],"arb":"Lima Barbosa M.","est":"Estádio José do Rego Maciel","pub":19981},"2026-05-23":{"fs":"Yq85X5JO","st":{"posse":[47,53],"fin":[9,18],"alvo":[2,4],"fora":[7,14]},"ev":[[1,"G","5","Pedro Favela"],[0,"G","22","Adeilson"],[0,"A","27","Paulinho"],[1,"S","46","Leo Costa","Marcos Andre"],[1,"S","59","Patrick Allan","Ronald"],[0,"S","61","Bruno Cheron","Paulinho"],[1,"S","67","Andrey","Fabinho"],[1,"S","67","Eron","Quirino"],[0,"S","72","Wendel Lomar","Felipe Cardoso"],[0,"S","80","Guilherme Pira","Adeilson"],[0,"S","80","Rafinha","Ronald Camarao"],[0,"S","80","Rai Natalino","Giovane Gomez"],[1,"A","88","William Alves"],[1,"S","88","Edson Miranda","William Alves"],[1,"A","90+2","Renato"],[1,"A","90+5","Alex Ruan"]],"arb":"dos Santos F.","est":"Estádio Willie Davids","pub":2614},"2026-05-16":{"fs":"dxQ1QW5s","st":{"posse":[53,47],"fin":[12,5],"alvo":[7,2],"fora":[5,3]},"ev":[[1,"G","8","Pedro Favela"],[0,"V","11","Bruno Barra"],[1,"A","18","Everaldo"],[0,"A","33","MV"],[1,"A","42","Eurico"],[1,"S","46","Marcos Andre","Everaldo"],[1,"S","46","Edson Miranda","Eurico"],[0,"A","56","Wagninho"],[0,"S","57","Fabricio","Caetano"],[0,"S","57","Fellipinho","Luciano Naninho"],[1,"S","61","Fabinho","Silva"],[1,"A","63","Fabinho"],[1,"S","69","Alex Ruan","Ze Mario"],[0,"A","72","Alan"],[0,"S","75","Marquinhos","MV"],[0,"S","75","Blanco O.","Ygor Catatau"],[1,"S","78","Eron","Tiago Marques"],[0,"S","79","Rafael Castro","Alan"],[1,"G","81","Marcos Andre"],[1,"A","81","Marcos Andre"],[1,"A","83","Vitinho"]],"arb":"Pereira M.","est":"Estádio José do Rego Maciel","pub":12222},"2026-05-11":{"fs":"UBaF4eSN","st":{"posse":[43,57],"fin":[5,16],"alvo":[4,4],"fora":[1,12]},"ev":[[1,"A","30","Ze Mario"],[1,"S","46","Alex Ruan","Ze Mario"],[1,"A","52","Vitinho"],[1,"A","58","Silva"],[0,"A","59","Lucas Buchecha"],[1,"G","61","Ronald"],[0,"S","63","Getulio","Fabricio Dias"],[1,"S","63","Leo Costa","Silva"],[0,"S","63","Marco Antonio","Lucas Buchecha"],[1,"S","67","Quirino","Tiago Marques"],[1,"S","67","Andrey","Pedro Favela"],[0,"A","69","Lucas Santos"],[0,"S","71","Ronaldo Henrique","Lucas Santos"],[1,"A","74","Andrey"],[1,"A","74","Ronald"],[1,"GC","75","Saulo"],[0,"GC","77","Matheus Vinicius"],[1,"S","77","Edson Miranda","Ronald"],[1,"A","82","Everaldo"],[0,"S","82","Robinho","Richard"],[0,"S","82","Luiz Guilherme","Vitor Leque"],[0,"A","90+2","Ronaldo Henrique"],[1,"A","90+5","Cristian Souza","banco"]],"arb":"de Sousa M.","est":"Estádio Major José Levy Sobrinho","pub":1725},"2026-05-02":{"fs":"SO00j57D","st":{"posse":[45,55],"fin":[2,14],"alvo":[0,7],"fora":[2,7]},"ev":[[0,"A","38","Yan Henrique"],[0,"S","44","Renan Castro","Emerson Barbosa"],[1,"S","46","Renato","Thiago Ennes"],[0,"S","61","Mirandinha","Herbert"],[1,"A","63","Silva"],[1,"S","65","Vitinho","Patrick Allan"],[0,"A","69","Willian Farias"],[1,"S","73","Pedro Favela","Silva"],[1,"A","79","Everaldo"],[1,"S","80","Eron","Ronald"],[1,"S","80","Marcos Andre","Everaldo"],[0,"A","83","Maranhao"],[0,"S","84","Guilherme Parede","Joao Paulo"],[0,"S","84","Kewen","Maranhao"],[1,"A","87","Renato"],[0,"G","90+2","Willian Farias"]],"arb":"Bauermann G.","est":"Estádio Brinco de Ouro","pub":5550},"2026-04-26":{"fs":"WKgFa9pR","st":{"posse":[58,42],"fin":[6,6],"alvo":[2,2],"fora":[4,4]},"ev":[[0,"A","21","Nunez P."],[0,"A","25","Ronaldo","banco"],[1,"S","46","Vitinho","Silva"],[1,"A","48","Vitinho"],[0,"S","49","Victor Jesus","Vinicius Leite"],[1,"A","56","Wagner Balotelli"],[1,"S","56","Everaldo","Regis"],[0,"S","58","Rafael Tavares","Nunez P."],[0,"S","58","Alyson","Italo Silva"],[0,"G","60","Schiappacasse N."],[1,"S","68","Thiago Ennes","Israel"],[1,"S","68","Quirino","Tiago Marques"],[0,"A","69","Renan"],[0,"S","73","Marcondes","Marcel Scalese"],[0,"S","73","Ronaldo","Schiappacasse N."],[1,"S","78","Alex Ruan","Ze Mario"],[0,"A","90+1","Iury"],[1,"2A","90+5","Wagner Balotelli"]],"arb":"Cidral D.","est":"Estádio José do Rego Maciel","pub":13501},"2026-04-18":{"fs":"pQbDz2Bb","st":{"posse":[56,44],"fin":[8,19],"alvo":[2,5],"fora":[6,14]},"ev":[[0,"G","10","Joao Pedro"],[0,"A","24","Gabriel Zeca"],[1,"A","45+4","Ze Mario"],[1,"S","46","Thiago Ennes","Regis"],[1,"S","46","Marcos Andre","Renato"],[1,"S","46","Fabinho","Israel"],[0,"S","63","Lorran","PK"],[0,"S","63","Fabricio","Gabriel Zeca"],[0,"S","70","Andrey Quintino","Iago Silva"],[1,"S","70","Quirino","Tiago Marques"],[1,"S","78","Patrick Allan","Wagner Balotelli"],[0,"S","83","Mateus Ludke","Danielzinho"],[1,"A","89","Marcos Andre"]],"arb":"Alves P.","est":"Estadio Estadual Lourival Baptista (Batistao)","pub":3465},"2026-04-11":{"fs":"Igy09PCa","st":{"posse":[61,39],"fin":[16,12],"alvo":[4,3],"fora":[12,9]},"ev":[[0,"G","34","Daniel"],[1,"G","36","Tiago Marques"],[0,"A","54","Islan"],[1,"A","55","Regis"],[1,"S","62","Marcos Andre","Renato"],[1,"S","62","Patrick Allan","Regis"],[0,"S","67","Matheus Martins","Daniel"],[1,"S","73","Vitinho","Ronald"],[0,"S","74","Matheusinho","Garraty"],[1,"S","79","Fabinho","Pedro Favela"],[1,"S","79","Silva","Wagner Balotelli"],[0,"A","83","Cedric"],[0,"S","84","Guilherme Borges","Jeam"],[0,"S","84","Eliandro","Cedric"],[0,"S","84","Joao Celeri","Jhony Douglas"]],"arb":"Pequeno Frutuoso A. C.","est":"Domingão","pub":436},"2026-04-06":{"fs":"E5zDb8bs","st":{"posse":[56,44],"fin":[6,12],"alvo":[2,3],"fora":[4,9]},"ev":[[0,"A","7","Karl"],[0,"A","39","Caio Felipe"],[1,"S","46","Quirino","Regis"],[1,"S","46","Marcos Andre","Renato"],[0,"A","49","Tito"],[1,"A","53","Wagner Balotelli"],[0,"S","54","Tarcisio","Tito"],[0,"S","63","Luan Silva","Caio Felipe"],[0,"S","63","Fabricio Moura","Rodrigo Alves"],[1,"S","65","Patrick Allan","Tiago Marques"],[1,"S","70","Silva","Pedro Favela"],[1,"G","71","Marcos Andre"],[0,"S","77","Pedro Igor","Karl"],[0,"S","77","Renatinho","Leilson"],[1,"S","79","Fabinho","Ronald"]],"arb":"Echevarria W.","est":"Estádio José do Rego Maciel","pub":10267},"2026-03-05":{"fs":"06bvVFu1","st":{"posse":[60,40],"fin":[19,5],"alvo":[5,3],"fora":[14,2]},"ev":[],"est":"Estádio José do Rego Maciel","disp":[[1,"GP","1","Nahuelpan A."],[0,"GP","1","Veraldo"],[1,"PP","2","Willian Junior"],[0,"GP","2","Crystian"],[1,"GP","3","Eurico"],[0,"GP","3","Felipe Jacare"],[1,"PP","4","Marcos Andre"],[0,"GP","4","Diego Viana"]]},"2026-02-22":{"fs":"O6jtVHqo","st":{"posse":[39,61],"fin":[7,12],"alvo":[3,6],"fora":[4,6]},"ev":[[1,"A","16","Ianson"],[0,"A","18","Samuel Felix"],[1,"A","24","Pedro Favela"],[0,"A","32","Arnaldo"],[1,"S","45","Matheus Vinicius","Ianson"],[0,"GP","45+6","Paulo Sergio"],[1,"S","46","Renato","Vitinho"],[1,"A","51","Wagner Balotelli"],[0,"S","59","Juninho","Junior Todinho"],[0,"S","59","Reginaldo","Arnaldo"],[0,"A","65","Wenderson"],[1,"S","72","Matheus Castilho","Quirino"],[0,"G","73","Paulo Sergio"],[0,"S","77","Auremir","Samuel Felix"],[0,"S","77","Luiz Felipe","Wenderson"],[1,"S","80","Rodrigues","Alex Ruan"],[1,"S","80","Gabriel Galhardo","Pedro Favela"],[1,"S","80","Vini Hora","Willian Junior"],[1,"A","80","Eurico"],[0,"S","84","Ramon","Dodo"],[0,"S","84","Rosa G.","Paulo Sergio"],[0,"A","84","Luiz Felipe"]],"est":"Estadio Eladio de Barros Carvalho (Aflitos)"},"2026-02-11":{"fs":"hOaAzvMN","st":{"posse":[41,59],"fin":[6,11],"alvo":[2,9],"fora":[4,2]},"ev":[[0,"S","5","Wanderson","Mateus Silva"],[0,"G","18","Paulo Sergio"],[0,"A","23","Samuel Felix"],[0,"S","34","Guruceaga G.","Muriel Becker"],[1,"A","35","Quirino"],[0,"A","42","Wenderson"],[0,"S","46","Auremir","Samuel Felix"],[1,"A","64","Israel"],[1,"S","67","Renato","Quirino"],[0,"S","73","Luiz Felipe","Wenderson"],[0,"S","73","Juninho","Junior Todinho"],[1,"A","73","Eurico"],[1,"A","75","Alex Ruan"],[1,"A","83","Matheus Vinicius"],[0,"PP","86","Paulo Sergio"],[1,"S","89","Matheus Castilho","Vitinho"],[1,"S","89","Vini Hora","Patrick Allan"],[0,"A","90+3","Vinicius"],[1,"S","90+3","Gabriel Galhardo","Pedro Favela"]],"arb":"Arleu B.","est":"Estádio José do Rego Maciel"},"2026-02-08":{"fs":"YmMc0wD5","st":{"posse":[52,48],"fin":[11,10],"alvo":[7,1],"fora":[4,9]},"ev":[[0,"A","23","Xandinho"],[1,"A","40","Gabriel Galhardo"],[0,"S","46","Jonas","Xandinho"],[1,"G","51","Ianson"],[0,"S","60","Cesar Leite M.","Eder Monteiro"],[0,"S","60","Richarles","Mosquito"],[1,"S","61","Pedro Favela","Gabriel Galhardo"],[1,"S","61","Pedro Costa","Vitinho"],[0,"S","69","Luis Lipek","Pablinho"],[1,"S","79","Renato","Patrick Allan"],[0,"S","80","Batista R.","Fernando Portel"],[1,"S","87","Andrey","Wagner Balotelli"],[1,"S","88","Matheus Castilho","Willian Junior"]],"est":"Estádio José do Rego Maciel"},"2026-02-05":{"fs":"tt4j2arg","st":{"posse":[53,47],"fin":[11,10],"alvo":[8,5],"fora":[3,5]},"ev":[[1,"G","13","Israel"],[1,"A","32","Wagner Balotelli"],[0,"S","38","Jonas","Victor Ramon"],[1,"G","44","Matheus Vinicius"],[1,"A","56","Vitinho"],[0,"S","58","Cesar Leite M.","Xandinho"],[0,"S","58","Richarles","Mosquito"],[0,"A","60","Almeida da Silva K. D."],[1,"S","63","Pedro Costa","Vitinho"],[1,"S","64","Rodrigues","Alex Ruan"],[0,"A","71","Mateus Rodrigues"],[0,"A","75","Fernando Portel"],[1,"S","76","Vini Hora","Willian Junior"],[0,"S","82","Luis Lipek","Pablinho"],[0,"G","85","Bambam"],[1,"S","86","Matheus Castilho","Patrick Allan"],[1,"S","86","Gabriel Galhardo","Israel"],[1,"A","90+2","Rokenedy"],[0,"A","90+4","Cesar Leite M."]],"arb":"Martins M.","est":"Estadio Municipal Odilon Ferreira Dos Santos"},"2026-01-31":{"fs":"SOTeToN5","st":{"posse":[42,58],"fin":[6,10],"alvo":[3,4],"fora":[3,6]},"ev":[[0,"G","36","Gustavo Coutinho"],[0,"A","37","Yago Felipe"],[1,"G","41","Eurico"],[0,"A","45+11","Ze Gabriel"],[1,"S","46","Ianson","Eurico"],[0,"S","46","de Pena Carlos","Marlon Douglas"],[1,"A","62","Quirino"],[0,"S","68","Pedro Martins","Yago Felipe"],[0,"S","68","Ze Roberto","Gustavo Coutinho"],[1,"S","71","Pedro Costa","Vitinho"],[1,"A","75","Rokenedy"],[0,"A","78","Ze Roberto"],[0,"S","80","Max Alves","Chrystian Barletta"],[0,"S","80","Micael","Gustavo Maia"],[1,"S","81","Andrey","Patrick Allan"],[1,"A","84","Wagner Balotelli"],[1,"S","88","Robinho","Israel"],[1,"S","88","Gabriel Galhardo","Wagner Balotelli"],[0,"G","90+2","Micael"],[0,"A","90+3","Micael"]],"est":"Estadio Adelmar da Costa Carvalho (Ilha do Retiro)"},"2026-01-28":{"fs":"AmcVCQxP","st":{"posse":[49,51],"fin":[25,5],"alvo":[19,4],"fora":[6,1]},"ev":[[1,"G","2","Patrick Allan"],[1,"G","6","Willian Junior"],[1,"G","31","Quirino"],[1,"G","40","Vitinho"],[1,"A","45+4","Andrey"],[0,"A","45+5","Gil Mineiro"],[0,"S","46","Leilson","Anderson Sao Joao"],[0,"S","46","Leo Mago","Lele"],[0,"S","46","Cruz R.","Nilson"],[1,"S","49","Gabriel Galhardo","Andrey"],[0,"A","49","Ruan Pablo"],[1,"G","56","Quirino"],[0,"S","58","Wallace","Edson Silva"],[1,"G","59","Quirino"],[1,"S","62","Pedro Favela","Wagner Balotelli"],[1,"S","62","Pedro Costa","Israel"],[1,"A","66","Pedro Favela"],[1,"S","69","Robinho","Willian Junior"],[1,"S","69","Matheus Regis","Quirino"],[0,"S","71","Jailton","Leilson"]],"est":"Estádio José do Rego Maciel"},"2026-01-25":{"fs":"t85EG8w0","st":{"posse":[43,57],"fin":[7,11],"alvo":[5,8],"fora":[2,3]},"ev":[[0,"A","29","Mateus Silva"],[0,"A","36","Dodo"],[0,"G","39","Dodo"],[1,"V","45+3","Matheus Vinicius"],[1,"S","46","Pedro Costa","Renato"],[1,"A","51","Israel"],[0,"G","51","Vinicius"],[0,"S","56","Wanderson","Mateus Silva"],[0,"S","56","Luiz Felipe","Wenderson"],[1,"S","56","Rodrigues","Alex Ruan"],[0,"A","61","Junior Todinho"],[0,"G","61","Vinicius"],[0,"S","63","Felipe Saraiva","Paulo Sergio"],[0,"S","63","Indio","Igor Fernandes"],[1,"A","64","Wagner Balotelli"],[1,"S","68","Gabriel Galhardo","Wagner Balotelli"],[1,"S","68","Willian Junior","Patrick Allan"],[0,"V","72","Dodo"],[0,"S","73","Auremir","Arnaldo"],[0,"G","77","Junior Todinho"],[1,"S","83","Vini Hora","Israel"]],"est":"Estádio José do Rego Maciel"},"2026-01-21":{"fs":"48yX3Vgf","st":{"posse":[54,46],"fin":[3,13],"alvo":[2,7],"fora":[1,6]},"ev":[[1,"A","19","Patrick Allan"],[0,"A","28","Douglas"],[0,"A","32","Vagner Love"],[1,"A","32","Rokenedy"],[1,"A","42","Andrey"],[1,"A","44","Matheus Vinicius"],[1,"S","46","Willian Junior","Matheus Regis"],[0,"S","59","Lira W.","Vagner Love"],[0,"S","59","Ericson","Douglas"],[0,"S","59","Fabricio Pereira","Diego Guerra"],[1,"S","61","Israel","Pedro Costa"],[1,"S","61","Alex Ruan","Rodrigues"],[1,"S","70","Pedro Favela","Renato"],[0,"S","76","Bruno Marques","Guilherme"],[0,"G","77","Bruno Marques"],[0,"S","80","Bruno Henrique","Radsley"],[1,"S","82","Robinho","Patrick Allan"],[1,"V","87","Andrey"],[0,"A","90","Bruno Marques"]],"est":"Arena Pernambuco"},"2026-01-17":{"fs":"0GYO90QF","st":{"posse":[56,44],"fin":[17,3],"alvo":[8,2],"fora":[9,1]},"ev":[[0,"A","19","Hitalo"],[1,"S","44","Matheus Vinicius","William Alves"],[0,"S","44","Lucao","Diego"],[1,"S","46","Willian Junior","Andrey"],[0,"S","61","Luiz Paulo","Gabriel Pires"],[1,"S","64","Robinho","Matheus Regis"],[1,"S","64","Vini Hora","Vitinho"],[0,"S","67","Villela I.","Bruninho"],[0,"S","67","Pepeto","Elivelton"],[0,"A","71","Luiz Paulo"],[1,"G","72","Matheus Vinicius"],[1,"S","76","Pedro Favela","Patrick Allan"],[0,"S","77","Tomas Dias","Pedro Maycon"],[0,"S","77","Juninho Carpina","Ewerton Ageu"],[1,"S","90+3","Gabriel Galhardo","Wagner Balotelli"],[0,"A","90+5","Tomas Dias"]],"est":"Estádio José do Rego Maciel"},"2026-01-14":{"fs":"CfhUmJ3d","st":{"posse":[44,56],"fin":[9,14],"alvo":[4,8],"fora":[5,6]},"ev":[[0,"S","28","Iago Felipe","Memo"],[0,"G","30","Bruno Vinicius"],[1,"G","37","Renato"],[1,"S","46","Andrey","Wagner Balotelli"],[0,"S","63","Mayco Felix","Vinicius Kanu"],[0,"A","65","Italo"],[1,"S","71","Willian Junior","Patrick Allan"],[1,"S","72","Matheus Regis","Renato"],[1,"A","77","Andrey"],[1,"S","83","Gabriel Galhardo","Vitinho"],[0,"S","84","Henrique Paraiba","Bruno Vinicius"],[1,"S","90+1","Israel","Quirino"]],"est":"Estádio Arthur Tavares de Melo"},"2026-01-11":{"fs":"SlercNtA","st":{"posse":[57,43],"fin":[15,7],"alvo":[10,2],"fora":[5,5]},"ev":[[0,"A","15","Israel"],[1,"G","18","Renato"],[1,"GP","22","Quirino"],[1,"G","34","Patrick Allan"],[1,"A","51","Quirino"],[1,"S","56","Vitinho","Robinho"],[1,"S","56","Pedro Favela","Andrey"],[0,"S","62","Richarles","Jonas"],[0,"S","62","Xandinho","Mateus Rodrigues"],[1,"S","67","Willian Junior","Patrick Allan"],[1,"S","67","Matheus Regis","Quirino"],[0,"S","72","Luis Lipek","Mosquito"],[0,"S","72","Breno Renan","Fernando Portel"],[1,"A","73","Pedro Favela"],[0,"A","78","Breno Renan"],[1,"S","81","Ryan","Renato"],[0,"S","82","Pablinho","Almeida da Silva K. D."],[1,"A","88","Rodrigues"]],"est":"Estádio José do Rego Maciel"}};
 /* Jogos do Santa Cruz em 2026 (fonte: ogol.com.br, consulta em 29/10/2026) */
 const JOGOS_2026 = [
   ["2026-10-10","17:00","Série C","C","Fora","Botafogo-PB",0,1,""],
@@ -1072,7 +1098,7 @@ const COMP_INFO = {
   "Copa do Brasil":{nome:"Copa do Brasil 2026",status:"Eliminado na 2ª fase, nos pênaltis",cartoes:"—"},
   "Pernambucano":{nome:"Campeonato Pernambucano 2026",status:"Eliminado na semifinal",cartoes:"29 amarelos · 1 segundo amarelo · 1 vermelho"},
 };
-function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})); }
+function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})).map(comFS); }
 const COMPS = ["Série C","Copa do Brasil","Pernambucano"];
 const resJ = j => n(j.gp)==null||n(j.gc)==null ? null : n(j.gp)>n(j.gc)?"V":n(j.gp)<n(j.gc)?"D":"E";
 const COR_RES = {V:"var(--good)",E:"var(--warn)",D:"var(--bad)"};
@@ -1087,19 +1113,6 @@ function resumoJogos(lista){
     forma:js.slice(-5).map(resJ), seq};
 }
 function Forma({f}){ return html`<span style=${{display:"inline-flex",gap:"3px"}}>${f.map((r,i)=>html`<span key=${i} class="res" style=${{background:COR_RES[r]}}>${r}</span>`)}</span>`; }
-function JogoCard({st,j}){
-  const r=resJ(j); const adv=st.adversarios.find(a=>a.nome===j.adversario)||{nome:j.adversario};
-  return html`<div class="jogo" style=${{borderLeftColor:r?COR_RES[r]:"var(--line2)"}}>
-    <div class="jogo-top"><div class="jogo-d"><b>${fmtD(j.data)}</b><span>${j.hora||""}</span></div>
-      <span class="chip">${j.competicao}${j.fase?" · "+(FASE_JOGO[j.fase]||j.fase):""}</span><span class="chip">${j.mando==="Casa"?"Casa":"Fora"}</span>
-      <div class="jogo-r">${j.pen?html`<span class="note">pên. ${j.pen}</span>`:null}${r?html`<span class="res big" style=${{background:COR_RES[r]}}>${r}</span>`:html`<span class="chip">A jogar</span>`}</div></div>
-    <div class="jogo-p">
-      <span class="jogo-t"><img src=${CREST} alt="" width="26" height="26"/><b>Santa Cruz</b></span>
-      <span class="placar num">${j.gp===""?"–":j.gp}<i>×</i>${j.gc===""?"–":j.gc}</span>
-      <span class="jogo-t adv">${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${26}/>`:html`<span class="club">${siglaDe(j.adversario)}</span>`}<b>${j.adversario||"A definir"}</b></span>
-    </div>
-  </div>`;
-}
 function CalendarioJogos({st,up}){
   const [comp,setComp]=useState(""); const [mando,setMando]=useState(""); const [res,setRes]=useState(""); const [edit,setEdit]=useState(false);
   const jg=crud(up,"jogos");
@@ -1117,20 +1130,126 @@ function CalendarioJogos({st,up}){
     : grupos.length? grupos.map(g=>{ const js=lista.filter(j=>(j.competicao||"Outros")===g), r=resumoJogos(js), info=COMP_INFO[g];
         return html`<section key=${g} class="card">
           <div class="card-h"><div><h2>${info?info.nome:g}</h2><p>${info?info.status+" · ":""}${r.J} jogos · ${r.V}V ${r.E}E ${r.D}D · ${r.gp}–${r.gc} · ${r.aprov??"—"}% de aproveitamento</p></div><${Forma} f=${r.forma}/></div>
-          <div class="jogos">${js.map(j=>html`<${JogoCard} key=${j.id} st=${st} j=${j}/>`)}</div>
+          <div class="jogos">${js.map(j=>html`<${JogoCard} key=${j.id} st=${st} j=${j} up=${up}/>`)}</div>
         </section>`; })
     : html`<div class="empty">Nenhum jogo com esses filtros.</div>`}
-    <p class="note">Jogos de 2026 importados do ogol.com.br em 29/10/2026. Placar sempre com os gols do Santa Cruz primeiro. Use “Editar jogos” para corrigir, incluir xG e posse ou lançar os próximos jogos.</p>
+    <p class="note">Jogos de 2026 importados do ogol.com.br e lances/estatísticas do Flashscore em 29/10/2026. Placar sempre com os gols do Santa Cruz primeiro. Use “Editar jogos” para corrigir, incluir xG e posse ou lançar os próximos jogos.</p>
   </div>`;
 }
+const advDe = (st,nome) => st.adversarios.find(a=>a.nome===nome)||{nome};
+const comFS = j => { const f=FS_2026[j.data]; if(!f||j.eventos) return j;
+  return {...j, fs:f.fs, stats:f.st, eventos:f.ev, disp:f.disp||null, arbitro:j.arbitro||f.arb||"", estadio:j.estadio||f.est||"", publico:j.publico||(f.pub?String(f.pub):""),
+    posse:j.posse||String(f.st.posse[0]), fin:j.fin||(f.st.fin?String(f.st.fin[0]):""), assist:j.assist||{}, fonte:"oGol + Flashscore"}; };
+const EV_NOME = {G:"Gol",GP:"Gol de pênalti",GC:"Gol contra",A:"Cartão amarelo","2A":"Segundo amarelo",V:"Cartão vermelho",S:"Substituição",PP:"Pênalti perdido"};
+const minN = m => { const [a,b]=String(m).split("+"); return Number(a)+(b?Number(b)/100:0); };
+const ehGol = t => t==="G"||t==="GP"||t==="GC";
+const golsDe = (j,lado) => (j.eventos||[]).map((e,i)=>({e,i})).filter(({e})=>e[0]===lado&&ehGol(e[1]));
+const assistDe = (j,i) => ((j.assist||{})[i]||"").trim();
+function EvIc({t}){
+  if(ehGol(t)) return html`<span class="evi gol" aria-hidden="true">⚽</span>`;
+  if(t==="A") return html`<span class="evi card-a" aria-hidden="true"></span>`;
+  if(t==="2A") return html`<span class="evi card-2a" aria-hidden="true"><i></i><i></i></span>`;
+  if(t==="V") return html`<span class="evi card-v" aria-hidden="true"></span>`;
+  if(t==="S") return html`<span class="evi sub" aria-hidden="true">⇄</span>`;
+  if(t==="PP") return html`<span class="evi pp" aria-hidden="true">✕</span>`;
+  return null;
+}
+const golTxt = (j,{e,i}) => `${e[3]} ${e[2]}'${e[1]==="GP"?" (pên.)":e[1]==="GC"?" (contra)":""}${e[0]===1&&assistDe(j,i)?" · assist. "+assistDe(j,i):""}`;
+
+function JogoCard({st,j,up}){
+  const [aberto,setAberto]=useState(false);
+  const r=resJ(j); const adv=advDe(st,j.adversario);
+  const gS=golsDe(j,1), gA=golsDe(j,0); const detalhe=(j.eventos||[]).length||j.stats;
+  return html`<div class="jogo" style=${{borderLeftColor:r?COR_RES[r]:"var(--line2)"}}>
+    <div class="jogo-top"><div class="jogo-d"><b>${fmtD(j.data)}</b><span>${j.hora||""}</span></div>
+      <span class="chip">${j.competicao}${j.fase?" · "+(FASE_JOGO[j.fase]||j.fase):""}</span><span class="chip">${j.mando==="Casa"?"Casa":"Fora"}</span>
+      <div class="jogo-r">${j.pen?html`<span class="note">pên. ${j.pen}</span>`:null}${r?html`<span class="res big" style=${{background:COR_RES[r]}}>${r}</span>`:html`<span class="chip">A jogar</span>`}</div></div>
+    <div class="jogo-p">
+      <span class="jogo-t"><img src=${CREST} alt="" width="26" height="26"/><b>Santa Cruz</b></span>
+      <span class="placar num">${j.gp===""?"–":j.gp}<i>×</i>${j.gc===""?"–":j.gc}</span>
+      <span class="jogo-t adv">${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${26}/>`:html`<span class="club">${siglaDe(j.adversario)}</span>`}<b>${j.adversario||"A definir"}</b></span>
+    </div>
+    ${gS.length||gA.length?html`<div class="jogo-g"><div>${gS.map(g=>html`<span key=${g.i}>${golTxt(j,g)}</span>`)}</div><div class="r">${gA.map(g=>html`<span key=${g.i}>${golTxt(j,g)}</span>`)}</div></div>`:null}
+    ${detalhe?html`<button class="jogo-mais" aria-expanded=${aberto} onClick=${()=>setAberto(!aberto)}>${aberto?"Ocultar estatísticas":"Estatísticas e lances"}<span aria-hidden="true">${aberto?"▴":"▾"}</span></button>`:null}
+    ${aberto?html`<${JogoDetalhe} st=${st} j=${j} up=${up}/>`:null}
+  </div>`;
+}
+function JogoDetalhe({st,j,up}){
+  const s=j.stats||{}; const ev=(j.eventos||[]).map((e,i)=>({e,i})).sort((a,b)=>minN(a.e[2])-minN(b.e[2]));
+  const cart=l=>{ const x=(j.eventos||[]).filter(e=>e[0]===l); return [x.filter(e=>e[1]==="A").length, x.filter(e=>e[1]==="2A"||e[1]==="V").length]; };
+  const cS=cart(1), cA=cart(0);
+  const linhas=[["Posse de bola",s.posse,"%"],["Finalizações",s.fin],["No alvo",s.alvo],["Para fora",s.fora],["Cartões amarelos",[cS[0],cA[0]]],["Expulsões",[cS[1],cA[1]]]].filter(x=>x[1]&&!(x[0]==="Expulsões"&&!x[1][0]&&!x[1][1]));
+  const nomesSC=[...new Set([...(j.eventos||[]).filter(e=>e[0]===1).flatMap(e=>[e[3],e[1]==="S"?e[4]:null]),...st.elenco.map(a=>a.nome)].filter(x=>x&&x!=="banco"))].sort();
+  const setAssist=(i,v)=>up&&up(S=>({...S,jogos:S.jogos.map(x=>x.id===j.id?{...x,assist:{...(x.assist||{}),[i]:v}}:x)}));
+  const golsSC=golsDe(j,1).filter(g=>g.e[1]!=="GC");
+  return html`<div class="jdet">
+    <div class="jdet-info">${j.arbitro?html`<span><b>Árbitro</b>${j.arbitro}</span>`:null}${j.estadio?html`<span><b>Estádio</b>${j.estadio}</span>`:null}${n(j.publico)?html`<span><b>Público</b>${Number(j.publico).toLocaleString("pt-BR")}</span>`:null}</div>
+    ${linhas.length?html`<div class="jstats">${linhas.map(([l,[a,b],u])=>{ const t=(a||0)+(b||0)||1; return html`<div key=${l} class="jst">
+      <b class="num">${a}${u||""}</b><span>${l}</span><b class="num r">${b}${u||""}</b>
+      <div class="jst-bar"><i style=${{width:(a||0)/t*100+"%"}}></i><i style=${{width:(b||0)/t*100+"%"}}></i></div></div>`; })}</div>`:null}
+    ${golsSC.length?html`<div class="jdet-as"><b class="eyebrow" style=${{color:"var(--mute)"}}>Assistências do Santa Cruz</b>
+      <datalist id=${"dl-"+j.id}>${nomesSC.map(x=>html`<option key=${x} value=${x}/>`)}</datalist>
+      ${golsSC.map(g=>html`<label key=${g.i} class="jas"><span>⚽ ${g.e[3]} ${g.e[2]}'</span>
+        <input class="cell" id=${"as-"+j.id+"-"+g.i} list=${"dl-"+j.id} placeholder="Quem deu a assistência?" value=${assistDe(j,g.i)} onChange=${e2=>setAssist(g.i,e2.target.value)} disabled=${!up}/></label>`)}
+      <span class="note">O Flashscore não publica assistências desta competição. Lance aqui e elas entram na artilharia.</span></div>`:null}
+    ${ev.length?html`<div class="tl"><div class="tl-h"><span>Santa Cruz</span><span></span><span class="r">${j.adversario}</span></div>
+      ${ev.map(({e,i})=>{ const txt=e[1]==="S"?html`<span><b>${e[3]}</b> <small>sai ${e[4]}</small></span>`:html`<span><b>${e[3]}</b>${e[4]==="banco"?html` <small>(banco)</small>`:null}${ehGol(e[1])?html` <small>${EV_NOME[e[1]]}${e[0]===1&&assistDe(j,i)?" · assist. "+assistDe(j,i):""}</small>`:e[1]==="PP"?html` <small>pênalti perdido</small>`:null}</span>`;
+        return html`<div key=${i} class=${"tl-r"+(ehGol(e[1])?" g":"")}>
+          <div class="tl-s">${e[0]===1?html`${txt}<${EvIc} t=${e[1]}/>`:null}</div><span class="tl-m num">${e[2]}'</span><div class="tl-a">${e[0]===0?html`<${EvIc} t=${e[1]}/>${txt}`:null}</div></div>`; })}</div>`:null}
+    ${j.disp&&j.disp.length?html`<div class="jdet-as"><b class="eyebrow" style=${{color:"var(--mute)"}}>Disputa de pênaltis ${j.pen?"· "+j.pen:""}</b>
+      <div class="note">${j.disp.map((e,k)=>html`<span key=${k} style=${{marginRight:"10px"}}>${e[1]==="GP"?"✓":"✕"} ${e[3]} (${e[0]===1?"SC":"adv."})</span>`)}</div></div>`:null}
+    ${j.fs?html`<p class="note" style=${{margin:0}}>Fonte: Flashscore (jogo ${j.fs}). Estatísticas que o Flashscore não publicou ficam em branco.</p>`:null}
+  </div>`;
+}
+
+/* Números por jogador a partir dos lances */
+function porJogador(js){
+  const m={}; const p=nm=>(m[nm]=m[nm]||{nome:nm,g:0,pen:0,a:0,am:0,v:0,ent:0,sai:0,jg:new Set()});
+  js.forEach(j=>(j.eventos||[]).forEach((e,i)=>{ if(e[0]!==1) return; const t=e[1];
+    if(t==="G"||t==="GP"){ const x=p(e[3]); x.g++; if(t==="GP") x.pen++; x.jg.add(j.id); const as=assistDe(j,i); if(as) p(as).a++; }
+    else if(t==="A") p(e[3]).am++;
+    else if(t==="2A"){ const x=p(e[3]); x.v++; }
+    else if(t==="V") p(e[3]).v++;
+    else if(t==="S"){ p(e[3]).ent++; if(e[4]) p(e[4]).sai++; } }));
+  return Object.values(m);
+}
+const FAIXAS=[["0–15",0,15],["16–30",16,30],["31–45+",31,45.99],["46–60",46,60],["61–75",61,75],["76–90+",76,999]];
+function faixaDe(min){ const v=minN(min); const f=FAIXAS.findIndex(([,a,b])=>v>=a&&v<=b); return f<0?FAIXAS.length-1:f; }
+
 function EstatJogos({st}){
-  const [comp,setComp]=useState("");
+  const [comp,setComp]=useState(""); const [ordJ,setOrdJ]=useState("g");
   const base=st.jogos.filter(j=>!comp||j.competicao===comp);
   const r=resumoJogos(base), casa=resumoJogos(base.filter(j=>j.mando==="Casa")), fora=resumoJogos(base.filter(j=>j.mando==="Fora"));
   const comps=[...new Set(st.jogos.map(j=>j.competicao).filter(Boolean))];
   let acc=0; const pontos=r.js.map(j=>{ const x=resJ(j); acc+=x==="V"?3:x==="E"?1:0; return {x:fmtD(j.data),y:acc}; });
   const h2h=Object.values(r.js.reduce((o,j)=>{ const k=j.adversario||"?"; o[k]=o[k]||{nome:k,js:[]}; o[k].js.push(j); return o; },{})).map(x=>({...x,r:resumoJogos(x.js)})).sort((a,b)=>b.r.J-a.r.J||b.r.pts-a.r.pts);
   const sp=(l,v,d)=>html`<div class="mini"><span class="note">${l}</span><b class="num">${v}</b>${d?html`<span class="note">${d}</span>`:null}</div>`;
+  // estatísticas de partida
+  const comSt=r.js.filter(j=>j.stats&&j.stats.posse); const comFin=r.js.filter(j=>j.stats&&j.stats.fin);
+  const med=(arr,f)=>arr.length?arr.reduce((s,j)=>s+f(j),0)/arr.length:null;
+  const posse=med(comSt,j=>j.stats.posse[0]);
+  const finP=med(comFin,j=>j.stats.fin[0]), finC=med(comFin,j=>j.stats.fin[1]);
+  const alvoP=comFin.reduce((s,j)=>s+j.stats.alvo[0],0), finTot=comFin.reduce((s,j)=>s+j.stats.fin[0],0);
+  const golsFin=comFin.reduce((s,j)=>s+n(j.gp),0);
+  const pubCasa=r.js.filter(j=>j.mando==="Casa"&&n(j.publico)); const pubMed=pubCasa.length?Math.round(sum(pubCasa.map(j=>j.publico))/pubCasa.length):null;
+  const pubMax=pubCasa.slice().sort((a,b)=>n(b.publico)-n(a.publico))[0];
+  const evs=r.js.flatMap(j=>(j.eventos||[]).map(e=>({e,j})));
+  const amS=evs.filter(x=>x.e[0]===1&&x.e[1]==="A").length, vmS=evs.filter(x=>x.e[0]===1&&(x.e[1]==="2A"||x.e[1]==="V")).length;
+  const amA=evs.filter(x=>x.e[0]===0&&x.e[1]==="A").length, vmA=evs.filter(x=>x.e[0]===0&&(x.e[1]==="2A"||x.e[1]==="V")).length;
+  const penS=evs.filter(x=>x.e[0]===1&&(x.e[1]==="GP"||x.e[1]==="PP")); const penA=evs.filter(x=>x.e[0]===0&&(x.e[1]==="GP"||x.e[1]==="PP"));
+  // posse x resultado
+  const pr=[["Mais posse (>50%)",comSt.filter(j=>j.stats.posse[0]>50)],["Menos posse (≤50%)",comSt.filter(j=>j.stats.posse[0]<=50)]].map(([l,js])=>[l,resumoJogos(js)]);
+  // gols por período
+  const fx=FAIXAS.map(()=>({p:0,c:0})); evs.forEach(({e})=>{ if(!ehGol(e[1])) return; fx[faixaDe(e[2])][e[0]===1?"p":"c"]++; });
+  const fxMax=Math.max(1,...fx.map(x=>Math.max(x.p,x.c)));
+  // jogadores
+  const pj=porJogador(r.js);
+  const ORD={g:["Gols",(a,b)=>b.g-a.g||b.a-a.a],a:["Assistências",(a,b)=>b.a-a.a||b.g-a.g],ga:["G+A",(a,b)=>(b.g+b.a)-(a.g+a.a)||b.g-a.g],c:["Cartões",(a,b)=>(b.am+b.v*2)-(a.am+a.v*2)],ent:["Entradas",(a,b)=>b.ent-a.ent]};
+  const lista=pj.filter(x=>ordJ==="c"?x.am+x.v:ordJ==="ent"?x.ent:ordJ==="a"?x.a:x.g+x.a).sort(ORD[ordJ][1]);
+  const contra=evs.filter(x=>x.e[0]===1&&x.e[1]==="GC").length;
+  const temAssist=pj.some(x=>x.a);
+  // árbitros
+  const arb=Object.values(r.js.filter(j=>j.arbitro).reduce((o,j)=>{ const k=j.arbitro; o[k]=o[k]||{nome:k,js:[]}; o[k].js.push(j); return o; },{})).map(x=>{ const e=x.js.flatMap(j=>j.eventos||[]); return {...x,r:resumoJogos(x.js),am:e.filter(v=>v[0]===1&&v[1]==="A").length,vm:e.filter(v=>v[0]===1&&(v[1]==="2A"||v[1]==="V")).length,pen:e.filter(v=>v[1]==="GP"||v[1]==="PP").length,tot:e.filter(v=>v[1]==="A"||v[1]==="2A"||v[1]==="V").length}; }).sort((a,b)=>b.js.length-a.js.length||a.nome.localeCompare(b.nome));
   return html`<div class="grid" style=${{gap:"14px"}}>
     <div class="seg" style=${{alignSelf:"start",flexWrap:"wrap"}}>${[["","Temporada 2026"],...comps.map(c=>[c,c])].map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)}>${l}</button>`)}</div>
     <div class="grid g-kpi">
@@ -1140,6 +1259,33 @@ function EstatJogos({st}){
       <${Kpi} l="Gols pró" v=${r.gp} d=${r.J?f2(r.gp/r.J)+" por jogo · marcou em "+r.marcou+"%":""}/>
       <${Kpi} l="Gols sofridos" v=${r.gc} d=${r.J?f2(r.gc/r.J)+" por jogo · sofreu em "+r.sofreu+"%":""}/>
       <${Kpi} l="Saldo" v=${(r.sg>0?"+":"")+r.sg}/>
+    </div>
+    ${comSt.length?html`<div class="grid g-kpi">
+      <${Kpi} l="Posse média" v=${Math.round(posse)} u="%" d=${comSt.length+" jogos com dado"}/>
+      <${Kpi} l="Finalizações por jogo" v=${finP==null?"—":f1(finP)} d=${finC==null?"":"cede "+f1(finC)+" ao adversário"}/>
+      <${Kpi} l="Precisão" v=${finTot?Math.round(alvoP/finTot*100):"—"} u=${finTot?"%":""} d=${finTot?`${alvoP} de ${finTot} no alvo`:""}/>
+      <${Kpi} l="Conversão" v=${finTot?Math.round(golsFin/finTot*100):"—"} u=${finTot?"%":""} d=${finTot?`1 gol a cada ${f1(finTot/Math.max(1,golsFin))} finalizações`:""}/>
+      <${Kpi} l="Cartões" v=${`${amS}·${vmS}`} d=${`amarelos · expulsões (adv.: ${amA}·${vmA})`}/>
+      <${Kpi} l="Público médio em casa" v=${pubMed==null?"—":pubMed.toLocaleString("pt-BR")} d=${pubMax?`recorde ${Number(pubMax.publico).toLocaleString("pt-BR")} × ${pubMax.adversario}`:""}/>
+    </div>`:null}
+    <div class="grid g-2">
+      <div class="card"><div class="card-h"><div><h2>Jogadores</h2><p>Gols, assistências, cartões e entradas no decorrer dos jogos${contra?` · ${contra} gol(s) contra a favor`:""}</p></div>
+        <div class="seg">${Object.entries(ORD).map(([k,[l]])=>html`<button key=${k} class=${ordJ===k?"on":""} onClick=${()=>setOrdJ(k)}>${l}</button>`)}</div></div>
+        ${lista.length?html`<div class="tablewrap planilha"><table><thead><tr><th>#</th><th>Jogador</th><th class="r">Gols</th><th class="r">Pên.</th><th class="r">Assist.</th><th class="r">Amar.</th><th class="r">Exp.</th><th class="r">Entrou</th><th class="r">Saiu</th></tr></thead><tbody>
+          ${lista.slice(0,25).map((x,i)=>html`<tr key=${x.nome}><td class="num" style=${{padding:"7px 8px",color:"var(--mute)"}}>${i+1}</td><td style=${{padding:"7px 8px",fontWeight:600,whiteSpace:"nowrap"}}>${x.nome}</td><td class="r num"><b>${x.g||""}</b></td><td class="r num">${x.pen||""}</td><td class="r num">${x.a||""}</td><td class="r num">${x.am||""}</td><td class="r num">${x.v||""}</td><td class="r num">${x.ent||""}</td><td class="r num">${x.sai||""}</td></tr>`)}
+        </tbody></table></div>`:html`<div class="empty">Sem lances registrados para esse filtro.</div>`}
+        ${temAssist?null:html`<p class="note" style=${{marginTop:"8px"}}>O Flashscore não publica assistências do Pernambucano, da Copa do Brasil e da Série C. Abra um jogo no Calendário, clique em “Estatísticas e lances” e informe quem deu o passe — a tabela soma na hora.</p>`}</div>
+      <div class="grid" style=${{gap:"14px",alignContent:"start"}}>
+        <div class="card"><div class="card-h"><div><h2>Gols por período</h2><p>Marcados × sofridos, por faixa de 15 minutos</p></div></div>
+          <div class="fx">${FAIXAS.map((f,i)=>html`<div key=${f[0]} class="fx-r"><span class="note">${f[0]}</span>
+            <div class="fx-b"><i style=${{width:fx[i].p/fxMax*100+"%",background:"var(--good)"}}></i></div><b class="num">${fx[i].p}</b>
+            <div class="fx-b"><i style=${{width:fx[i].c/fxMax*100+"%",background:"var(--bad)"}}></i></div><b class="num">${fx[i].c}</b></div>`)}</div>
+          <div class="legend" style=${{marginTop:"8px"}}><span><i style=${{background:"var(--good)"}}></i>Marcados</span><span><i style=${{background:"var(--bad)"}}></i>Sofridos</span></div></div>
+        ${comSt.length?html`<div class="card"><div class="card-h"><div><h2>Posse × resultado</h2></div></div>
+          <div class="grid" style=${{gridTemplateColumns:"1fr 1fr",gap:"8px"}}>${pr.map(([l,x])=>sp(l,x.J?x.aprov+"%":"—",`${x.J}J · ${x.V}V ${x.E}E ${x.D}D · ${x.gp}–${x.gc}`))}</div></div>`:null}
+        <div class="card"><div class="card-h"><div><h2>Pênaltis</h2><p>Durante os jogos (sem disputas)</p></div></div>
+          <div class="grid" style=${{gridTemplateColumns:"1fr 1fr",gap:"8px"}}>${sp("A favor",`${penS.filter(x=>x.e[1]==="GP").length}/${penS.length}`,"convertidos")}${sp("Contra",`${penA.filter(x=>x.e[1]==="GP").length}/${penA.length}`,"convertidos pelo adversário")}</div></div>
+      </div>
     </div>
     <div class="grid g-3">
       <div class="card"><div class="card-h"><div><h2>Casa × fora</h2></div></div>
@@ -1158,10 +1304,19 @@ function EstatJogos({st}){
       <div class="card"><div class="card-h"><div><h2>Gols por jogo</h2><p>Gols do Santa Cruz, cor pelo resultado</p></div></div><${Serie} pts=${r.js.map(j=>({x:fmtD(j.data),y:n(j.gp),cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
       <div class="card"><div class="card-h"><div><h2>Pontos acumulados</h2><p>${comp||"Todas as competições"}</p></div></div><${Serie} tipo="linha" pts=${pontos} fmt=${v=>Math.round(v)}/></div>
     </div>
+    ${comSt.length?html`<div class="grid g-2">
+      <div class="card"><div class="card-h"><div><h2>Posse de bola por jogo</h2><p>Linha de 50% como referência</p></div></div><${Serie} pts=${comSt.map(j=>({x:fmtD(j.data),y:j.stats.posse[0],cor:COR_RES[resJ(j)]}))} ymin=${0} ymax=${100} ref=${50} refTxt="50%" fmt=${v=>Math.round(v)+"%"}/></div>
+      <div class="card"><div class="card-h"><div><h2>Finalizações por jogo</h2><p>Do Santa Cruz, cor pelo resultado</p></div></div><${Serie} pts=${comFin.map(j=>({x:fmtD(j.data),y:j.stats.fin[0],cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
+    </div>`:null}
+    ${arb.length?html`<div class="card"><div class="card-h"><div><h2>Árbitros</h2><p>Resultado do Santa Cruz e cartões em cada apito</p></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Árbitro</th><th class="r">Jogos</th><th class="r">V·E·D</th><th class="r">Aprov.</th><th class="r">Amarelos SC</th><th class="r">Expulsões SC</th><th class="r">Cartões no jogo</th><th class="r">Pênaltis</th></tr></thead><tbody>
+        ${arb.map(x=>html`<tr key=${x.nome}><td style=${{padding:"8px",fontWeight:600}}>${x.nome}</td><td class="r num">${x.js.length}</td><td class="r num">${x.r.V}·${x.r.E}·${x.r.D}</td><td class="r num">${x.r.aprov??"—"}%</td><td class="r num">${x.am}</td><td class="r num">${x.vm}</td><td class="r num">${f1(x.tot/x.js.length)}/jogo</td><td class="r num">${x.pen}</td></tr>`)}
+      </tbody></table></div></div>`:null}
     <div class="card"><div class="card-h"><div><h2>Confrontos</h2><p>Retrospecto contra cada adversário em 2026</p></div></div>
-      <div class="h2h">${h2h.map(x=>{ const adv=st.adversarios.find(a=>a.nome===x.nome)||{nome:x.nome}; return html`<div key=${x.nome} class="h2h-i">
+      <div class="h2h">${h2h.map(x=>{ const adv=advDe(st,x.nome); return html`<div key=${x.nome} class="h2h-i">
         ${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${30}/>`:html`<span class="club">${siglaDe(x.nome)}</span>`}
         <div style=${{minWidth:0,flex:1}}><b>${x.nome}</b><div class="note">${x.r.J}J · ${x.r.V}V ${x.r.E}E ${x.r.D}D · ${x.r.gp}–${x.r.gc}</div></div><${Forma} f=${x.js.slice().sort((a,b)=>a.data.localeCompare(b.data)).map(resJ)}/></div>`; })}</div></div>
+    <p class="note">Lances, posse, finalizações, árbitro e público importados do Flashscore em 29/10/2026. Jogos em que o Flashscore não publicou finalizações ficam fora das médias de finalização.</p>
   </div>`;
 }
 
@@ -1479,7 +1634,7 @@ function Inicio({st,up,user,go}){
   const doDia=d=>st.eventos.filter(e=>e.data===d).sort((a,b)=>(a.hora||"").localeCompare(b.hora||""));
   const jogosDia=d=>st.jogos.filter(j=>j.data===d).map(j=>({id:j.id,hora:j.hora,tipo:"Jogo",titulo:`${j.mando==="Fora"?"@":"x"} ${j.adversario}${resJ(j)?` ${j.gp}-${j.gc}`:""}`,local:j.competicao,jogo:j}));
   const tudoDia=d=>[...jogosDia(d),...doDia(d)].sort((a,b)=>(a.hora||"").localeCompare(b.hora||""));
-  const prox=[...st.eventos,...st.jogos.map(j=>({id:j.id,data:j.data,hora:j.hora,tipo:"Jogo",titulo:`${j.mando==="Fora"?"@":"x"} ${j.adversario}`,local:j.competicao}))].filter(e=>e.data && diasEntre(hoje(),e.data)>=0 && diasEntre(hoje(),e.data)<7).sort((a,b)=>(a.data+(a.hora||"")).localeCompare(b.data+(b.hora||"")));
+  const prox=[...st.eventos,...st.jogos.map(j=>({id:j.id,data:j.data,hora:j.hora,tipo:"Jogo",titulo:`${j.mando==="Fora"?"@":"x"} ${j.adversario}`,local:j.competicao,adv:j.adversario}))].filter(e=>e.data && diasEntre(hoje(),e.data)>=0 && diasEntre(hoje(),e.data)<7).sort((a,b)=>(a.data+(a.hora||"")).localeCompare(b.data+(b.hora||"")));
   const mudaMes=k=>{ const d=new Date(y,m-1+k,1); setMes(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`); };
   const at=ativos(st);
   const disp={Liberado:0,"Sob observação":0,"Em transição":0,"Não liberado":0}; at.forEach(j=>disp[j.saude||"Liberado"]++);
@@ -1489,7 +1644,7 @@ function Inicio({st,up,user,go}){
   return html`<div class="grid" style=${{gap:"16px"}}>
     <div><h2 class="saud">${sauda}, ${USUARIOS[user?.nick]||user?.nick||"equipe"}</h2><p class="sub" style=${{margin:"2px 0 0"}}>${fmtDL(hoje())}</p></div>
     ${(()=>{ const ult=st.jogos.filter(j=>resJ(j)).sort((a,b)=>b.data.localeCompare(a.data))[0]; const prox=st.jogos.filter(j=>!resJ(j)&&j.data>=hoje()).sort((a,b)=>a.data.localeCompare(b.data))[0]; const r=resumoJogos(st.jogos);
-      return ult?html`<div class="grid g-2"><div class="card"><div class="card-h"><div><h2>Último jogo</h2><p>Temporada: ${r.J} jogos · ${r.V}V ${r.E}E ${r.D}D · ${r.aprov}%</p></div><button class="btn sm ghost" onClick=${()=>go("analise-desempenho")}>Jogos →</button></div><${JogoCard} st=${st} j=${ult}/></div>
+      return ult?html`<div class="grid g-2"><div class="card"><div class="card-h"><div><h2>Último jogo</h2><p>Temporada: ${r.J} jogos · ${r.V}V ${r.E}E ${r.D}D · ${r.aprov}%</p></div><button class="btn sm ghost" onClick=${()=>go("analise-desempenho")}>Jogos →</button></div><${JogoCard} st=${st} j=${ult} up=${up}/></div>
         <div class="card"><div class="card-h"><div><h2>Próximo jogo</h2><p>Lançado em Análise Desemp. › Calendário</p></div></div>${prox?html`<${JogoCard} st=${st} j=${prox}/>`:html`<p class="note">Nenhum jogo futuro cadastrado. Adicione a próxima partida em “Editar jogos”.</p>`}</div></div>`:null; })()}
     <div class="card">
       <div class="card-h"><div><h2>Calendário de eventos</h2><p>${st.eventos.length} eventos no total</p></div>
@@ -1502,18 +1657,18 @@ function Inicio({st,up,user,go}){
           ${dias.map(d=>{ const es=tudoDia(d); const fora=vis==="Mês"&&d.slice(0,7)!==mes;
             return html`<button key=${d} class=${"cal-d"+(fora?" fora":"")+(d===hoje()?" hoje":"")+(d===dia?" sel":"")} onClick=${()=>setDia(d)}>
               <span class="cal-n">${Number(d.slice(8))}</span>
-              ${es.slice(0,3).map(e=>html`<span key=${e.id} class="cal-e" style=${{borderLeftColor:EVT_COR[e.tipo]}}>${e.hora?e.hora+" ":""}${e.titulo||e.tipo}</span>`)}
+              ${es.slice(0,3).map(e=>e.jogo?html`<span key=${e.id} class="cal-e cal-j" style=${{borderLeftColor:resJ(e.jogo)?COR_RES[resJ(e.jogo)]:EVT_COR[e.tipo]}}><${EscImg} src=${escudoDe(advDe(st,e.jogo.adversario))} alt=${e.jogo.adversario} size=${18}/><span>${e.titulo}</span></span>`:html`<span key=${e.id} class="cal-e" style=${{borderLeftColor:EVT_COR[e.tipo]}}>${e.hora?e.hora+" ":""}${e.titulo||e.tipo}</span>`)}
               ${es.length>3?html`<span class="note">+${es.length-3}</span>`:null}
             </button>`; })}
         </div>
         <aside class="cal-side"><b class="eyebrow" style=${{color:"var(--mute)"}}>Próximos 7 dias</b>
-          ${prox.length?prox.map(e=>html`<div key=${e.id} class="evt" style=${{borderLeftColor:EVT_COR[e.tipo]}}><b>${e.titulo||e.tipo}</b><span>${fmtD(e.data)}${e.hora?" · "+e.hora:""}${e.local?" · "+e.local:""}</span></div>`):html`<p class="note">Sem eventos próximos.</p>`}
+          ${prox.length?prox.map(e=>html`<div key=${e.id} class="evt" style=${{borderLeftColor:EVT_COR[e.tipo]}}><b style=${{display:"flex",alignItems:"center",gap:"6px"}}>${e.adv?html`<${EscImg} src=${escudoDe(advDe(st,e.adv))} size=${18}/>`:null}${e.titulo||e.tipo}</b><span>${fmtD(e.data)}${e.hora?" · "+e.hora:""}${e.local?" · "+e.local:""}</span></div>`):html`<p class="note">Sem eventos próximos.</p>`}
         </aside>
       </div>
       <div class="legend" style=${{marginTop:"10px"}}>${EVT.map(t=>html`<span key=${t}><i style=${{background:EVT_COR[t]}}></i>${t}</span>`)}</div>
       <div style=${{marginTop:"14px"}}>
         <div class="card-h" style=${{marginBottom:"8px"}}><div><h2 style=${{fontSize:"16px"}}>${fmtDL(dia)}</h2></div><button class="btn sm ro-hide" onClick=${()=>novo(dia)}>${I.plus}Adicionar neste dia</button></div>
-        ${jogosDia(dia).map(x=>html`<div key=${x.id} style=${{marginBottom:"8px"}}><${JogoCard} st=${st} j=${x.jogo}/></div>`)}
+        ${jogosDia(dia).map(x=>html`<div key=${x.id} style=${{marginBottom:"8px"}}><${JogoCard} st=${st} j=${x.jogo} up=${up}/></div>`)}
         <${Tabela} st=${st} rows=${doDia(dia)} api=${ev} vazio=${jogosDia(dia).length?"Nenhum outro evento neste dia.":"Nenhum evento neste dia."} cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"tipo",l:"Tipo",t:"select",opts:EVT,cor:v=>EVT_COR[v]},{k:"titulo",l:"Título",w:"180px",ph:"ex.: Treino tático"},{k:"local",l:"Local",ph:"ex.: CT"}]}/>
       </div>
     </div>
@@ -2058,7 +2213,13 @@ function planilhas0(st){
   const alvos = st.alvos.map(a=>({"Atleta":a.nome,"Posição":POSN[a.pos]?.s||a.pos,"Nascimento":n(a.nasc),"Idade em 2027":idade(a,2027),"Clube atual":a.clube,"Salário (R$)":n(a.salario),"Prioridade":a.prioridade,"Situação":a.status,"Observação":a.obs}));
   const comissao = st.comissao.map(c=>({"Profissional":c.nome,"Função":c.funcao,"Área":AREA(c.funcao),"Nascimento":n(c.nasc),"Idade":idade(c,ano),"Desde":n(c.desde),"Contrato até":n(c.contrato),"Salário (R$)":n(c.salario),"Situação 2027":c.sit2027,"Observação":c.obs}));
   const ROT={psr:"PSR (bem-estar)",pse:"PSE (carga)",cmj:"CMJ",gps:"GPS",atend:"Atendimentos fisio",lesoes:"Lesões",sessoes:"Sessões de treino",nutri:"Composição corporal",hidrat:"Hidratação",planos:"Planos alimentares",tarefas:"Tarefas",relatorios:"Relatórios de jogo",adversarios:"Adversários",jogos:"Jogos",arbitros:"Árbitros",cartoes:"Cartões",metas:"Metas",fin:"Financeiro",eventos:"Eventos"};
-  const extras=Object.entries(ROT).map(([k,t])=>[t,(st[k]||[]).map(r=>{ const o={}; Object.entries(r).forEach(([c,v])=>{ if(c==="id"||c==="escudo") return; o[c==="atleta"?"Atleta":c]=c==="atleta"?nomeA(st,v):v; }); return o; })]).filter(([,rows])=>rows.length);
+  const extras=Object.entries(ROT).map(([k,t])=>[t,(st[k]||[]).map(r=>{ const o={}; Object.entries(r).forEach(([c,v])=>{ if(c==="id"||c==="escudo"||(v&&typeof v==="object")) return; o[c==="atleta"?"Atleta":c]=c==="atleta"?nomeA(st,v):v; }); return o; })]).filter(([,rows])=>rows.length);
+  const lances=st.jogos.slice().sort((a,b)=>(a.data||"").localeCompare(b.data||"")).flatMap(j=>(j.eventos||[]).map((e,i)=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Minuto":e[2],"Equipe":e[0]===1?"Santa Cruz":j.adversario,"Lance":EV_NOME[e[1]]||e[1],"Jogador":e[3],"Detalhe":e[1]==="S"?"sai "+(e[4]||""):e[4]==="banco"?"no banco":"","Assistência":e[0]===1&&ehGol(e[1])?assistDe(j,i):""})));
+  if(lances.length) extras.push(["Lances dos jogos",lances]);
+  const jg=porJogador(st.jogos).sort((a,b)=>b.g-a.g||b.a-a.a).map(x=>({"Jogador":x.nome,"Gols":x.g,"Pênaltis":x.pen,"Assistências":x.a,"Amarelos":x.am,"Expulsões":x.v,"Entrou":x.ent,"Saiu":x.sai}));
+  if(jg.length) extras.push(["Jogadores (lances)",jg]);
+  const est=st.jogos.filter(j=>j.stats).map(j=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Mando":j.mando,"Placar":`${j.gp}-${j.gc}`,"Posse SC %":j.stats.posse?.[0],"Posse adv %":j.stats.posse?.[1],"Finalizações SC":j.stats.fin?.[0],"Finalizações adv":j.stats.fin?.[1],"No alvo SC":j.stats.alvo?.[0],"No alvo adv":j.stats.alvo?.[1],"Árbitro":j.arbitro,"Estádio":j.estadio,"Público":n(j.publico)}));
+  if(est.length) extras.push(["Estatísticas dos jogos",est]);
   return {elenco,resumo,bench,alvos,comissao,extras};
 }
 function Exportar({st,up,toast}){
@@ -2192,6 +2353,12 @@ function App(){
   const roT=useRef(0);
   const up=useCallback(fn=>{ if(!podeEditar){ const now=Date.now(); if(now-roT.current>2500){ roT.current=now; toast("Sem permissão para editar"); } return; } store.update(fn); },[podeEditar,store.update,toast]);
   useEffect(()=>{ document.body.classList.toggle("ro", !podeEditar && modo!=="conectando"); },[podeEditar,modo]);
+  useEffect(()=>{ // zoom com os dedos liberado só na Gestão de Elenco
+    const m=document.querySelector('meta[name="viewport"]'); if(!m) return;
+    const base="width=device-width,initial-scale=1,viewport-fit=cover";
+    m.setAttribute("content", tab==="gestao-elenco" ? base+",minimum-scale=0.3,maximum-scale=5,user-scalable=yes" : base+",maximum-scale=1,user-scalable=no");
+    document.body.classList.toggle("zoom-ok", tab==="gestao-elenco");
+  },[tab]);
   if(modo==="offline" || (modo==="nuvem" && !user) || (modo==="conectando" && window.SCOUTPRO_FIREBASE && window.SCOUTPRO_FIREBASE.apiKey)) return html`<${TelaLogin} entrar=${entrar} modo=${modo}/>`;
   const [e,t,s]=TITULOS[tab];
   const nome=USUARIOS[user?.nick]||user?.nick;
