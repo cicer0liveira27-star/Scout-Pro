@@ -610,8 +610,11 @@ function useStore(){
         try{
           const [appM,authM,fsM] = await comTempo(Promise.all([import(FBV+"firebase-app.js"),import(FBV+"firebase-auth.js"),import(FBV+"firebase-firestore.js")]), 12000);
           if(!alive) return;
-          const app = appM.initializeApp(cfg), db = fsM.getFirestore(app), auth = authM.getAuth(app);
-          try{ await authM.setPersistence(auth, authM.browserLocalPersistence); }catch(e){}
+          const app = appM.initializeApp(cfg), db = fsM.getFirestore(app);
+          // Sessão guardada no aparelho (IndexedDB, com localStorage de reserva): só sai pelo botão Sair.
+          let auth;
+          try{ auth = authM.initializeAuth(app, {persistence:[authM.indexedDBLocalPersistence, authM.browserLocalPersistence]}); }
+          catch(e){ auth = authM.getAuth(app); try{ await authM.setPersistence(auth, authM.browserLocalPersistence); }catch(e2){} }
           fb.current = {authM, auth};
           const col = fsM.collection(db, "scoutpro_dados");
           const ultimo = {}; let subs = [];
@@ -638,6 +641,8 @@ function useStore(){
               setSync("online");
             }, e => setSync(/permission/i.test((e&&e.code)||"") ? "leitura" : "erro")));
           });
+          try{ await comTempo(auth.authStateReady(), 8000); }catch(e){}
+          if(!alive) return;
           setModo("nuvem");
           unsub = () => subs.forEach(f=>f());
           return;
@@ -697,15 +702,15 @@ function TelaLogin({entrar, modo}){
   return html`<div class="gate"><div class="gate-box">
     <div class="gate-brand">${LOGO}<div><b>SCOUT<em>PRO</em></b><small>Análise & mercado</small></div></div>
     ${modo==="offline"?html`<div class="alert bad"><div><b>Sem conexão com o banco</b><span>Verifique a internet e recarregue a página.</span></div></div>`:
-    html`<form onSubmit=${enviar} autocomplete="off">
+    html`${modo==="conectando"?html`<p class="note" style=${{textAlign:"center"}}>Abrindo sua sessão…</p>`:html`<form onSubmit=${enviar} method="post" action="#">
       <label for="login-id">Apelido ou CPF</label>
-      <input class="field" id="login-id" name="sp-ident" autocomplete="off" autocapitalize="none" spellcheck="false" required value=${id} onInput=${e=>setId(e.target.value)}/>
+      <input class="field" id="login-id" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" required value=${id} onInput=${e=>setId(e.target.value)}/>
       <label for="login-senha">Senha</label>
-      <div style=${{position:"relative"}}><input class="field" id="login-senha" type=${ver?"text":"password"} autocomplete="new-password" data-lpignore="true" required value=${senha} onInput=${e=>setSenha(e.target.value)} style=${{paddingRight:"64px"}}/>
+      <div style=${{position:"relative"}}><input class="field" id="login-senha" name="password" type=${ver?"text":"password"} autocomplete="current-password" required value=${senha} onInput=${e=>setSenha(e.target.value)} style=${{paddingRight:"64px"}}/>
         <button type="button" class="btn sm ghost" style=${{position:"absolute",right:"4px",top:"50%",transform:"translateY(-50%)",border:0}} onClick=${()=>setVer(!ver)}>${ver?"Ocultar":"Mostrar"}</button></div>
       ${erro?html`<div class="err" role="alert">${erro}</div>`:null}
       <button class="btn primary" type="submit" disabled=${busy||modo!=="nuvem"} style=${{justifyContent:"center",padding:"11px"}}>${modo!=="nuvem"?"Conectando…":busy?"Entrando…":"Entrar"}</button>
-    </form>`}
+    </form>`}`}
   </div></div>`;
 }
 
