@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
 <meta name="theme-color" content="#000000">
 <title>Scout Pro</title>
@@ -301,6 +301,8 @@ select.cell{cursor:pointer}
 .card-am,.card-vm{width:12px;height:16px;border-radius:2px;display:inline-block}
 .card-am{background:var(--warn)}.card-vm{background:var(--bad)}
 .chip{white-space:nowrap}
+@media (max-width:860px){input,select,textarea,.field,.cell,.gate form .field{font-size:16px!important}}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .tablewrap td input.cell,.tablewrap td select.cell{border-color:var(--line);background:color-mix(in srgb,var(--panel2) 70%,transparent)}
 .tablewrap td input.cell:focus,.tablewrap td select.cell:focus{border-color:var(--red)}
 </style>
