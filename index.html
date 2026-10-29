@@ -46,8 +46,8 @@ body.t-light{--bg:#f2f3f4;--panel:#fff;--panel2:#f3f4f6;--line:#dfe2e6;--line2:#
 body.t-black{--bg:#000;--panel:#000;--panel2:#0c0c0c;--line:#1c1c1c;--line2:#2a2a2a;--fg:#f4f4f4;--mute:#8c8c8c;--faint:#555;--red:#e3262c;--red-ink:#ff4d52;--red-soft:rgba(227,38,44,.15);--good:#3cc47a;--warn:#e8b13a;--bad:#ff5a5f;--info:#6ea2ff;--st-rem:#6ea2ff;--st-con:#3cc47a;--st-base:#e8b13a;--st-emp:#e3262c;--shadow:none;color-scheme:dark}
 body.t-black .card,body.t-black .tablewrap,body.t-black .posbox{border-color:#1f1f1f}
 body.t-black th{background:#080808}
-.themes{display:inline-flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;width:100%}
-.themes button{flex:1;border:0;background:transparent;padding:6px 4px;font-size:11px;cursor:pointer;color:var(--mute);display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.themes{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line2);border-radius:6px;overflow:hidden;width:100%}
+.themes button{white-space:nowrap;border:0;background:transparent;padding:6px 4px;font-size:11px;cursor:pointer;color:var(--mute);display:inline-flex;align-items:center;justify-content:center;gap:5px}
 .themes button i{width:9px;height:9px;border-radius:50%;border:1px solid var(--line2)}
 .themes button.on{background:var(--panel2);color:var(--fg);font-weight:600}
 body.ro .money,body.ro .ro-hide{display:none!important}
