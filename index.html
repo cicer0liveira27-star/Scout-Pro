@@ -589,13 +589,13 @@ function TelaLogin({entrar, modo}){
   const [id,setId]=useState(""); const [senha,setSenha]=useState(""); const [ver,setVer]=useState(false); const [erro,setErro]=useState(""); const [busy,setBusy]=useState(false);
   const enviar=async e=>{ e.preventDefault(); setBusy(true); setErro("");
     try{ await entrar(id,senha); }
-    catch(err){ const c=(err&&err.code)||""; setErro(c==="usuario-desconhecido"?"Usuário não encontrado. Use seu nome de acesso ou CPF.":/invalid|wrong|credential|not-found/.test(c)?"Usuário ou senha incorretos.":/too-many/.test(c)?"Muitas tentativas. Aguarde alguns minutos.":/network/.test(c)?"Sem conexão. Verifique a internet.":"Não foi possível entrar ("+(c||"erro")+")."); }
+    catch(err){ const c=(err&&err.code)||""; setErro(c==="usuario-desconhecido"?"Usuário não encontrado. Use seu apelido ou CPF.":/invalid|wrong|credential|not-found/.test(c)?"Usuário ou senha incorretos.":/too-many/.test(c)?"Muitas tentativas. Aguarde alguns minutos.":/network/.test(c)?"Sem conexão. Verifique a internet.":"Não foi possível entrar ("+(c||"erro")+")."); }
     setBusy(false); };
   return html`<div class="gate"><div class="gate-box">
     <div class="gate-brand">${LOGO}<div><b>SCOUT<em>PRO</em></b><small>Análise & mercado</small></div></div>
     ${modo==="offline"?html`<div class="alert bad"><div><b>Sem conexão com o banco</b><span>Verifique a internet e recarregue a página.</span></div></div>`:
     html`<form onSubmit=${enviar} autocomplete="off">
-      <label for="login-id">Nome ou CPF</label>
+      <label for="login-id">Apelido ou CPF</label>
       <input class="field" id="login-id" name="sp-ident" autocomplete="off" autocapitalize="none" spellcheck="false" required value=${id} onInput=${e=>setId(e.target.value)}/>
       <label for="login-senha">Senha</label>
       <div style=${{position:"relative"}}><input class="field" id="login-senha" type=${ver?"text":"password"} autocomplete="new-password" data-lpignore="true" required value=${senha} onInput=${e=>setSenha(e.target.value)} style=${{paddingRight:"64px"}}/>
