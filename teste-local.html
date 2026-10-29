@@ -1304,7 +1304,7 @@ function EstatJogos({st}){
       <div class="card"><div class="card-h"><div><h2>Pontos acumulados</h2><p>${comp||"Todas as competições"}</p></div></div><${Serie} tipo="linha" pts=${pontos} fmt=${v=>Math.round(v)}/></div>
     </div>
     ${comSt.length?html`<div class="grid g-2">
-      <div class="card"><div class="card-h"><div><h2>Posse de bola por jogo</h2><p>Linha de 50% como referência</p></div></div><${Serie} pts=${comSt.map(j=>({x:fmtD(j.data),y:j.stats.posse[0],cor:COR_RES[resJ(j)]}))} ymin=${0} ymax=${100} ref=${50} refTxt="50%" fmt=${v=>Math.round(v)+"%"}/></div>
+      <div class="card"><div class="card-h"><div><h2>Posse de bola por jogo</h2><p>Linha de 50% como referência</p></div></div><${Serie} pts=${comSt.map(j=>({x:fmtD(j.data),y:j.stats.posse[0],cor:COR_RES[resJ(j)]}))} ymin=${0} ymax=${100} linha=${50} refTxt="50%" fmt=${v=>Math.round(v)+"%"}/></div>
       <div class="card"><div class="card-h"><div><h2>Finalizações por jogo</h2><p>Do Santa Cruz, cor pelo resultado</p></div></div><${Serie} pts=${comFin.map(j=>({x:fmtD(j.data),y:j.stats.fin[0],cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
     </div>`:null}
     ${arb.length?html`<div class="card"><div class="card-h"><div><h2>Árbitros</h2><p>Resultado do Santa Cruz e cartões em cada apito</p></div></div>
@@ -1600,18 +1600,18 @@ function Tabela({st,rows,cols,api,vazio}){
 }
 
 /* Gráfico simples de linha ou barras, com rótulos por ponto */
-function Serie({pts,h=170,tipo="barra",cor="var(--red)",ymin,ymax,fmt=f1,ref,refTxt}){
+function Serie({pts,h=170,tipo="barra",cor="var(--red)",ymin,ymax,fmt=f1,linha,refTxt}){
   const W=560,H=h,L=36,R=12,Tp=14,B=26;
   const ys=pts.map(p=>p.y).filter(v=>v!=null&&isFinite(v));
   if(!ys.length) return html`<div class="empty" style=${{padding:"20px"}}>Sem dados no período.</div>`;
-  let lo=ymin??Math.min(0,...ys), hi=ymax??Math.max(...ys,ref??-Infinity); if(!(hi>lo)) hi=lo+1;
+  let lo=ymin??Math.min(0,...ys), hi=ymax??Math.max(...ys,linha??-Infinity); if(!(hi>lo)) hi=lo+1;
   const Y=v=>H-B-(v-lo)/(hi-lo)*(H-B-Tp), slot=(W-L-R)/pts.length, X=i=>L+slot*i+slot/2;
   const ticks=[lo,lo+(hi-lo)/2,hi];
   const linha=pts.map((p,i)=>p.y==null?null:`${X(i)},${Y(p.y)}`).filter(Boolean).join(" ");
   const passo=Math.ceil(pts.length/10);
   return html`<svg class="chart" viewBox=${`0 0 ${W} ${H}`} role="img">
     ${ticks.map((t,i)=>html`<g key=${i}><line x1=${L} x2=${W-R} y1=${Y(t)} y2=${Y(t)} stroke="var(--line)"/><text x=${L-6} y=${Y(t)+4} text-anchor="end" font-size="10.5" fill="var(--mute)">${fmt(t)}</text></g>`)}
-    ${ref!=null?html`<line x1=${L} x2=${W-R} y1=${Y(ref)} y2=${Y(ref)} stroke="var(--fg)" stroke-dasharray="5 4" opacity=".6"/><text x=${W-R} y=${Y(ref)-5} text-anchor="end" font-size="10.5" fill="var(--fg)">${refTxt||""}</text>`:null}
+    ${linha!=null?html`<line x1=${L} x2=${W-R} y1=${Y(linha)} y2=${Y(linha)} stroke="var(--fg)" stroke-dasharray="5 4" opacity=".6"/><text x=${W-R} y=${Y(linha)-5} text-anchor="end" font-size="10.5" fill="var(--fg)">${refTxt||""}</text>`:null}
     ${tipo==="barra"
       ? pts.map((p,i)=>p.y==null?null:html`<rect key=${i} x=${X(i)-slot*.32} y=${Math.min(Y(p.y),Y(Math.max(lo,0)))} width=${slot*.64} height=${Math.abs(Y(p.y)-Y(Math.max(lo,0)))} rx="2" fill=${p.cor||cor}/>`)
       : html`<polyline points=${linha} fill="none" stroke=${cor} stroke-width="2.5" stroke-linejoin="round"/>${pts.map((p,i)=>p.y==null?null:html`<circle key=${i} cx=${X(i)} cy=${Y(p.y)} r="3.5" fill=${cor}/>`)}`}
