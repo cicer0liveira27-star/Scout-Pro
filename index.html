@@ -318,23 +318,37 @@ select.cell{cursor:pointer}
 .h2h-i b{font-size:13px}
 /* Celular: tabelas viram fichas com rótulo em cada campo */
 @media (max-width:760px){
-  .tablewrap{border:0;background:transparent;overflow:visible;border-radius:0}
-  .tablewrap table,.tablewrap tbody,.tablewrap tr,.tablewrap td{display:block;width:100%}
-  .tablewrap thead{display:none}
-  .tablewrap tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px;margin-bottom:10px}
-  .tablewrap tbody tr:hover td{background:transparent}
-  .tablewrap td{border:0;padding:0!important;display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left!important}
-  .tablewrap td::before{content:attr(data-label);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600}
-  .tablewrap td[data-label=""]::before{display:none}
-  .tablewrap td.stbar{display:none}
-  .tablewrap td:has(.w-name),.tablewrap td:has(textarea),.tablewrap td:first-child:not(.stbar){grid-column:1/-1}
-  .tablewrap td:last-child:has(.x),.tablewrap td:last-child:has(.confirm){grid-column:1/-1;align-items:flex-end}
-  .tablewrap td:last-child:has(.x)::before{display:none}
-  .tablewrap .cell,.tablewrap select.cell,.tablewrap input.cell{width:100%!important;min-width:0!important;max-width:none!important;min-height:42px;font-size:16px!important;text-align:left}
-  .tablewrap td>div{width:100%}
-  .tablewrap .av{display:none}
-  .tablewrap td .num{font-size:16px}
+  .tablewrap:not(.planilha){border:0;background:transparent;overflow:visible;border-radius:0}
+  .tablewrap:not(.planilha) table,.tablewrap:not(.planilha) tbody,.tablewrap:not(.planilha) tr,.tablewrap:not(.planilha) td{display:block;width:100%}
+  .tablewrap:not(.planilha) thead{display:none}
+  .tablewrap:not(.planilha) tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px;margin-bottom:10px}
+  .tablewrap:not(.planilha) tbody tr:hover td{background:transparent}
+  .tablewrap:not(.planilha) td{border:0;padding:0!important;display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left!important}
+  .tablewrap:not(.planilha) td::before{content:attr(data-label);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .tablewrap:not(.planilha) td[data-label=""]::before{display:none}
+  .tablewrap:not(.planilha) td.stbar{display:none}
+  .tablewrap:not(.planilha) td:has(.w-name),.tablewrap:not(.planilha) td:has(textarea),.tablewrap:not(.planilha) td:first-child:not(.stbar){grid-column:1/-1}
+  .tablewrap:not(.planilha) td:last-child:has(.x),.tablewrap:not(.planilha) td:last-child:has(.confirm){grid-column:1/-1;align-items:flex-end}
+  .tablewrap:not(.planilha) td:last-child:has(.x)::before{display:none}
+  .tablewrap:not(.planilha) .cell,.tablewrap:not(.planilha) select.cell,.tablewrap:not(.planilha) input.cell{width:100%!important;min-width:0!important;max-width:none!important;min-height:42px;font-size:16px!important;text-align:left}
+  .tablewrap:not(.planilha) td>div{width:100%}
+  .tablewrap:not(.planilha) .av{display:none}
+  .tablewrap:not(.planilha) td .num{font-size:16px}
   .toolbar>.field,.toolbar>select{flex:1 1 140px}
+/* Planilha (Gestão de Elenco): no celular continua tabela, com rolagem lateral e nome fixo */
+.planilha td:nth-child(2),.planilha th:nth-child(2){position:sticky;left:4px;z-index:2;background:var(--panel)}
+.planilha td.stbar,.planilha th.stbar{position:sticky;left:0;z-index:2;background:var(--panel)}
+.planilha thead th{z-index:3}
+@media (max-width:760px){
+  .planilha{max-height:calc(100vh - 150px);overflow:auto;-webkit-overflow-scrolling:touch}
+  .planilha table{font-size:13px}
+  .planilha th{padding:8px 6px;font-size:10px}
+  .planilha td{padding:2px 4px}
+  .planilha .av{display:none}
+  .planilha .w-name{min-width:118px!important;width:118px!important}
+  .planilha .cell{padding:6px 5px;font-size:15px!important}
+  .planilha td:nth-child(2){box-shadow:6px 0 8px -6px rgba(0,0,0,.5)}
+}
 }
 .clubes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:10px}
 .clube{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
@@ -855,7 +869,7 @@ function Elenco({st,up,toast}){
       <button class="btn primary ro-hide" onClick=${add}>${I.plus}Atleta</button>
     </div>
 
-    ${vis==="tabela" ? html`<div class="tablewrap"><table>
+    ${vis==="tabela" ? html`<div class="tablewrap planilha"><table>
       <thead><tr><th class="stbar"></th><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade</th><th class="r">Altura</th><th>Vínculo</th><th>Aprov.</th><th class="r money">Salário (R$)</th><th class="r">Contrato até</th><th class="r">% Min</th><th class="r">J</th><th class="r">G</th><th class="r">A</th><th class="r">Nota</th><th></th></tr></thead>
       <tbody>${lista.map(j=>html`<tr key=${j.id} class=${j.aproveitado?"":"dim-row"}>
         <td class="stbar"><i style=${{background:STATUS[j.status]?.c||"var(--line2)"}}></i></td>
@@ -2160,8 +2174,9 @@ function App(){
   const {state:st, sync, modo, user, entrar, sair, podeEditar}=store;
   const [tema,setTema]=useTema();
   const ler=()=>{ let h=(location.hash||"").slice(1); h=ALIAS[h]||h; return TITULOS[h]?h:"inicio"; };
-  const [tab,setTab]=useState(ler);
-  const [menu,setMenu]=useState(false);
+  const celular = () => { try{ return window.matchMedia("(max-width: 860px)").matches; }catch(e){ return false; } };
+  const [tab,setTab]=useState(()=>{ if(celular()){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} return "inicio"; } return ler(); });
+  const [menu,setMenu]=useState(celular);
   const [fechados,setFechados]=useState({});
   const [msg,setMsg]=useState(null); const tm=useRef();
   const toast=useCallback(t=>{ setMsg(t); clearTimeout(tm.current); tm.current=setTimeout(()=>setMsg(null),3200); },[]);
