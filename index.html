@@ -601,7 +601,6 @@ function TelaLogin({entrar, modo}){
       ${erro?html`<div class="err" role="alert">${erro}</div>`:null}
       <button class="btn primary" type="submit" disabled=${busy||modo!=="nuvem"} style=${{justifyContent:"center",padding:"11px"}}>${modo!=="nuvem"?"Conectando…":busy?"Entrando…":"Entrar"}</button>
     </form>`}
-    <div class="gate-club"><img src=${CREST} alt=""/><span>Departamento de Análise · Santa Cruz F.C.</span></div>
   </div></div>`;
 }
 
