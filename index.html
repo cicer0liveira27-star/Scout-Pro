@@ -457,27 +457,10 @@ function useStore(){
       return next;
     });
   },[]);
-  const entrar = async (email, senha) => { const f=fb.current; if(!f) throw new Error("sem nuvem"); await f.authM.signInWithEmailAndPassword(f.auth, email, senha); };
+  const entrar = async () => { const f=fb.current; if(!f) throw new Error("sem nuvem"); const p=new f.authM.GoogleAuthProvider(); p.setCustomParameters({prompt:"select_account"}); await f.authM.signInWithPopup(f.auth, p); setSync("online"); };
   const sair = async () => { const f=fb.current; if(f) await f.authM.signOut(f.auth); };
-  const podeEditar = modo==="nuvem" ? !!user : (modo!=="conectando" && sync!=="leitura");
+  const podeEditar = modo==="nuvem" ? (!!user && sync!=="leitura") : (modo!=="conectando" && sync!=="leitura");
   return {state, update, sync, modo, user, entrar, sair, podeEditar};
-}
-
-function Login({onClose,entrar}){
-  const [email,setEmail]=useState(""); const [senha,setSenha]=useState(""); const [erro,setErro]=useState(""); const [busy,setBusy]=useState(false);
-  const enviar=async e=>{ e.preventDefault(); setBusy(true); setErro("");
-    try{ await entrar(email.trim(),senha); onClose(true); }
-    catch(err){ const c=(err&&err.code)||""; setErro(/invalid|wrong|not-found|credential/.test(c)?"E-mail ou senha incorretos.":/too-many/.test(c)?"Muitas tentativas. Aguarde alguns minutos.":/network/.test(c)?"Sem conexão com o banco.":"Não foi possível entrar ("+(c||"erro")+")."); }
-    setBusy(false); };
-  return html`<div class="modal" onClick=${e=>{ if(e.target===e.currentTarget) onClose(false); }}>
-    <form onSubmit=${enviar}>
-      <h2>Entrar como editor</h2>
-      <p class="note" style=${{margin:0}}>Visitantes veem o app em modo leitura. Editores alteram os dados de todos em tempo real.</p>
-      <label>E-mail<input class="field" id="login-email" type="email" autocomplete="username" required value=${email} onInput=${e=>setEmail(e.target.value)}/></label>
-      <label>Senha<input class="field" id="login-senha" type="password" autocomplete="current-password" required value=${senha} onInput=${e=>setSenha(e.target.value)}/></label>
-      ${erro?html`<div class="err">${erro}</div>`:null}
-      <div class="actions"><button class="btn primary" type="submit" disabled=${busy}>${busy?"Entrando…":"Entrar"}</button><button class="btn ghost" type="button" onClick=${()=>onClose(false)}>Cancelar</button></div>
-    </form></div>`;
 }
 
 /* ---------- Ícones ---------- */
@@ -1055,7 +1038,7 @@ function useTema(){
 function App(){
   const store=useStore();
   const {state:st, sync, modo, user, entrar, sair, podeEditar}=store;
-  const [login,setLogin]=useState(false);
+  const doLogin=async()=>{ try{ await entrar(); toast("Conectado. Se a conta for de editor, você já pode alterar."); }catch(e){ const c=(e&&e.code)||""; if(/popup-closed|cancelled/.test(c)) return; toast(/popup-blocked/.test(c)?"O navegador bloqueou a janela do Google. Libere pop-ups e tente de novo.":/unauthorized-domain/.test(c)?"Domínio não autorizado no Firebase.":"Não foi possível entrar ("+(c||"erro")+")"); } };
   const [tema,setTema]=useTema();
   const ler=()=>{ const h=(location.hash||"").slice(1); return TITULOS[h]?h:"painel"; };
   const [tab,setTab]=useState(ler);
@@ -1066,8 +1049,8 @@ function App(){
   const up=useCallback(fn=>{ if(!podeEditar){ const now=Date.now(); if(now-roT.current>2500){ roT.current=now; toast(modo==="nuvem"?"Modo leitura: entre como editor para alterar":"Sem permissão para editar"); } return; } store.update(fn); },[podeEditar,modo,store.update,toast]);
   useEffect(()=>{ document.body.classList.toggle("ro", !podeEditar && modo!=="conectando"); },[podeEditar,modo]);
   const acesso = modo==="nuvem" ? (user
-      ? html`<div class="lock"><span>Editor conectado</span><b>${user.email}</b><button class="btn sm ghost" onClick=${()=>{sair();toast("Você saiu. Modo leitura.")}}>Sair</button></div>`
-      : html`<button class="btn sm" onClick=${()=>setLogin(true)}>Entrar como editor</button>`) : null;
+      ? html`<div class="lock"><span>${sync==="leitura"?"Conta sem permissão de editor":"Editor conectado"}</span><b>${user.email}</b><button class="btn sm ghost" onClick=${()=>{sair();toast("Você saiu. Modo leitura.")}}>Sair</button></div>`
+      : html`<button class="btn sm" onClick=${doLogin}>Entrar com Google (editor)</button>`) : null;
   const [e,t,s]=TITULOS[tab];
   const brand=html`<div class="brand">${LOGO}<div><b>SCOUT<em>PRO</em></b><small>Análise & mercado</small></div></div>`;
   return html`<${EDIT.Provider} value=${podeEditar}><div class="shell">
@@ -1079,7 +1062,7 @@ function App(){
         <div class="themes" role="group" aria-label="Tema">${TEMAS.map(x=>html`<button key=${x.k} class=${tema===x.k?"on":""} aria-pressed=${tema===x.k} onClick=${()=>setTema(x.k)}><i style=${{background:x.c}}></i>${x.n}</button>`)}</div></div>
     </aside>
     <div style=${{minWidth:0}}>
-      <div class="mhead">${brand}<div style=${{display:"flex",gap:"6px",alignItems:"center"}}>${modo==="nuvem"?html`<button class="btn sm" onClick=${()=>user?(sair(),toast("Você saiu. Modo leitura.")):setLogin(true)}>${user?"Sair":"Editar"}</button>`:null}<select class="mtheme" id="tema-m" aria-label="Tema" value=${tema} onChange=${e=>setTema(e.target.value)}>${TEMAS.map(x=>html`<option key=${x.k} value=${x.k}>${x.n}</option>`)}</select></div></div>
+      <div class="mhead">${brand}<div style=${{display:"flex",gap:"6px",alignItems:"center"}}>${modo==="nuvem"?html`<button class="btn sm" onClick=${()=>user?(sair(),toast("Você saiu. Modo leitura.")):doLogin()}>${user?"Sair":"Editar"}</button>`:null}<select class="mtheme" id="tema-m" aria-label="Tema" value=${tema} onChange=${e=>setTema(e.target.value)}>${TEMAS.map(x=>html`<option key=${x.k} value=${x.k}>${x.n}</option>`)}</select></div></div>
       <main class="main">
         <div class="top"><div><div class="eyebrow">${e}</div><h1>${t}</h1><p class="sub">${s}</p></div></div>
         ${tab==="painel"?html`<${Painel} st=${st}/>`:null}
@@ -1091,7 +1074,6 @@ function App(){
       </main>
     </div>
     <nav class="mobile-tabs">${TABS.map(x=>html`<a key=${x.k} href=${"#"+x.k} class=${tab===x.k?"on":""}>${x.i}<span>${x.m||x.n}</span></a>`)}</nav>
-    ${login?html`<${Login} entrar=${entrar} onClose=${ok=>{ setLogin(false); if(ok) toast("Modo editor ativo"); }}/>`:null}
     ${msg?html`<div class="toast" role="status">${msg}</div>`:null}
   </div><//>`;
 }

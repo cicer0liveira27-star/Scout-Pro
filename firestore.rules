@@ -1,11 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Lista de editores: documento scoutpro_config/editores com o campo "emails" (array de e-mails).
-    // Edite essa lista só pelo console do Firebase.
+    // Editores: troque a lista pelos e-mails Google autorizados (a versão publicada fica no console do Firebase).
     function editor() {
-      return request.auth != null
-        && request.auth.token.email in get(/databases/$(database)/documents/scoutpro_config/editores).data.emails;
+      return request.auth != null && request.auth.token.email_verified == true
+        && request.auth.token.email in ['EMAIL_DO_EDITOR@gmail.com'];
     }
     // Dados do app: todos leem, só editores gravam.
     match /scoutpro/estado { allow read: if true; allow write: if editor(); }
