@@ -6,8 +6,7 @@ service cloud.firestore {
       return request.auth != null
         && request.auth.token.email in ['ciceroav@scoutpro.app', 'phsouzaleao@scoutpro.app'];
     }
-    match /scoutpro/estado { allow read, write: if editor(); }
-    match /scoutpro_privado/financeiro { allow read, write: if editor(); }
+    match /scoutpro_dados/{area} { allow read, write: if editor(); }
     match /{document=**} { allow read, write: if false; }
   }
 }
