@@ -302,6 +302,26 @@ select.cell{cursor:pointer}
 .card-am,.card-vm{width:12px;height:16px;border-radius:2px;display:inline-block}
 .card-am{background:var(--warn)}.card-vm{background:var(--bad)}
 .chip{white-space:nowrap}
+/* Celular: tabelas viram fichas com rótulo em cada campo */
+@media (max-width:760px){
+  .tablewrap{border:0;background:transparent;overflow:visible;border-radius:0}
+  .tablewrap table,.tablewrap tbody,.tablewrap tr,.tablewrap td{display:block;width:100%}
+  .tablewrap thead{display:none}
+  .tablewrap tr{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:12px;margin-bottom:10px}
+  .tablewrap tbody tr:hover td{background:transparent}
+  .tablewrap td{border:0;padding:0!important;display:flex;flex-direction:column;gap:4px;min-width:0;text-align:left!important}
+  .tablewrap td::before{content:attr(data-label);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-weight:600}
+  .tablewrap td[data-label=""]::before{display:none}
+  .tablewrap td.stbar{display:none}
+  .tablewrap td:has(.w-name),.tablewrap td:has(textarea),.tablewrap td:first-child:not(.stbar){grid-column:1/-1}
+  .tablewrap td:last-child:has(.x),.tablewrap td:last-child:has(.confirm){grid-column:1/-1;align-items:flex-end}
+  .tablewrap td:last-child:has(.x)::before{display:none}
+  .tablewrap .cell,.tablewrap select.cell,.tablewrap input.cell{width:100%!important;min-width:0!important;max-width:none!important;min-height:42px;font-size:16px!important;text-align:left}
+  .tablewrap td>div{width:100%}
+  .tablewrap .av{display:none}
+  .tablewrap td .num{font-size:16px}
+  .toolbar>.field,.toolbar>select{flex:1 1 140px}
+}
 .clubes{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:10px}
 .clube{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
 .clube b{font-size:13px;line-height:1.2}
@@ -440,7 +460,9 @@ const sum = a => a.reduce((s,x)=>s+(n(x)||0),0);
 const f1 = v => v===null||v===undefined ? "—" : v.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1});
 const f2 = v => v===null||v===undefined ? "—" : v.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
 const brl = v => (v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
-const idade = (j,ano) => n(j.nasc)!==null ? ano - n(j.nasc) : null;
+const nascOk = (v,ano=new Date().getFullYear()) => { const y=n(v); return y!=null && Number.isInteger(y) && y>=1940 && y<=ano; };
+const idade = (j,ano) => nascOk(j.nasc) ? ano - n(j.nasc) : null;
+const nascInvalidos = lista => lista.filter(j=>String(j.nasc??"").trim()!=="" && !nascOk(j.nasc));
 const iniciais = s => (s||"?").replace(/[^\p{L}\s]/gu,"").trim().split(/\s+/).map(w=>w[0]).slice(0,2).join("").toUpperCase()||"?";
 function pearson(xs,ys){ const m=xs.length; if(m<3) return null; const mx=avg(xs),my=avg(ys); let a=0,b=0,c=0; for(let i=0;i<m;i++){const dx=xs[i]-mx,dy=ys[i]-my;a+=dx*dy;b+=dx*dx;c+=dy*dy;} return b&&c? a/Math.sqrt(b*c):null; }
 function regress(xs,ys){ const mx=avg(xs),my=avg(ys); let a=0,b=0; xs.forEach((x,i)=>{a+=(x-mx)*(ys[i]-my);b+=(x-mx)**2}); const s=b?a/b:0; return {s, i:my-s*mx}; }
@@ -823,7 +845,7 @@ function Elenco({st,up,toast}){
         <td class="stbar"><i style=${{background:STATUS[j.status]?.c||"var(--line2)"}}></i></td>
         <td><div style=${{display:"flex",alignItems:"center",gap:"8px"}}><span class="av" style=${{borderColor:STATUS[j.status]?.c}}>${iniciais(j.nome)}</span><input class="cell w-name" id=${"nome-"+j.id} value=${j.nome} onInput=${e=>set(j.id,"nome",e.target.value)}/></div></td>
         <td><select class="cell" id=${"pos-"+j.id} value=${j.pos} onChange=${e=>set(j.id,"pos",e.target.value)}>${POS.map(p=>html`<option key=${p.k} value=${p.k}>${p.k}</option>`)}</select></td>
-        <td class="r">${numIn(j,"nasc",1,"60px")}</td>
+        <td class="r"><input class="cell n" id=${"nasc-"+j.id} inputmode="numeric" maxlength="4" style=${{width:"60px",...(String(j.nasc??"").trim()!==""&&!nascOk(j.nasc)?{borderColor:"var(--bad)",color:"var(--bad)"}:{})}} value=${j.nasc} onInput=${e=>set(j.id,"nasc",e.target.value.replace(/\D/g,"").slice(0,4))}/></td>
         <td class="r num">${idade(j,ano)??"—"}</td>
         <td class="r">${numIn(j,"alt",.01,"58px")}</td>
         <td><select class="cell" id=${"st-"+j.id} value=${j.status} onChange=${e=>set(j.id,"status",e.target.value)} style=${{color:STATUS[j.status]?.c,fontWeight:600}}>${Object.keys(STATUS).map(k=>html`<option key=${k}>${k}</option>`)}</select></td>
@@ -1333,6 +1355,7 @@ function Inicio({st,up,user,go}){
           <div class="mini"><span class="note">Disponíveis</span><b class="num">${disp.Liberado}</b></div>
           <div class="mini"><span class="note">Lesionados</span><b class="num">${lesionados}</b></div>
         </div>
+        ${nascInvalidos(at).length?html`<p class="note" style=${{color:"var(--bad)",margin:"10px 0 0"}}>Nascimento inválido: ${nascInvalidos(at).map(j=>j.nome).join(", ")}. <a href="#gestao-elenco" style=${{color:"var(--red-ink)"}}>Corrigir</a></p>`:null}
         <p class="eyebrow" style=${{color:"var(--mute)",margin:"14px 0 6px"}}>Faixas etárias</p>
         <div class="grid" style=${{gridTemplateColumns:"repeat(4,1fr)",gap:"6px"}}>${fx.map(([l,q])=>html`<div key=${l} class="mini c"><b class="num">${q}</b><span class="note">${l}</span></div>`)}</div>
       </div>
@@ -1847,6 +1870,7 @@ function GestaoElenco({st,up,toast}){
   const exp=st.elenco.filter(j=>{const s=situacaoContrato(j.contrato);return s.k.startsWith("Crítico")||s.k.startsWith("Atenção")||s.k==="Expirado";}).length;
   return html`<div class="grid" style=${{gap:"14px"}}>
     <div class="grid g-kpi"><${Kpi} l="Atletas no elenco" v=${st.elenco.length}/><${Kpi} l="Contratos expirando" v=${exp} d="menos de 6 meses ou vencidos"/><${Kpi} l="Folha mensal" v=${brl(folha)}/><${Kpi} l="Média salarial" v=${com.length?brl(folha/com.length):"—"}/><${Kpi} l="Base (sub-20)" v=${st.elenco.filter(j=>(idade(j,st.temporada)||99)<=20).length}/></div>
+    ${nascInvalidos(st.elenco).length?html`<div class="alert bad"><div><b>Ano de nascimento inválido</b><span>${nascInvalidos(st.elenco).map(j=>`${j.nome} (${j.nasc})`).join(", ")} · use o ano com 4 dígitos, ex.: 1993. Esses atletas ficam fora da média de idade até a correção.</span></div></div>`:null}
     <${Elenco} st=${st} up=${up} toast=${toast}/>
   </div>`;
 }
@@ -1991,6 +2015,12 @@ function App(){
   const toast=useCallback(t=>{ setMsg(t); clearTimeout(tm.current); tm.current=setTimeout(()=>setMsg(null),3200); },[]);
   useEffect(()=>{ const f=()=>{ setTab(ler()); setMenu(false); window.scrollTo(0,0); }; window.addEventListener("hashchange",f); return ()=>window.removeEventListener("hashchange",f); },[]);
   const go=k=>{ location.hash=k; };
+  useEffect(()=>{ // rótulos das colunas em cada célula (usados no layout de celular)
+    let t=null; const rotular=()=>{ document.querySelectorAll(".tablewrap table").forEach(tb=>{ const hs=[...tb.querySelectorAll("thead th")].map(th=>th.textContent.trim()); tb.querySelectorAll("tbody tr").forEach(tr=>[...tr.children].forEach((td,i)=>{ const l=hs[i]||""; if(td.getAttribute("data-label")!==l) td.setAttribute("data-label",l); })); }); };
+    const mo=new MutationObserver(()=>{ clearTimeout(t); t=setTimeout(rotular,60); });
+    mo.observe(document.getElementById("root"),{childList:true,subtree:true}); rotular();
+    return ()=>{ mo.disconnect(); clearTimeout(t); };
+  },[]);
   const roT=useRef(0);
   const up=useCallback(fn=>{ if(!podeEditar){ const now=Date.now(); if(now-roT.current>2500){ roT.current=now; toast("Sem permissão para editar"); } return; } store.update(fn); },[podeEditar,store.update,toast]);
   useEffect(()=>{ document.body.classList.toggle("ro", !podeEditar && modo!=="conectando"); },[podeEditar,modo]);
