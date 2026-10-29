@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
-<meta name="theme-color" content="#0e1012">
+<meta name="theme-color" content="#000000">
 <title>Scout Pro</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +40,26 @@
   --shadow:0 1px 2px rgba(20,23,26,.06), 0 6px 18px rgba(20,23,26,.05);
   color-scheme:light;
 }
+/* Temas escolhidos no app (classe no body, independente do tema do sistema) */
+body.t-dark{--bg:#0e1012;--panel:#16191c;--panel2:#1d2125;--line:#2a3036;--line2:#353c43;--fg:#eceef0;--mute:#8b939b;--faint:#5d656d;--red:#e3262c;--red-ink:#ff4a4f;--red-soft:rgba(227,38,44,.14);--good:#2fb36b;--warn:#e3a62b;--bad:#ff5a5f;--info:#5b95ff;--st-rem:#5b95ff;--st-con:#2fb36b;--st-base:#e3a62b;--st-emp:#e3262c;--shadow:0 1px 0 rgba(255,255,255,.03) inset,0 8px 24px rgba(0,0,0,.25);color-scheme:dark}
+body.t-light{--bg:#f2f3f4;--panel:#fff;--panel2:#f3f4f6;--line:#dfe2e6;--line2:#cfd4d9;--fg:#14171a;--mute:#59616a;--faint:#8c949c;--red:#cc151b;--red-ink:#c3121a;--red-soft:rgba(204,21,27,.09);--good:#1d8f52;--warn:#b77d0c;--bad:#d23338;--info:#2f6fe0;--st-rem:#2f6fe0;--st-con:#1d8f52;--st-base:#b77d0c;--st-emp:#cc151b;--shadow:0 1px 2px rgba(20,23,26,.06),0 6px 18px rgba(20,23,26,.05);color-scheme:light}
+body.t-black{--bg:#000;--panel:#000;--panel2:#0c0c0c;--line:#1c1c1c;--line2:#2a2a2a;--fg:#f4f4f4;--mute:#8c8c8c;--faint:#555;--red:#e3262c;--red-ink:#ff4d52;--red-soft:rgba(227,38,44,.15);--good:#3cc47a;--warn:#e8b13a;--bad:#ff5a5f;--info:#6ea2ff;--st-rem:#6ea2ff;--st-con:#3cc47a;--st-base:#e8b13a;--st-emp:#e3262c;--shadow:none;color-scheme:dark}
+body.t-black .card,body.t-black .tablewrap,body.t-black .posbox{border-color:#1f1f1f}
+body.t-black th{background:#080808}
+.themes{display:inline-flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden;width:100%}
+.themes button{flex:1;border:0;background:transparent;padding:6px 4px;font-size:11px;cursor:pointer;color:var(--mute);display:inline-flex;align-items:center;justify-content:center;gap:5px}
+.themes button i{width:9px;height:9px;border-radius:50%;border:1px solid var(--line2)}
+.themes button.on{background:var(--panel2);color:var(--fg);font-weight:600}
+body.ro .money,body.ro .ro-hide{display:none!important}
+body.ro .cell{pointer-events:none}
+body.ro select.cell{appearance:none;-webkit-appearance:none}
+.lock{display:flex;flex-direction:column;gap:6px;font-size:12px}
+.lock b{font-weight:600;color:var(--fg);word-break:break-all}
+.modal{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:16px}
+.modal form{background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:20px;width:min(380px,100%);display:flex;flex-direction:column;gap:12px}
+.modal label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mute)}
+.err{color:var(--bad);font-size:12px}
+.mtheme{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:5px 6px;font-size:12px}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:14px;line-height:1.45}
@@ -74,7 +94,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 .sync{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--mute)}
 .sync i{width:8px;height:8px;border-radius:50%;background:var(--faint);flex:none}
-.sync.online i{background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent);animation:pulse 2s infinite}
+.sync.online i,.sync.nuvem i{background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent);animation:pulse 2s infinite}
 .sync.salvando i{background:var(--warn)}
 .sync.erro i{background:var(--bad)}
 @keyframes pulse{50%{box-shadow:0 0 0 6px transparent}}
@@ -199,6 +219,7 @@ select.cell{cursor:pointer}
 </style>
 
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script src="firebase-config.js"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -250,6 +271,7 @@ const FICA_2027 = new Set(["Manter","Renovar"]);
 const ALVO_ST = ["Monitorando","Em negociação","Fechado","Descartado"];
 const ALVO_COR = {"Monitorando":"var(--mute)","Em negociação":"var(--warn)","Fechado":"var(--good)","Descartado":"var(--faint)"};
 
+const EDIT = React.createContext(true);
 let _id = 0; const uid = p => (p||"id") + Date.now().toString(36) + (_id++).toString(36);
 const P = (nome,pos,nasc,alt,status) => ({id:uid("j"),nome,pos,nasc,alt,status,aproveitado:status!=="Emprestado",salario:"",contrato:"",minutos:"",jogos:"",gols:"",assist:"",nota:"",obs:""});
 
@@ -341,36 +363,89 @@ function lerLocal(){ try{ const s=localStorage.getItem(LS_KEY); return s?JSON.pa
 function gravarLocal(s){ try{ localStorage.setItem(LS_KEY, JSON.stringify(s)); }catch(e){} }
 function migrar(s){ const d=padrao(); if(!s||typeof s!=="object") return d; return {...d, ...s, bench:Array.isArray(s.bench)?s.bench:d.bench, elenco:Array.isArray(s.elenco)?s.elenco:d.elenco, alvos:Array.isArray(s.alvos)?s.alvos:[], comissao:Array.isArray(s.comissao)?s.comissao:[], decisoes:s.decisoes||{}}; }
 
+const FBV = "https://www.gstatic.com/firebasejs/10.12.2/";
+// Na nuvem pública, valores financeiros ficam num documento separado que só editores leem.
+function separar(s){
+  const sal={};
+  const tira=arr=>(arr||[]).map(x=>{ if(x.salario!==""&&x.salario!=null) sal[x.id]=x.salario; return {...x,salario:""}; });
+  return { pub:{...s, elenco:tira(s.elenco), comissao:tira(s.comissao), alvos:tira(s.alvos), orc2026:"", orc2027:""},
+           priv:{sal, orc2026:s.orc2026||"", orc2027:s.orc2027||""} };
+}
+function juntar(pub,priv){
+  if(!priv) return pub;
+  const f=arr=>(arr||[]).map(x=>({...x, salario: priv.sal&&priv.sal[x.id]!=null ? priv.sal[x.id] : x.salario}));
+  return {...pub, elenco:f(pub.elenco), comissao:f(pub.comissao), alvos:f(pub.alvos), orc2026:priv.orc2026||"", orc2027:priv.orc2027||""};
+}
+const comTempo = (p,ms) => Promise.race([p, new Promise((_,rej)=>setTimeout(()=>rej(new Error("tempo")),ms))]);
 function useStore(){
   const [state,setState] = useState(()=>migrar(lerLocal()));
   const [sync,setSync] = useState("conectando");
-  const db = useRef(null), pend = useRef(null), writing = useRef(false), timer = useRef(null);
+  const [modo,setModo] = useState("conectando"); // nuvem | claude | local
+  const [user,setUser] = useState(null);
+  const fb = useRef(null), writer = useRef(null), pend = useRef(null), writing = useRef(false), timer = useRef(null);
   const cid = useRef(Math.random().toString(36).slice(2));
   const flush = useRef(null);
   flush.current = async () => {
-    if(writing.current || !pend.current || !db.current) return;
+    if(writing.current || !pend.current || !writer.current) return;
     const s = pend.current; pend.current = null; writing.current = true; setSync("salvando");
-    try{ await db.current.doc("scout/estado").set({json:JSON.stringify(s), by:cid.current, at:new Date().toISOString()}); setSync("online"); }
-    catch(e){ setSync(e && /grant|writer|denied|permission/i.test(e.code||"") ? "leitura" : "erro"); }
+    try{ await writer.current(s); setSync("online"); }
+    catch(e){ setSync(/grant|writer|denied|permission/i.test((e&&(e.code||e.message))||"") ? "leitura" : "erro"); }
     writing.current = false;
     if(pend.current) flush.current();
   };
   useEffect(()=>{
     let alive = true, unsub = null;
+    const meta = () => ({by:cid.current, at:new Date().toISOString()});
+    const receber = data => {
+      if(!data || data.by===cid.current){ setSync("online"); return; }
+      if(pend.current || writing.current) return;
+      try{ const s = migrar(JSON.parse(data.json)); setState(s); gravarLocal(s); }catch(e){}
+      setSync("online");
+    };
     (async()=>{
+      const cfg = window.SCOUTPRO_FIREBASE;
+      if(cfg && cfg.apiKey && cfg.projectId){
+        try{
+          const [appM,authM,fsM] = await comTempo(Promise.all([import(FBV+"firebase-app.js"),import(FBV+"firebase-auth.js"),import(FBV+"firebase-firestore.js")]), 10000);
+          if(!alive) return;
+          const app = appM.initializeApp(cfg), db = fsM.getFirestore(app), auth = authM.getAuth(app);
+          fb.current = {authM, auth};
+          const pubRef = fsM.doc(db, "scoutpro", "estado"), privRef = fsM.doc(db, "scoutpro_privado", "financeiro");
+          let lastPub = null, lastPriv = null, unsubPriv = null;
+          const aplicar = () => { if(!lastPub) return; const s = migrar(juntar(lastPub, lastPriv)); setState(s); gravarLocal(s); };
+          writer.current = async st => {
+            const {pub, priv} = separar(st); const m = meta();
+            lastPub = pub; lastPriv = priv;
+            await fsM.setDoc(pubRef, {json:JSON.stringify(pub), ...m});
+            await fsM.setDoc(privRef, {json:JSON.stringify(priv), ...m});
+          };
+          const ouvir = (snap, qual) => {
+            if(!snap.exists()){ setSync("online"); return; }
+            const d = snap.data(); if(d.by===cid.current){ setSync("online"); return; }
+            if(pend.current || writing.current) return;
+            try{ const v = JSON.parse(d.json); if(qual==="pub") lastPub = v; else lastPriv = v; aplicar(); }catch(e){}
+            setSync("online");
+          };
+          authM.onAuthStateChanged(auth, u => {
+            setUser(u ? {email:u.email} : null);
+            if(unsubPriv){ unsubPriv(); unsubPriv = null; }
+            if(u){ unsubPriv = fsM.onSnapshot(privRef, sn => ouvir(sn,"priv"), () => {}); }
+            else { lastPriv = null; aplicar(); }
+          });
+          setModo("nuvem");
+          const u1 = fsM.onSnapshot(pubRef, sn => ouvir(sn,"pub"), () => setSync("erro"));
+          unsub = () => { u1(); if(unsubPriv) unsubPriv(); };
+          return;
+        }catch(e){ console.warn("Firebase indisponível, seguindo sem nuvem", e); }
+      }
       let d = null;
       try{ d = window.claude && window.claude.use ? await window.claude.use("db") : null; }catch(e){ d = null; }
       if(!alive) return;
-      if(!d){ setSync("local"); return; }
-      db.current = d;
-      unsub = d.doc("scout/estado").onSnapshot(snap=>{
-        if(!snap.exists){ setSync("online"); return; }
-        const data = snap.data();
-        if(!data || data.by===cid.current){ setSync("online"); return; }
-        if(pend.current || writing.current) return;
-        try{ const s = migrar(JSON.parse(data.json)); setState(s); gravarLocal(s); }catch(e){}
-        setSync("online");
-      }, ()=>setSync("erro"));
+      if(!d){ setModo("local"); setSync("local"); return; }
+      const ref = d.doc("scout/estado");
+      writer.current = st => ref.set({json:JSON.stringify(st), ...meta()});
+      setModo("claude");
+      unsub = ref.onSnapshot(snap => receber(snap.exists ? snap.data() : null), () => setSync("erro"));
     })();
     return ()=>{ alive=false; if(unsub) unsub(); };
   },[]);
@@ -378,11 +453,31 @@ function useStore(){
     setState(prev=>{
       const next = typeof fn==="function" ? fn(prev) : fn;
       gravarLocal(next);
-      if(db.current){ pend.current = next; clearTimeout(timer.current); timer.current = setTimeout(()=>flush.current(), 600); }
+      if(writer.current){ pend.current = next; clearTimeout(timer.current); timer.current = setTimeout(()=>flush.current(), 600); }
       return next;
     });
   },[]);
-  return [state, update, sync];
+  const entrar = async (email, senha) => { const f=fb.current; if(!f) throw new Error("sem nuvem"); await f.authM.signInWithEmailAndPassword(f.auth, email, senha); };
+  const sair = async () => { const f=fb.current; if(f) await f.authM.signOut(f.auth); };
+  const podeEditar = modo==="nuvem" ? !!user : (modo!=="conectando" && sync!=="leitura");
+  return {state, update, sync, modo, user, entrar, sair, podeEditar};
+}
+
+function Login({onClose,entrar}){
+  const [email,setEmail]=useState(""); const [senha,setSenha]=useState(""); const [erro,setErro]=useState(""); const [busy,setBusy]=useState(false);
+  const enviar=async e=>{ e.preventDefault(); setBusy(true); setErro("");
+    try{ await entrar(email.trim(),senha); onClose(true); }
+    catch(err){ const c=(err&&err.code)||""; setErro(/invalid|wrong|not-found|credential/.test(c)?"E-mail ou senha incorretos.":/too-many/.test(c)?"Muitas tentativas. Aguarde alguns minutos.":/network/.test(c)?"Sem conexão com o banco.":"Não foi possível entrar ("+(c||"erro")+")."); }
+    setBusy(false); };
+  return html`<div class="modal" onClick=${e=>{ if(e.target===e.currentTarget) onClose(false); }}>
+    <form onSubmit=${enviar}>
+      <h2>Entrar como editor</h2>
+      <p class="note" style=${{margin:0}}>Visitantes veem o app em modo leitura. Editores alteram os dados de todos em tempo real.</p>
+      <label>E-mail<input class="field" id="login-email" type="email" autocomplete="username" required value=${email} onInput=${e=>setEmail(e.target.value)}/></label>
+      <label>Senha<input class="field" id="login-senha" type="password" autocomplete="current-password" required value=${senha} onInput=${e=>setSenha(e.target.value)}/></label>
+      ${erro?html`<div class="err">${erro}</div>`:null}
+      <div class="actions"><button class="btn primary" type="submit" disabled=${busy}>${busy?"Entrando…":"Entrar"}</button><button class="btn ghost" type="button" onClick=${()=>onClose(false)}>Cancelar</button></div>
+    </form></div>`;
 }
 
 /* ---------- Ícones ---------- */
@@ -410,10 +505,10 @@ const TABS = [
 /* ---------- Componentes base ---------- */
 function Badge({txt,cor}){ return html`<span class="badge" style=${{color:cor, background:`color-mix(in srgb, ${cor} 14%, transparent)`}}>${txt}</span>`; }
 function SyncPill({s}){
-  const t = {conectando:"Conectando…", online:"Ao vivo · equipe sincronizada", salvando:"Salvando…", local:"Modo local · este navegador", erro:"Falha ao sincronizar", leitura:"Somente leitura"}[s]||s;
+  const t = {conectando:"Conectando…", online:"Ao vivo · equipe sincronizada", nuvem:"Ao vivo · banco na nuvem", salvando:"Salvando…", local:"Modo local · este navegador", erro:"Falha ao sincronizar", leitura:"Somente leitura"}[s]||s;
   return html`<span class=${"sync "+s}><i></i>${t}</span>`;
 }
-function Kpi({l,v,u,d}){ return html`<div class="card kpi"><span class="l">${l}</span><span class="v num">${v}${u?html`<small>${u}</small>`:null}</span>${d?html`<span class="d">${d}</span>`:null}</div>`; }
+function Kpi({l,v,u,d,cls}){ return html`<div class=${"card kpi "+(cls||"")}><span class="l">${l}</span><span class="v num">${v}${u?html`<small>${u}</small>`:null}</span>${d?html`<span class="d">${d}</span>`:null}</div>`; }
 function Delta({a,b,inv,suf=""}){
   if(a===null||b===null) return html`<b>—</b>`;
   const d=a-b, ok = inv ? d<=0 : d>=0;
@@ -520,7 +615,7 @@ function Painel({st}){
       <${Kpi} l="Atletas aproveitados" v=${aprov.length} d=${html`de ${st.elenco.length} no elenco · média acesso <b>${f1(benchUsados)}</b> utilizados`}/>
       <${Kpi} l="Idade média" v=${f1(idadeMed)} u="anos" d=${html`<${Delta} a=${idadeMed} b=${benchIdade} inv=${true}/> vs ${f1(benchIdade)} dos acessos`}/>
       <${Kpi} l="Altura média" v=${f2(altMed)} u="m" d="atletas aproveitados"/>
-      <${Kpi} l="Folha mensal" v=${folha?brl(folha):"—"} d=${folha? html`atletas ${brl(folhaAtl)} · comissão ${brl(folhaCom)}` : "preencha salários no Elenco e na Comissão"}/>
+      <${Kpi} cls="money" l="Folha mensal" v=${folha?brl(folha):"—"} d=${folha? html`atletas ${brl(folhaAtl)} · comissão ${brl(folhaCom)}` : "preencha salários no Elenco e na Comissão"}/>
       <${Kpi} l="Núcleo (+50% min.)" v=${temMin?titulares:"—"} d=${html`acessos: <b>${f1(BENCH_NUCLEO.tit)}</b> titulares + ${f1(BENCH_NUCLEO.rot)} em rotação${temMin?` · SC ${rotacao} em rotação`:""}`}/>
       <${Kpi} l="Comissão técnica" v=${st.comissao.length||"—"} d=${st.comissao.length?(st.comissao.find(c=>c.funcao==="Técnico")?.nome ? "Técnico: "+st.comissao.find(c=>c.funcao==="Técnico").nome : "técnico não cadastrado") : html`<a href="#comissao" style=${{color:"var(--red-ink)"}}>Cadastrar profissionais</a>`}/>
       <${Kpi} l="Gols do elenco" v=${gols||"—"} d="soma dos gols lançados"/>
@@ -560,8 +655,10 @@ function Painel({st}){
 
 /* ---------- Elenco ---------- */
 function Del({onYes}){
+  const ed=React.useContext(EDIT);
   const [c,setC]=useState(false);
   useEffect(()=>{ if(!c) return; const t=setTimeout(()=>setC(false),3500); return ()=>clearTimeout(t); },[c]);
+  if(!ed) return null;
   return c ? html`<span class="confirm"><button class="btn sm primary" onClick=${onYes}>Remover</button><button class="btn sm ghost" onClick=${()=>setC(false)}>Não</button></span>`
            : html`<button class="x" title="Remover" aria-label="Remover" onClick=${()=>setC(true)}>${I.trash}</button>`;
 }
@@ -583,11 +680,11 @@ function Elenco({st,up,toast}){
       <select class="field" id="f-pos" style=${{width:"auto"}} value=${fp} onChange=${e=>setFp(e.target.value)}><option value="">Todas as posições</option>${POS.map(p=>html`<option key=${p.k} value=${p.k}>${p.s}</option>`)}</select>
       <select class="field" id="f-st" style=${{width:"auto"}} value=${fs} onChange=${e=>setFs(e.target.value)}><option value="">Todos os vínculos</option>${Object.keys(STATUS).map(k=>html`<option key=${k}>${k}</option>`)}</select>
       <div class="seg" role="tablist"><button class=${vis==="tabela"?"on":""} onClick=${()=>setVis("tabela")}>Tabela</button><button class=${vis==="posicao"?"on":""} onClick=${()=>setVis("posicao")}>Por posição</button></div>
-      <button class="btn primary" onClick=${add}>${I.plus}Atleta</button>
+      <button class="btn primary ro-hide" onClick=${add}>${I.plus}Atleta</button>
     </div>
 
     ${vis==="tabela" ? html`<div class="tablewrap"><table>
-      <thead><tr><th class="stbar"></th><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade</th><th class="r">Altura</th><th>Vínculo</th><th>Aprov.</th><th class="r">Salário (R$)</th><th class="r">Contrato até</th><th class="r">% Min</th><th class="r">J</th><th class="r">G</th><th class="r">A</th><th class="r">Nota</th><th></th></tr></thead>
+      <thead><tr><th class="stbar"></th><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade</th><th class="r">Altura</th><th>Vínculo</th><th>Aprov.</th><th class="r money">Salário (R$)</th><th class="r">Contrato até</th><th class="r">% Min</th><th class="r">J</th><th class="r">G</th><th class="r">A</th><th class="r">Nota</th><th></th></tr></thead>
       <tbody>${lista.map(j=>html`<tr key=${j.id} class=${j.aproveitado?"":"dim-row"}>
         <td class="stbar"><i style=${{background:STATUS[j.status]?.c||"var(--line2)"}}></i></td>
         <td><div style=${{display:"flex",alignItems:"center",gap:"8px"}}><span class="av" style=${{borderColor:STATUS[j.status]?.c}}>${iniciais(j.nome)}</span><input class="cell w-name" id=${"nome-"+j.id} value=${j.nome} onInput=${e=>set(j.id,"nome",e.target.value)}/></div></td>
@@ -597,7 +694,7 @@ function Elenco({st,up,toast}){
         <td class="r">${numIn(j,"alt",.01,"58px")}</td>
         <td><select class="cell" id=${"st-"+j.id} value=${j.status} onChange=${e=>set(j.id,"status",e.target.value)} style=${{color:STATUS[j.status]?.c,fontWeight:600}}>${Object.keys(STATUS).map(k=>html`<option key=${k}>${k}</option>`)}</select></td>
         <td style=${{textAlign:"center"}}><input type="checkbox" id=${"ap-"+j.id} checked=${!!j.aproveitado} onChange=${e=>set(j.id,"aproveitado",e.target.checked)} style=${{accentColor:"var(--red)",width:"16px",height:"16px"}}/></td>
-        <td class="r">${numIn(j,"salario",1,"92px")}</td>
+        <td class="r money">${numIn(j,"salario",1,"92px")}</td>
         <td class="r">${numIn(j,"contrato",1,"64px")}</td>
         <td class="r">${numIn(j,"minutos",1,"52px")}</td>
         <td class="r">${numIn(j,"jogos",1,"42px")}</td>
@@ -637,7 +734,7 @@ function Comissao({st,up,toast}){
   return html`<div class="grid" style=${{gap:"16px"}}>
     <div class="grid g-kpi">
       <${Kpi} l="Profissionais" v=${st.comissao.length} d=${areas.filter(x=>x.q).map(x=>x.q+" "+x.a.toLowerCase()).join(" · ")||"nenhum cadastrado"}/>
-      <${Kpi} l="Folha da comissão" v=${folha?brl(folha):"—"} d="soma mensal dos salários"/>
+      <${Kpi} cls="money" l="Folha da comissão" v=${folha?brl(folha):"—"} d="soma mensal dos salários"/>
       <${Kpi} l="Funções essenciais" v=${ESSENCIAIS.length-faltam.length} u=${"/"+ESSENCIAIS.length} d=${faltam.length?"faltam "+faltam.length:"todas cobertas"}/>
       <${Kpi} l="Contratos até ${ano}" v=${vencem.length} d=${vencem.length?vencem.map(c=>c.nome||c.funcao).join(", "):"nenhum vencendo"}/>
     </div>
@@ -646,12 +743,12 @@ function Comissao({st,up,toast}){
       <div style=${{display:"flex",flexWrap:"wrap",gap:"8px"}}>${ESSENCIAIS.map(f=>html`<span key=${f} class="badge" style=${{color:tem.has(f)?"var(--good)":"var(--bad)",background:`color-mix(in srgb, ${tem.has(f)?"var(--good)":"var(--bad)"} 13%, transparent)`,fontSize:"12px",padding:"4px 10px"}}>${f}</span>`)}</div>
     </div>
     <div class="toolbar" style=${{marginBottom:0}}>
-      <select class="field" id="nova-funcao" style=${{width:"auto"}} value=${fun} onChange=${e=>setFun(e.target.value)}>${FUNCOES.map(f=>html`<option key=${f}>${f}</option>`)}</select>
-      <button class="btn primary" onClick=${add}>${I.plus}Adicionar profissional</button>
+      <select class="field ro-hide" id="nova-funcao" style=${{width:"auto"}} value=${fun} onChange=${e=>setFun(e.target.value)}>${FUNCOES.map(f=>html`<option key=${f}>${f}</option>`)}</select>
+      <button class="btn primary ro-hide" onClick=${add}>${I.plus}Adicionar profissional</button>
       <span class="note">Nome, contrato, salário e situação 2027 editáveis direto na tabela.</span>
     </div>
     ${lista.length? html`<div class="tablewrap"><table>
-      <thead><tr><th>Profissional</th><th>Função</th><th>Área</th><th class="r">Nasc.</th><th class="r">Idade</th><th class="r">Desde</th><th class="r">Contrato até</th><th class="r">Salário (R$)</th><th>Situação 2027</th><th>Observação</th><th></th></tr></thead>
+      <thead><tr><th>Profissional</th><th>Função</th><th>Área</th><th class="r">Nasc.</th><th class="r">Idade</th><th class="r">Desde</th><th class="r">Contrato até</th><th class="r money">Salário (R$)</th><th>Situação 2027</th><th>Observação</th><th></th></tr></thead>
       <tbody>${lista.map(c=>html`<tr key=${c.id}>
         <td><div style=${{display:"flex",alignItems:"center",gap:"8px"}}><span class="av">${iniciais(c.nome||c.funcao)}</span><input class="cell w-name" id=${"cn-"+c.id} placeholder="Nome" value=${c.nome} onInput=${e=>set(c.id,"nome",e.target.value)}/></div></td>
         <td><select class="cell" id=${"cf-"+c.id} style=${{minWidth:"150px"}} value=${c.funcao} onChange=${e=>set(c.id,"funcao",e.target.value)}>${FUNCOES.map(f=>html`<option key=${f}>${f}</option>`)}</select></td>
@@ -660,7 +757,7 @@ function Comissao({st,up,toast}){
         <td class="r num">${idade(c,ano)??"—"}</td>
         <td class="r"><input class="cell n" id=${"cd-"+c.id} style=${{width:"60px"}} value=${c.desde} onInput=${e=>set(c.id,"desde",e.target.value)}/></td>
         <td class="r"><input class="cell n" id=${"cc-"+c.id} style=${{width:"64px"}} value=${c.contrato} onInput=${e=>set(c.id,"contrato",e.target.value)}/></td>
-        <td class="r"><input class="cell n" id=${"cs-"+c.id} style=${{width:"92px"}} value=${c.salario} onInput=${e=>set(c.id,"salario",e.target.value)}/></td>
+        <td class="r money"><input class="cell n" id=${"cs-"+c.id} style=${{width:"92px"}} value=${c.salario} onInput=${e=>set(c.id,"salario",e.target.value)}/></td>
         <td><select class="cell" id=${"c27-"+c.id} value=${c.sit2027} onChange=${e=>set(c.id,"sit2027",e.target.value)} style=${{color:DEC_COR[c.sit2027],fontWeight:600}}>${SIT_COM.map(x=>html`<option key=${x}>${x}</option>`)}</select></td>
         <td><input class="cell" id=${"co-"+c.id} style=${{minWidth:"160px"}} value=${c.obs} onInput=${e=>set(c.id,"obs",e.target.value)}/></td>
         <td><${Del} onYes=${()=>del(c.id)}/></td>
@@ -734,6 +831,7 @@ const PARES = [
 ];
 
 function Benchmark({st,up,toast}){
+  const edB=React.useContext(EDIT);
   const [par,setPar]=useState("gf"); const [fa,setFa]=useState("");
   const pr=PARES.find(p=>p.k===par);
   const bench=st.bench.filter(t=>!fa||String(t.ano)===fa);
@@ -771,7 +869,7 @@ function Benchmark({st,up,toast}){
     <div class="tablewrap"><table>
       <thead><tr><th>Clube</th><th class="r">Ano</th>${cols.map(([k,l])=>html`<th class="r" key=${k}>${l}</th>`)}<th class="r">Aprov.</th></tr></thead>
       <tbody>${bench.map(t=>html`<tr key=${t.id}>
-        <td><div style=${{display:"flex",gap:"8px",alignItems:"center"}}><${ClubMark} t=${t} onSet=${setEsc(t)}/><span style=${{fontWeight:600,whiteSpace:"nowrap"}}>${t.nome}</span>${t.escudo?html`<button class="x" title="Remover escudo" aria-label="Remover escudo" onClick=${()=>up(s=>({...s,bench:s.bench.map(b=>b.nome===t.nome?{...b,escudo:""}:b)}))}>×</button>`:null}</div></td>
+        <td><div style=${{display:"flex",gap:"8px",alignItems:"center"}}><${ClubMark} t=${t} onSet=${edB?setEsc(t):null}/><span style=${{fontWeight:600,whiteSpace:"nowrap"}}>${t.nome}</span>${t.escudo?html`<button class="x ro-hide" title="Remover escudo" aria-label="Remover escudo" onClick=${()=>up(s=>({...s,bench:s.bench.map(b=>b.nome===t.nome?{...b,escudo:""}:b)}))}>×</button>`:null}</div></td>
         <td class="r num">${t.ano}</td>
         ${cols.map(([k])=>html`<td class="r" key=${k}><input class="cell n" id=${"b-"+k+"-"+t.id} style=${{width:"54px"}} value=${t[k]} onInput=${e=>set(t.id,k,e.target.value)}/></td>`)}
         <td class="r num">${n(t.p30)&&n(t.total)?f1(n(t.p30)/n(t.total)*100)+"%":"—"}</td>
@@ -813,17 +911,17 @@ function Plano({st,up,toast}){
       <${Kpi} l="Elenco projetado" v=${proj.length} d=${html`${ficam.length} ficam · ${chegam.length} chegam · ${abertos.length} em avaliação`}/>
       <${Kpi} l="Idade em 2027" v=${f1(idadeProj)} u="anos" d=${html`<${Delta} a=${idadeProj} b=${benchIdade} inv=${true}/> vs perfil de acesso`}/>
       <${Kpi} l="Vagas a preencher" v=${totalFalta} d="para a profundidade média dos acessos"/>
-      <${Kpi} l="Folha projetada" v=${folha?brl(folha):"—"} d=${html`${orc?html`<span class=${folha>orc?"up":"ok"}>${Math.round(folha/orc*100)}%</span> do teto · `:""}inclui ${comFica.length} da comissão`}/>
+      <${Kpi} cls="money" l="Folha projetada" v=${folha?brl(folha):"—"} d=${html`${orc?html`<span class=${folha>orc?"up":"ok"}>${Math.round(folha/orc*100)}%</span> do teto · `:""}inclui ${comFica.length} da comissão`}/>
     </div>
 
     <div class="card">
       <div class="card-h"><div><h2>Parâmetros 2027</h2><p>Mudam a projeção na hora</p></div></div>
       <div class="grid" style=${{gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))"}}>
         <label><span class="note">Competição</span><select class="field" id="comp2027" value=${st.comp2027} onChange=${e=>up(s=>({...s,comp2027:e.target.value}))}>${["Série C","Série B"].map(c=>html`<option key=${c}>${c}</option>`)}</select></label>
-        <label><span class="note">Teto da folha mensal (R$)</span><input class="field num" id="orc2027" inputmode="decimal" value=${st.orc2027} onInput=${e=>up(s=>({...s,orc2027:e.target.value}))} placeholder="ex.: 1500000"/></label>
+        <label class="money"><span class="note">Teto da folha mensal (R$)</span><input class="field num" id="orc2027" inputmode="decimal" value=${st.orc2027} onInput=${e=>up(s=>({...s,orc2027:e.target.value}))} placeholder="ex.: 1500000"/></label>
         <label style=${{display:"flex",alignItems:"center",gap:"8px",paddingTop:"18px"}}><input type="checkbox" id="incneg" checked=${!!st.incluirNeg} onChange=${e=>up(s=>({...s,incluirNeg:e.target.checked}))} style=${{accentColor:"var(--red)",width:"16px",height:"16px"}}/><span>Contar negociações na projeção</span></label>
       </div>
-      ${orc?html`<div style=${{marginTop:"14px"}}><div class=${"bar"+(folha>orc?" over":"")}><i style=${{width:Math.min(100,folha/orc*100)+"%"}}></i></div><p class="note">${brl(folha)} de ${brl(orc)} · saldo ${brl(orc-folha)}</p></div>`:null}
+      ${orc?html`<div class="money" style=${{marginTop:"14px"}}><div class=${"bar"+(folha>orc?" over":"")}><i style=${{width:Math.min(100,folha/orc*100)+"%"}}></i></div><p class="note">${brl(folha)} de ${brl(orc)} · saldo ${brl(orc-folha)}</p></div>`:null}
       ${st.comp2027==="Série B"?html`<p class="note" style=${{marginTop:"8px"}}>As referências de profundidade e idade vêm do estudo da Série C; para a Série B, use-as como piso.</p>`:null}
     </div>
 
@@ -833,22 +931,22 @@ function Plano({st,up,toast}){
         ${necessidades.map(x=>html`<div class="need" key=${x.p.k} style=${{borderLeft:`3px solid ${x.falta?"var(--bad)":"var(--good)"}`}}>
           <span class="big" style=${{color:x.falta?"var(--red-ink)":"var(--good)"}}>${x.falta?"+"+x.falta:"OK"}</span>
           <div style=${{minWidth:0,flex:1}}><b>${x.p.n}</b><div class="note num">${x.tem}/${x.alvo} · ${f1(x.idade)} anos (ref. ${f1(BENCH_IDADE[x.p.k])}) · ${x.mon} alvo(s)</div></div>
-          ${x.falta?html`<button class="btn sm" onClick=${()=>addA(x.p.k)} title=${"Novo alvo: "+x.p.s}>${I.plus}</button>`:null}
+          ${x.falta?html`<button class="btn sm ro-hide" onClick=${()=>addA(x.p.k)} title=${"Novo alvo: "+x.p.s}>${I.plus}</button>`:null}
         </div>`)}
       </div>
     </div>
 
     <div class="card">
-      <div class="card-h"><div><h2>Mercado · alvos</h2><p>Atletas monitorados para 2027. “Fechado” entra na projeção.</p></div><button class="btn primary" onClick=${()=>addA()}>${I.plus}Alvo</button></div>
+      <div class="card-h"><div><h2>Mercado · alvos</h2><p>Atletas monitorados para 2027. “Fechado” entra na projeção.</p></div><button class="btn primary ro-hide" onClick=${()=>addA()}>${I.plus}Alvo</button></div>
       ${st.alvos.length? html`<div class="tablewrap"><table>
-        <thead><tr><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade 27</th><th>Clube atual</th><th class="r">Salário (R$)</th><th>Prioridade</th><th>Situação</th><th>Observação</th><th></th></tr></thead>
+        <thead><tr><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade 27</th><th>Clube atual</th><th class="r money">Salário (R$)</th><th>Prioridade</th><th>Situação</th><th>Observação</th><th></th></tr></thead>
         <tbody>${st.alvos.map(a=>html`<tr key=${a.id}>
           <td><input class="cell w-name" id=${"an-"+a.id} placeholder="Nome do atleta" value=${a.nome} onInput=${e=>setA(a.id,"nome",e.target.value)}/></td>
           <td><select class="cell" id=${"ap-"+a.id} value=${a.pos} onChange=${e=>setA(a.id,"pos",e.target.value)}>${POS.map(p=>html`<option key=${p.k} value=${p.k}>${p.k}</option>`)}</select></td>
           <td class="r"><input class="cell n" id=${"anas-"+a.id} style=${{width:"60px"}} value=${a.nasc} onInput=${e=>setA(a.id,"nasc",e.target.value)}/></td>
           <td class="r num">${idade(a,ano)??"—"}</td>
           <td><input class="cell" id=${"ac-"+a.id} style=${{minWidth:"110px"}} value=${a.clube} onInput=${e=>setA(a.id,"clube",e.target.value)}/></td>
-          <td class="r"><input class="cell n" id=${"as-"+a.id} style=${{width:"92px"}} value=${a.salario} onInput=${e=>setA(a.id,"salario",e.target.value)}/></td>
+          <td class="r money"><input class="cell n" id=${"as-"+a.id} style=${{width:"92px"}} value=${a.salario} onInput=${e=>setA(a.id,"salario",e.target.value)}/></td>
           <td><select class="cell" id=${"apr-"+a.id} value=${a.prioridade} onChange=${e=>setA(a.id,"prioridade",e.target.value)}>${["Alta","Média","Baixa"].map(x=>html`<option key=${x}>${x}</option>`)}</select></td>
           <td><select class="cell" id=${"ast-"+a.id} value=${a.status} onChange=${e=>setA(a.id,"status",e.target.value)} style=${{color:ALVO_COR[a.status],fontWeight:600}}>${ALVO_ST.map(x=>html`<option key=${x}>${x}</option>`)}</select></td>
           <td><input class="cell" id=${"ao-"+a.id} style=${{minWidth:"160px"}} value=${a.obs} onInput=${e=>setA(a.id,"obs",e.target.value)}/></td>
@@ -875,7 +973,13 @@ function Plano({st,up,toast}){
 }
 
 /* ---------- Planilhas ---------- */
-function planilhas(st){
+function planilhas(st,ed){
+  const p=planilhas0(st);
+  if(ed) return p;
+  const tira=rows=>rows.map(r=>{const o={...r}; delete o["Salário (R$)"]; return o;});
+  return {...p, elenco:tira(p.elenco), alvos:tira(p.alvos), comissao:tira(p.comissao)};
+}
+function planilhas0(st){
   const ano=st.temporada;
   const elenco = st.elenco.map(j=>({"Atleta":j.nome,"Posição":POSN[j.pos]?.s||j.pos,"Nascimento":n(j.nasc),"Idade":idade(j,ano),"Altura (m)":n(j.alt),"Vínculo":j.status,"Aproveitado":j.aproveitado?"Sim":"Não","Salário (R$)":n(j.salario),"Contrato até":n(j.contrato),"% Minutos":n(j.minutos),"Jogos":n(j.jogos),"Gols":n(j.gols),"Assistências":n(j.assist),"Nota":n(j.nota),"Decisão 2027":st.decisoes[j.id]||"Avaliar"}));
   const pp=porPos(st.elenco.filter(j=>j.aproveitado),ano);
@@ -888,7 +992,8 @@ function planilhas(st){
 function Exportar({st,up,toast}){
   const [dl,setDl]=useState(undefined); const [busy,setBusy]=useState(false); const fileRef=useRef();
   useEffect(()=>{ let ok=true; (async()=>{ try{ const d = window.claude&&window.claude.use? await window.claude.use("downloads"):null; if(ok) setDl(d); }catch(e){ if(ok) setDl(null);} })(); return ()=>{ok=false}; },[]);
-  const p=planilhas(st);
+  const ed=React.useContext(EDIT);
+  const p=planilhas(st,ed);
   const salvar=async(filename,data)=>{
     if(!dl){ try{ baixarArquivo(filename,data); toast("Download iniciado: "+filename); }catch(e){ toast("Não foi possível baixar neste navegador"); } return; }
     setBusy(true);
@@ -919,7 +1024,7 @@ function Exportar({st,up,toast}){
       <div style=${{flex:1,minWidth:0}}><h2 style=${{fontSize:"18px"}}>${it.t}</h2><p class="note" style=${{margin:"4px 0 12px"}}>${it.d}</p>
         <button class=${"btn"+(it.main?" primary":"")} disabled=${busy} onClick=${it.go}>${I.export}Baixar .xlsx</button></div>
     </div>`)}</div>
-    <div class="card">
+    <div class="card ro-hide">
       <div class="card-h"><div><h2>Backup e restauração</h2><p>Guarde uma cópia de todo o trabalho ou volte aos dados do documento original</p></div></div>
       <div class="actions">
         <button class="btn" disabled=${busy} onClick=${()=>salvar(`ScoutPro_backup_${hoje}.json`,JSON.stringify(st,null,2))}>${I.export}Baixar backup .json</button>
@@ -941,23 +1046,40 @@ const TITULOS = {
   "planejamento-2027":["Próxima temporada","Planejamento 2027","Decida quem fica, monitore o mercado e veja a projeção do elenco contra o perfil de acesso."],
   "exportar":["Exportação","Planilhas e backup","Baixe o trabalho em Excel ou guarde um backup completo."],
 };
+const TEMAS=[{k:"auto",n:"Auto",c:"linear-gradient(90deg,#fff 50%,#16191c 50%)"},{k:"light",n:"Claro",c:"#fff"},{k:"dark",n:"Escuro",c:"#16191c"},{k:"black",n:"All black",c:"#000"}];
+function useTema(){
+  const [t,setT]=useState(()=>{ try{ return localStorage.getItem("scoutpro.tema")||"black"; }catch(e){ return "black"; } });
+  useEffect(()=>{ document.body.classList.remove("t-light","t-dark","t-black"); if(t!=="auto") document.body.classList.add("t-"+t); try{ localStorage.setItem("scoutpro.tema",t); }catch(e){} },[t]);
+  return [t,setT];
+}
 function App(){
-  const [st,up,sync]=useStore();
+  const store=useStore();
+  const {state:st, sync, modo, user, entrar, sair, podeEditar}=store;
+  const [login,setLogin]=useState(false);
+  const [tema,setTema]=useTema();
   const ler=()=>{ const h=(location.hash||"").slice(1); return TITULOS[h]?h:"painel"; };
   const [tab,setTab]=useState(ler);
   const [msg,setMsg]=useState(null); const tm=useRef();
   const toast=useCallback(t=>{ setMsg(t); clearTimeout(tm.current); tm.current=setTimeout(()=>setMsg(null),3200); },[]);
   useEffect(()=>{ const f=()=>{ setTab(ler()); window.scrollTo(0,0); }; window.addEventListener("hashchange",f); return ()=>window.removeEventListener("hashchange",f); },[]);
+  const roT=useRef(0);
+  const up=useCallback(fn=>{ if(!podeEditar){ const now=Date.now(); if(now-roT.current>2500){ roT.current=now; toast(modo==="nuvem"?"Modo leitura: entre como editor para alterar":"Sem permissão para editar"); } return; } store.update(fn); },[podeEditar,modo,store.update,toast]);
+  useEffect(()=>{ document.body.classList.toggle("ro", !podeEditar && modo!=="conectando"); },[podeEditar,modo]);
+  const acesso = modo==="nuvem" ? (user
+      ? html`<div class="lock"><span>Editor conectado</span><b>${user.email}</b><button class="btn sm ghost" onClick=${()=>{sair();toast("Você saiu. Modo leitura.")}}>Sair</button></div>`
+      : html`<button class="btn sm" onClick=${()=>setLogin(true)}>Entrar como editor</button>`) : null;
   const [e,t,s]=TITULOS[tab];
   const brand=html`<div class="brand">${LOGO}<div><b>SCOUT<em>PRO</em></b><small>Análise & mercado</small></div></div>`;
-  return html`<div class="shell">
+  return html`<${EDIT.Provider} value=${podeEditar}><div class="shell">
     <aside class="rail">
       ${brand}
       <nav class="nav">${TABS.map(x=>html`<a key=${x.k} href=${"#"+x.k} class=${tab===x.k?"on":""}>${x.i}${x.n}${x.tag?html`<span class="tag">${x.tag}</span>`:null}</a>`)}</nav>
-      <div class="rail-foot"><div class="client"><img src=${CREST} alt=""/><div><span>Clube</span><b>Santa Cruz F.C. · Recife</b></div></div><${SyncPill} s=${sync}/></div>
+      <div class="rail-foot"><div class="client"><img src=${CREST} alt=""/><div><span>Clube</span><b>Santa Cruz F.C. · Recife</b></div></div><${SyncPill} s=${modo==="nuvem"&&sync==="online"?"nuvem":sync}/>
+        ${acesso}
+        <div class="themes" role="group" aria-label="Tema">${TEMAS.map(x=>html`<button key=${x.k} class=${tema===x.k?"on":""} aria-pressed=${tema===x.k} onClick=${()=>setTema(x.k)}><i style=${{background:x.c}}></i>${x.n}</button>`)}</div></div>
     </aside>
     <div style=${{minWidth:0}}>
-      <div class="mhead">${brand}<${SyncPill} s=${sync}/></div>
+      <div class="mhead">${brand}<div style=${{display:"flex",gap:"6px",alignItems:"center"}}>${modo==="nuvem"?html`<button class="btn sm" onClick=${()=>user?(sair(),toast("Você saiu. Modo leitura.")):setLogin(true)}>${user?"Sair":"Editar"}</button>`:null}<select class="mtheme" id="tema-m" aria-label="Tema" value=${tema} onChange=${e=>setTema(e.target.value)}>${TEMAS.map(x=>html`<option key=${x.k} value=${x.k}>${x.n}</option>`)}</select></div></div>
       <main class="main">
         <div class="top"><div><div class="eyebrow">${e}</div><h1>${t}</h1><p class="sub">${s}</p></div></div>
         ${tab==="painel"?html`<${Painel} st=${st}/>`:null}
@@ -969,8 +1091,9 @@ function App(){
       </main>
     </div>
     <nav class="mobile-tabs">${TABS.map(x=>html`<a key=${x.k} href=${"#"+x.k} class=${tab===x.k?"on":""}>${x.i}<span>${x.m||x.n}</span></a>`)}</nav>
+    ${login?html`<${Login} entrar=${entrar} onClose=${ok=>{ setLogin(false); if(ok) toast("Modo editor ativo"); }}/>`:null}
     ${msg?html`<div class="toast" role="status">${msg}</div>`:null}
-  </div>`;
+  </div><//>`;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(html`<${App}/>`);
 })();

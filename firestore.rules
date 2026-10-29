@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Lista de editores: documento scoutpro_config/editores com o campo "emails" (array de e-mails).
+    // Edite essa lista só pelo console do Firebase.
+    function editor() {
+      return request.auth != null
+        && request.auth.token.email in get(/databases/$(database)/documents/scoutpro_config/editores).data.emails;
+    }
+    // Dados do app: todos leem, só editores gravam.
+    match /scoutpro/estado { allow read: if true; allow write: if editor(); }
+    // Salários e teto de folha: só editores leem e gravam.
+    match /scoutpro_privado/financeiro { allow read, write: if editor(); }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
