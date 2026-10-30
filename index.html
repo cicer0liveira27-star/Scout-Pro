@@ -567,7 +567,7 @@ function padrao(){
   elenco.forEach(j=>{ decisoes[j.id] = j.status==="Emprestado" ? "Avaliar" : "Manter"; });
   return {v:3, temporada:2026, elenco, bench:benchPadrao(), decisoes, alvos:[], comissao:[], orc2026:"", orc2027:"", comp2027:"Série C", incluirNeg:false,
     eventos:[], psr:[], pse:[], cmj:[], gps:[], atend:[], lesoes:[], sessoes:[], modelos:[], nutri:[], hidrat:[], planos:[],
-    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true, wsSeed:true, wsPacote:!!PACOTE(), wsPacoteVersao:(PACOTE()||{}).versao||0, live:{jogo:"",treino:""}}, treinos:treinosPadrao(), arquivoJogos:arquivoPadrao(), relScout:[], scoutAtl:{}};
+    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true, wsSeed:true, sportySeed:true, wsPacote:!!PACOTE(), wsPacoteVersao:(PACOTE()||{}).versao||0, live:{jogo:"",treino:""}}, treinos:treinosPadrao(), arquivoJogos:arquivoPadrao(), relScout:[], scoutAtl:{}};
 }
 const SAUDE = ["Liberado","Sob observação","Em transição","Não liberado"];
 const SAUDE_COR = {"Liberado":"var(--good)","Sob observação":"var(--warn)","Em transição":"var(--info)","Não liberado":"var(--bad)"};
@@ -616,6 +616,8 @@ function migrar(s){
   o.config.statsSeed=true;
   if(!(s.config&&s.config.wsSeed)){ o.jogos=(o.jogos||[]).map(comWS); if(!(s.treinos||[]).length) o.treinos=treinosPadrao(); }
   o.config.wsSeed=true;
+  if(!(s.config&&s.config.sportySeed)) o.jogos=(o.jogos||[]).map(comSporty);
+  o.config.sportySeed=true;
   if(PACOTE()&&(!o.config.wsPacote||(o.config.wsPacoteVersao||1)<(PACOTE().versao||1))){ try{ Object.assign(o,aplicarPacote(o,PACOTE()).s); }catch(e){} }
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
@@ -1176,7 +1178,7 @@ const COMP_INFO = {
   "Copa do Brasil":{nome:"Copa do Brasil 2026",status:"Eliminado na 2ª fase, nos pênaltis",cartoes:"—"},
   "Pernambucano":{nome:"Campeonato Pernambucano 2026",status:"Eliminado na semifinal",cartoes:"29 amarelos · 1 segundo amarelo · 1 vermelho"},
 };
-function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})).map(comFS).map(comWS); }
+function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})).map(comFS).map(comWS).map(comSporty); }
 const COMPS = ["Série C","Copa do Brasil","Pernambucano"];
 const resJ = j => n(j.gp)==null||n(j.gc)==null ? null : n(j.gp)>n(j.gc)?"V":n(j.gp)<n(j.gc)?"D":"E";
 const COR_RES = {V:"var(--good)",E:"var(--warn)",D:"var(--bad)"};
@@ -1532,6 +1534,9 @@ function Treinos({st,up,toast}){
 }
 
 /* ---------- Mídias e escalação do jogo (WilScout) ---------- */
+/* Transmissões da Série C 2026 no canal SportyNet (YouTube, públicas) */
+const SPORTYNET = {"2026-10-10": "-ejBIOl3WN4", "2026-10-03": "iQOnqmNfM-A", "2026-09-26": "-Ulq77Aj0RI", "2026-09-20": "YEi12llK-Gk", "2026-09-12": "9xDdzYiiPng", "2026-09-06": "p5_eoZ2W1zc", "2026-08-29": "jHcBb3xNpbA", "2026-08-22": "U1C2LbGbIuM", "2026-08-15": "kb0svA-ej1c", "2026-08-08": "9Te_BiaJQdU", "2026-07-25": "5grTXQFKdo8", "2026-07-12": "hBqba5traok", "2026-07-04": "JuV5NzROnLI", "2026-06-27": "NkxhbZNM1PA", "2026-06-20": "Ls0sF0gsqf4", "2026-06-14": "J6FL2Pol0_E", "2026-05-31": "-7H70q_vpWQ", "2026-05-23": "Rrgq7h0EgqM", "2026-05-16": "xdYuFCeDozo", "2026-05-11": "O9TRCOmyNCE", "2026-05-02": "u2tydS3Xy8M", "2026-04-26": "oLRJcfuFUzo", "2026-04-18": "lzcXK84Ag60", "2026-04-11": "3Gru7GMJV9c", "2026-04-06": "_21iNpiPuf0"};
+const comSporty = j => { const v=SPORTYNET[j.data]; if(!v||(j.pos&&j.pos.transmissao)) return j; return {...j,pos:{...(j.pos||{}),transmissao:v}}; };
 const comWS = j => { const f=((PACOTE()||{}).jogos||{})[j.data]||{}; const e=WS_ESC[j.data]; return {...j, pre:j.pre||f.pre||null, pos:j.pos||f.pos||null, escalacao:j.escalacao||e||null}; };
 const LINHAS_F = f => { const p=String(f||"").split("-").map(Number).filter(x=>x>0); return p.length&&p.reduce((s,x)=>s+x,0)===10?p:[4,4,2]; };
 function Campo({esc}){
