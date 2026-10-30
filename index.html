@@ -1666,7 +1666,8 @@ function Jogos({st,up,toast,go}){
 /* ---------- Atletas e scout ---------- */
 const PERFIL_POS = {"Goleiro":"GOL","Zagueiro":"ZAG","Lateral Direito":"LD","Lateral Esquerdo":"LE","Volante":"VOL","Meia":"MEI","Extremo":"EXT","Atacante":"ATA","Defensor":"DEF","Meio-campo":"MC"};
 const atlKey = a => normNome(a.nome);
-const fotosAtl = a => [a.foto?WS_FOTO+a.foto:null, a.sofa?`https://api.sofascore.app/api/v1/player/${a.sofa}/image`:null].filter(Boolean);
+const FOTO_BASE="https://cicer0liveira27-star.github.io/Scout-Pro/fotos/";
+const fotosAtl = a => [a.foto?FOTO_BASE+a.foto+".webp":null, a.sofa?`https://api.sofascore.app/api/v1/player/${a.sofa}/image`:null].filter(Boolean);
 function FotoAtl({a,size=44}){
   const fs=fotosAtl(a); const [i,setI]=useState(0);
   if(i>=fs.length) return html`<span class="av foto-av" style=${{width:size+"px",height:size+"px",fontSize:Math.round(size/2.8)+"px"}}>${iniciais(a.nome)}</span>`;
