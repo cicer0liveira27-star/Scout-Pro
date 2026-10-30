@@ -564,7 +564,7 @@ function padrao(){
   elenco.forEach(j=>{ decisoes[j.id] = j.status==="Emprestado" ? "Avaliar" : "Manter"; });
   return {v:3, temporada:2026, elenco, bench:benchPadrao(), decisoes, alvos:[], comissao:[], orc2026:"", orc2027:"", comp2027:"Série C", incluirNeg:false,
     eventos:[], psr:[], pse:[], cmj:[], gps:[], atend:[], lesoes:[], sessoes:[], modelos:[], nutri:[], hidrat:[], planos:[],
-    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true, wsSeed:true, wsPacote:!!PACOTE(), live:{jogo:"",treino:""}}, treinos:treinosPadrao(), relScout:[], scoutAtl:{}};
+    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true, wsSeed:true, wsPacote:!!PACOTE(), wsPacoteVersao:(PACOTE()||{}).versao||0, live:{jogo:"",treino:""}}, treinos:treinosPadrao(), arquivoJogos:arquivoPadrao(), relScout:[], scoutAtl:{}};
 }
 const SAUDE = ["Liberado","Sob observação","Em transição","Não liberado"];
 const SAUDE_COR = {"Liberado":"var(--good)","Sob observação":"var(--warn)","Em transição":"var(--info)","Não liberado":"var(--bad)"};
@@ -613,7 +613,7 @@ function migrar(s){
   o.config.statsSeed=true;
   if(!(s.config&&s.config.wsSeed)){ o.jogos=(o.jogos||[]).map(comWS); if(!(s.treinos||[]).length) o.treinos=treinosPadrao(); }
   o.config.wsSeed=true;
-  if(PACOTE()&&!o.config.wsPacote){ try{ Object.assign(o,aplicarPacote(o,PACOTE()).s); }catch(e){} }
+  if(PACOTE()&&(!o.config.wsPacote||(o.config.wsPacoteVersao||1)<(PACOTE().versao||1))){ try{ Object.assign(o,aplicarPacote(o,PACOTE()).s); }catch(e){} }
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
 }
@@ -1462,18 +1462,23 @@ function AoVivo({st,up,toast}){
 /* ---------- Treinos ---------- */
 /* Pacote do WilScout (vídeos de treino, análises pré/pós-jogo e súmulas): fica fora do código público e entra por importação */
 const PACOTE = () => (typeof window!=="undefined" && window.SCOUTPRO_PACOTE) || null;
-const treinoDoPacote = (t,i) => ({id:"tr-"+t.data+"-"+i,data:t.data,hora:t.hora||"",local:t.local||"",treinador:t.treinador||"",titulo:t.titulo||"Treino",video:t.video||"",obs:"",fonte:"WilScout"});
+const treinoDoPacote = (t,i) => ({id:"tr-"+t.data+"-"+i,data:t.data,hora:t.hora||"",local:t.local||"",treinador:t.treinador||"",titulo:t.titulo||"Treino",video:t.video||"",compacto:t.compacto||"",obs:"",fonte:"WilScout"});
+function arquivoPadrao(){ const p=PACOTE(); return p?(p.arquivo||[]).map(a=>({...a,id:"aw-"+a.ws})):[]; }
 function treinosPadrao(){ const p=PACOTE(); return p?(p.treinos||[]).map(treinoDoPacote):[]; }
 function aplicarPacote(s,p){
   if(!p||p.tipo!=="scoutpro-pacote-wilscout") throw new Error("Arquivo não é um pacote do WilScout");
   const tem=new Set((s.treinos||[]).map(t=>ytId(t.video)||t.data+t.hora));
+  const comp=Object.fromEntries((p.treinos||[]).filter(t=>t.compacto).map(t=>[ytId(t.video),t.compacto]));
+  const antigos=(s.treinos||[]).map(t=>!t.compacto&&comp[ytId(t.video)]?{...t,compacto:comp[ytId(t.video)]}:t);
   const novos=(p.treinos||[]).map(treinoDoPacote).filter(t=>!tem.has(ytId(t.video)||t.data+t.hora));
+  const arqMap=new Map((s.arquivoJogos||[]).map(a=>[a.ws||a.id,a])); (p.arquivo||[]).forEach(a=>{ const old=arqMap.get(a.ws); arqMap.set(a.ws,{...(old||{}),...a,id:(old&&old.id)||"aw-"+a.ws}); });
+  const arquivo=[...arqMap.values()].sort((a,b)=>(b.data||"").localeCompare(a.data||""));
   const jogos=(s.jogos||[]).map(j=>{ const f=(p.jogos||{})[j.data]; if(!f) return j; return {...j,pre:{...(f.pre||{}),...(j.pre||{})},pos:{...(f.pos||{}),...(j.pos||{})}}; });
-  return {s:{...s,treinos:[...(s.treinos||[]),...novos],jogos,config:{...s.config,wsPacote:true}},novos:novos.length,jogos:Object.keys(p.jogos||{}).length};
+  return {s:{...s,treinos:[...antigos,...novos],jogos,arquivoJogos:arquivo,config:{...s.config,wsPacote:true,wsPacoteVersao:p.versao||1}},novos:novos.length,jogos:Object.keys(p.jogos||{}).length,arquivo:(p.arquivo||[]).length};
 }
 function ImportarPacote({up,toast,compacto}){
   const ref=useRef();
-  const ler=e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const p=JSON.parse(r.result); let info=null; up(s=>{ const x=aplicarPacote(s,p); info=x; return x.s; }); setTimeout(()=>toast&&toast(info?`Pacote importado: ${info.novos} treinos e mídias de ${info.jogos} jogos`:"Pacote importado"),50); }catch(err){ toast&&toast(err.message||"Não foi possível ler o arquivo"); } }; r.readAsText(f); e.target.value=""; };
+  const ler=e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const p=JSON.parse(r.result); let info=null; up(s=>{ const x=aplicarPacote(s,p); info=x; return x.s; }); setTimeout(()=>toast&&toast(info?`Pacote importado: ${info.novos} treinos novos, mídias de ${info.jogos} jogos do Santa Cruz e ${info.arquivo} jogos no arquivo`:"Pacote importado"),50); }catch(err){ toast&&toast(err.message||"Não foi possível ler o arquivo"); } }; r.readAsText(f); e.target.value=""; };
   return html`<span class="ro-hide"><button class=${"btn "+(compacto?"sm":"primary")} onClick=${()=>ref.current.click()}>Importar pacote do WilScout</button><input type="file" accept=".json,application/json" ref=${ref} hidden onChange=${ler}/></span>`;
 }
 function Treinos({st,up,toast}){
@@ -1489,7 +1494,7 @@ function Treinos({st,up,toast}){
   const novo=()=>{ api.add({data:hoje(),hora:"15:00",local:locais[0]||"",treinador:"",titulo:"Treino",video:"",obs:""}); setAba("Cadastro"); toast&&toast("Treino adicionado. Preencha os dados."); };
   const limpar=()=>{ setPer(""); setDe(""); setAte(""); setTr(""); setLc(""); };
   return html`<div class="grid" style=${{gap:"14px"}}>
-    <div class="toolbar" style=${{marginBottom:0,justifyContent:"space-between"}}><${Abas} tabs=${["Listagem","Cadastro","Resumo"]} v=${aba} set=${setAba}/><div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>${all.length&&!st.config.wsPacote?html`<${ImportarPacote} up=${up} toast=${toast} compacto=${true}/>`:null}<button class="btn primary ro-hide" onClick=${novo}>${I.plus}Novo treino</button></div></div>
+    <div class="toolbar" style=${{marginBottom:0,justifyContent:"space-between"}}><${Abas} tabs=${["Listagem","Cadastro","Resumo"]} v=${aba} set=${setAba}/><div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>${all.length&&(!st.config.wsPacote||(st.config.wsPacoteVersao||1)<2)?html`<${ImportarPacote} up=${up} toast=${toast} compacto=${true}/>`:null}<button class="btn primary ro-hide" onClick=${novo}>${I.plus}Novo treino</button></div></div>
     <div class="grid g-kpi">
       <${Kpi} l="Sessões gravadas" v=${all.length} d=${all.filter(t=>ytId(t.video)).length+" com vídeo"}/>
       <${Kpi} l="Neste mês" v=${all.filter(t=>(t.data||"").startsWith(mes)).length}/>
@@ -1508,11 +1513,11 @@ function Treinos({st,up,toast}){
     ${aba==="Listagem"&&all.length?html`${lista.length?html`<div class="tcards">${lista.slice(0,lim).map(t=>{ const v=ytId(t.video); return html`<article key=${t.id} class="tcard">
         <button type="button" class="tcard-img" onClick=${()=>v&&setVid({id:v,titulo:`${t.titulo||"Treino"} · ${fmtD(t.data)} · ${t.local||""}`})} disabled=${!v} aria-label=${"Assistir treino de "+fmtD(t.data)}>${v?html`<img src=${ytThumb(v)} alt="" loading="lazy"/><span class="yt-play" aria-hidden="true">▶</span>`:html`<span class="note">Sem vídeo</span>`}</button>
         <div class="tcard-b"><b>${t.titulo||"Treino"}</b><span>${fmtDL(t.data).replace(/ de \d{4}$/,"")}${t.hora?" · "+t.hora:""}</span><span>${t.local||"—"}${t.treinador?" · "+t.treinador:""}</span></div>
-        <div class="tcard-a">${v?html`<button class="btn sm primary" onClick=${()=>setVid({id:v,titulo:`${t.titulo||"Treino"} · ${fmtD(t.data)} · ${t.local||""}`})}>▶ Íntegra</button><a class="btn sm ghost" href=${"https://youtu.be/"+v} target="_blank" rel="noopener">YouTube</a>`:null}</div>
+        <div class="tcard-a">${v?html`<button class="btn sm primary" onClick=${()=>setVid({id:v,titulo:`${t.titulo||"Treino"} · ${fmtD(t.data)} · ${t.local||""}`})}>▶ Íntegra</button>${ytId(t.compacto)?html`<button class="btn sm" onClick=${()=>setVid({id:ytId(t.compacto),titulo:`Compacto · ${t.titulo||"Treino"} · ${fmtD(t.data)}`})}>Compacto</button>`:null}<a class="btn sm ghost" href=${"https://youtu.be/"+v} target="_blank" rel="noopener">YouTube</a>`:null}</div>
       </article>`; })}</div>
       ${lista.length>lim?html`<div style=${{textAlign:"center"}}><button class="btn" onClick=${()=>setLim(lim+24)}>Mostrar mais (${lista.length-lim})</button></div>`:null}`
       :html`<div class="empty">Nenhum treino com esses filtros.</div>`}`:null}
-    ${aba==="Cadastro"?html`<${Tabela} st=${st} rows=${lista} api=${api} vazio="Nenhum treino." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"titulo",l:"Título",w:"120px"},{k:"local",l:"Local",w:"120px"},{k:"treinador",l:"Treinador",w:"140px"},{k:"video",l:"Vídeo (YouTube)",t:"link"},{k:"obs",l:"Observações",w:"180px"}]}/>`:null}
+    ${aba==="Cadastro"?html`<${Tabela} st=${st} rows=${lista} api=${api} vazio="Nenhum treino." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"titulo",l:"Título",w:"120px"},{k:"local",l:"Local",w:"120px"},{k:"treinador",l:"Treinador",w:"140px"},{k:"video",l:"Vídeo (YouTube)",t:"link"},{k:"compacto",l:"Compacto",t:"link"},{k:"obs",l:"Observações",w:"180px"}]}/>`:null}
     ${aba==="Resumo"?html`<div class="grid g-2">
       <div class="card"><div class="card-h"><div><h2>Sessões por mês</h2><p>Últimos 12 meses com registro</p></div></div><${Serie} pts=${porMes.map(([m,v])=>({x:MESES[+m.slice(5)-1].slice(0,3)+"/"+m.slice(2,4),y:v}))} fmt=${v=>Math.round(v)}/></div>
       <div class="card"><div class="card-h"><div><h2>Por treinador</h2></div></div><div class="alerts">${porTr.map(([k,v])=>html`<div key=${k} style=${{display:"grid",gridTemplateColumns:"150px 1fr 40px",gap:"8px",alignItems:"center"}}><span style=${{fontSize:"13px"}}>${k}</span><${Barra} v=${v} max=${porTr[0][1]}/><b class="num r">${v}</b></div>`)}</div></div>
@@ -1547,6 +1552,51 @@ function JogoMidia({j,up}){
     ${esc&&(esc.t||[]).length?html`<section><b class="eyebrow" style=${{color:"var(--mute)"}}>Escalação · ${esc.f}</b><${Campo} esc=${esc}/>${(esc.r||[]).length?html`<p class="note" style=${{margin:"6px 0 0"}}><b>Reservas:</b> ${esc.r.join(", ")}</p>`:null}</section>`:null}
     ${up?html`<div class="ro-hide"><button class="btn sm ghost" onClick=${()=>setEd(!ed)}>${ed?"Fechar edição de mídias":"Editar vídeos e links do jogo"}</button>
       ${ed?html`<div class="jmid-ed">${[["pre","video","Pré: análise em vídeo (YouTube)"],["pre","relatorio","Pré: relatório (link)"],["pre","penaltis","Pré: relatório de pênaltis (link)"],["pre","zz","Pré: ZeroZero/oGol do adversário"],["pos","camera","Pós: câmera aberta (YouTube)"],["pos","transmissao","Pós: transmissão (YouTube)"],["pos","video","Pós: análise em vídeo (YouTube)"],["pos","sumula","Pós: súmula (link do PDF)"]].map(([g,k,l])=>html`<label key=${g+k} class="note">${l}<input class="cell" id=${"jm-"+j.id+g+k} value=${((j[g]||{})[k])||""} onChange=${e=>set(g,k,e.target.value.trim())}/></label>`)}</div>`:null}</div>`:null}
+  </div>`;
+}
+
+
+/* ---------- Arquivo de jogos (WilScout) ---------- */
+function ArquivoJogos({st,up,toast}){
+  const all=st.arquivoJogos||[];
+  const [temp,setTemp]=useState(""); const [comp,setComp]=useState(""); const [q,setQ]=useState(""); const [soVid,setSoVid]=useState(false); const [lim,setLim]=useState(30); const [vid,setVid]=useState(null); const [aberto,setAberto]=useState(null);
+  const temps=[...new Set(all.map(a=>a.temporada).filter(Boolean))].sort().reverse();
+  const comps=[...new Set(all.map(a=>a.competicao||"Amistoso / jogo-treino"))].sort();
+  const times=new Set(all.flatMap(a=>[a.mandante,a.visitante]));
+  const temVid=a=>ytId((a.pos||{}).transmissao)||ytId((a.pos||{}).camera)||ytId((a.pos||{}).video)||ytId((a.pre||{}).video);
+  const lista=all.filter(a=>(!temp||a.temporada===temp)&&(!comp||(a.competicao||"Amistoso / jogo-treino")===comp)&&(!q||normNome(a.mandante+" "+a.visitante+" "+(a.estadio||"")).includes(normNome(q)))&&(!soVid||temVid(a))).sort((a,b)=>(b.data+(b.hora||"")).localeCompare(a.data+(a.hora||"")));
+  const ab=(a,k,l)=>{ const id=ytId((a.pos||{})[k]||(k==="video"?(a.pre||{}).video:"")); return id?html`<button class="btn sm" onClick=${()=>setVid({id,titulo:`${l} · ${a.mandante} × ${a.visitante} · ${fmtD(a.data)}/${a.data.slice(2,4)}`})}>▶ ${l}</button>`:null; };
+  const placar=a=>a.gm!==""&&a.gm!=null&&a.gv!==""&&a.gv!=null?`${a.gm} × ${a.gv}`:"– × –";
+  if(!all.length) return html`<div class="empty"><p style=${{marginTop:0}}>O arquivo de jogos do WilScout ainda não foi importado.</p><p class="note">São todos os jogos cadastrados lá (Santa Cruz e jogos observados de outros clubes), com transmissão, câmera aberta, súmula, análises e escalações. Use o pacote mais recente.</p><${ImportarPacote} up=${up} toast=${toast}/></div>`;
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div class="grid g-kpi">
+      <${Kpi} l="Jogos no arquivo" v=${all.length} d=${all.filter(a=>/santa cruz/i.test(a.mandante+a.visitante)).length+" do Santa Cruz"}/>
+      <${Kpi} l="Com vídeo" v=${all.filter(temVid).length}/>
+      <${Kpi} l="Com súmula" v=${all.filter(a=>(a.pos||{}).sumula).length}/>
+      <${Kpi} l="Competições" v=${comps.length} d=${temps.join(" · ")}/>
+      <${Kpi} l="Clubes" v=${times.size}/>
+    </div>
+    <div class="card"><div class="toolbar" style=${{marginBottom:0}}>
+      <input class="field grow" id="aj-q" placeholder="Buscar clube ou estádio" value=${q} onInput=${e=>setQ(e.target.value)} style=${{maxWidth:"240px"}}/>
+      <select class="field" id="aj-t" style=${{width:"auto"}} value=${temp} onChange=${e=>setTemp(e.target.value)}><option value="">Todas as temporadas</option>${temps.map(t=>html`<option key=${t}>${t}</option>`)}</select>
+      <select class="field" id="aj-c" style=${{width:"auto"}} value=${comp} onChange=${e=>setComp(e.target.value)}><option value="">Todas as competições</option>${comps.map(c=>html`<option key=${c}>${c}</option>`)}</select>
+      <label class="note" style=${{display:"flex",gap:"6px",alignItems:"center"}}><input type="checkbox" checked=${soVid} onChange=${()=>setSoVid(!soVid)} style=${{accentColor:"var(--red)"}}/>Só com vídeo</label>
+      <span class="note">${lista.length} jogo(s)</span>
+    </div></div>
+    ${lista.length?html`<div class="jogos">${lista.slice(0,lim).map(a=>{ const e=a.esc||{}; const ex=aberto===a.id; const pre=a.pre||{}, po=a.pos||{};
+      return html`<div key=${a.id} class="jogo" style=${{borderLeftColor:/santa cruz/i.test(a.mandante+a.visitante)?"var(--red)":"var(--line2)"}}>
+        <div class="jogo-top"><div class="jogo-d"><b>${fmtD(a.data)}</b><span>${a.data.slice(0,4)}${a.hora?" · "+a.hora:""}</span></div><span class="chip">${a.competicao||"Amistoso / jogo-treino"}</span>${a.rodada?html`<span class="chip">${a.rodada}</span>`:null}</div>
+        <div class="jogo-p"><span class="jogo-t">${escudoDe({nome:a.mandante})?html`<${EscImg} src=${escudoDe({nome:a.mandante})} size=${24}/>`:html`<span class="club">${siglaDe(a.mandante)}</span>`}<b>${a.mandante}</b></span><span class="placar num">${placar(a)}</span><span class="jogo-t adv">${escudoDe({nome:a.visitante})?html`<${EscImg} src=${escudoDe({nome:a.visitante})} size=${24}/>`:html`<span class="club">${siglaDe(a.visitante)}</span>`}<b>${a.visitante}</b></span></div>
+        ${a.estadio?html`<span class="note">${a.estadio}${(a.acrescimos||[]).some(x=>x&&x!=="0")?` · acréscimos ${a.acrescimos[0]||0}' e ${a.acrescimos[1]||0}'`:""}</span>`:null}
+        <div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>${ab(a,"transmissao","Transmissão")}${ab(a,"camera","Câmera aberta")}${ab(a,"video","Análise em vídeo")}
+          ${po.sumula?html`<a class="btn sm ghost" href=${po.sumula} target="_blank" rel="noopener">📄 Súmula</a>`:null}${pre.relatorio?html`<a class="btn sm ghost" href=${pre.relatorio} target="_blank" rel="noopener">📊 Relatório</a>`:null}${pre.penaltis?html`<a class="btn sm ghost" href=${pre.penaltis} target="_blank" rel="noopener">🥅 Pênaltis</a>`:null}${pre.zz?html`<a class="btn sm ghost" href=${pre.zz} target="_blank" rel="noopener">ZeroZero</a>`:null}</div>
+        ${(e.tm||[]).length||(e.tv||[]).length||(e.rm||[]).length||(e.rv||[]).length?html`<button class="jogo-mais" aria-expanded=${ex} onClick=${()=>setAberto(ex?null:a.id)}>${ex?"Ocultar escalação":"Escalação registrada"}<span aria-hidden="true">${ex?"▴":"▾"}</span></button>`:null}
+        ${ex?html`<div class="grid g-2" style=${{gap:"10px"}}>${[[a.mandante,e.fm,e.tm,e.rm],[a.visitante,e.fv,e.tv,e.rv]].map(([t,f,ti,re])=>html`<div key=${t}><b style=${{fontSize:"13px"}}>${t}${f?" · "+f:""}</b>${(ti||[]).length?html`<p class="note" style=${{margin:"4px 0"}}><b>Titulares:</b> ${ti.join(", ")}</p>`:null}${(re||[]).length?html`<p class="note" style=${{margin:"4px 0"}}><b>Observados / reservas:</b> ${re.join(", ")}</p>`:null}${!(ti||[]).length&&!(re||[]).length?html`<p class="note">—</p>`:null}</div>`)}</div>`:null}
+      </div>`; })}</div>
+      ${lista.length>lim?html`<div style=${{textAlign:"center"}}><button class="btn" onClick=${()=>setLim(lim+30)}>Mostrar mais (${lista.length-lim})</button></div>`:null}`
+    :html`<div class="empty">Nenhum jogo com esses filtros.</div>`}
+    <${VideoModal} v=${vid} fechar=${()=>setVid(null)}/>
+    <p class="note">Cópia de todos os jogos cadastrados no WilScout em 29/10/2026. Vídeos e relatórios ficam no YouTube e no Google Drive; súmulas apontam para o servidor do WilScout.</p>
   </div>`;
 }
 
@@ -1759,8 +1809,8 @@ function CompararAtletas({st,comp,setComp}){
 const MODULOS = () => NAV.flatMap(([g,it])=>it.map(([k,l])=>[k,l,g]));
 const PERFIS_PADRAO = {
   "Administrador":{edita:true,mods:"*"},
-  "Analista de Desempenho":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","inteligencia","relatorio-jogo","mercado","scout-atletas","analise-desempenho","analise-dados","cartoes","diagnostico","gestao","gestao-elenco","comissao","planejamento-2027","exportar"]},
-  "Comissão Técnica":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","relatorio-jogo","scout-atletas","analise-desempenho","analise-dados","cartoes","gestao-elenco"]},
+  "Analista de Desempenho":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","inteligencia","relatorio-jogo","mercado","scout-atletas","analise-desempenho","arquivo-jogos","analise-dados","cartoes","diagnostico","gestao","gestao-elenco","comissao","planejamento-2027","exportar"]},
+  "Comissão Técnica":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","relatorio-jogo","scout-atletas","analise-desempenho","arquivo-jogos","analise-dados","cartoes","gestao-elenco"]},
   "Diretoria":{edita:false,mods:["inicio","ao-vivo","gestao","financeiro","contratos","planejamento-2027","mercado","scout-atletas","analise-desempenho","diagnostico","exportar"]},
   "Jogador":{edita:false,mods:["inicio","ao-vivo","treinos","analise-desempenho"]},
 };
@@ -2687,7 +2737,7 @@ function planilhas0(st){
   const bench = st.bench.map(t=>({"Clube":t.nome,"Ano":t.ano,"Jogadores utilizados":n(t.usados),"Idade média":n(t.idade),"+50% minutos":n(t.tit),"25-50% minutos":n(t.rot),">30% participação":n(t.p30),"Total elenco":n(t.total),"Pontos":n(t.pts),"Gols marcados":n(t.gf),"Gols sofridos":n(t.ga),"xG":n(t.xg),"xGA":n(t.xga)}));
   const alvos = st.alvos.map(a=>({"Atleta":a.nome,"Posição":POSN[a.pos]?.s||a.pos,"Nascimento":n(a.nasc),"Idade em 2027":idade(a,2027),"Clube atual":a.clube,"Salário (R$)":n(a.salario),"Prioridade":a.prioridade,"Situação":a.status,"Observação":a.obs}));
   const comissao = st.comissao.map(c=>({"Profissional":c.nome,"Função":c.funcao,"Área":AREA(c.funcao),"Nascimento":n(c.nasc),"Idade":idade(c,ano),"Desde":n(c.desde),"Contrato até":n(c.contrato),"Salário (R$)":n(c.salario),"Situação 2027":c.sit2027,"Observação":c.obs}));
-  const ROT={psr:"PSR (bem-estar)",pse:"PSE (carga)",cmj:"CMJ",gps:"GPS",atend:"Atendimentos fisio",lesoes:"Lesões",sessoes:"Sessões de treino",nutri:"Composição corporal",hidrat:"Hidratação",planos:"Planos alimentares",tarefas:"Tarefas",relatorios:"Relatórios de jogo",adversarios:"Adversários",jogos:"Jogos",arbitros:"Árbitros",cartoes:"Cartões",metas:"Metas",fin:"Financeiro",eventos:"Eventos",treinos:"Treinos",relScout:"Relatórios de scout"};
+  const ROT={psr:"PSR (bem-estar)",pse:"PSE (carga)",cmj:"CMJ",gps:"GPS",atend:"Atendimentos fisio",lesoes:"Lesões",sessoes:"Sessões de treino",nutri:"Composição corporal",hidrat:"Hidratação",planos:"Planos alimentares",tarefas:"Tarefas",relatorios:"Relatórios de jogo",adversarios:"Adversários",jogos:"Jogos",arbitros:"Árbitros",cartoes:"Cartões",metas:"Metas",fin:"Financeiro",eventos:"Eventos",treinos:"Treinos",relScout:"Relatórios de scout",arquivoJogos:"Arquivo de jogos (WilScout)"};
   const extras=Object.entries(ROT).map(([k,t])=>[t,(st[k]||[]).map(r=>{ const o={}; Object.entries(r).forEach(([c,v])=>{ if(c==="id"||c==="escudo"||(v&&typeof v==="object")) return; o[c==="atleta"?"Atleta":c]=c==="atleta"?nomeA(st,v):v; }); return o; })]).filter(([,rows])=>rows.length);
   const lances=st.jogos.slice().sort((a,b)=>(a.data||"").localeCompare(b.data||"")).flatMap(j=>(j.eventos||[]).map((e,i)=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Minuto":e[2],"Equipe":e[0]===1?"Santa Cruz":j.adversario,"Lance":EV_NOME[e[1]]||e[1],"Jogador":e[3],"Detalhe":e[1]==="S"?"sai "+(e[4]||""):e[4]==="banco"?"no banco":"","Assistência":e[0]===1&&ehGol(e[1])?assistDe(j,i):""})));
   if(lances.length) extras.push(["Lances dos jogos",lances]);
@@ -2775,12 +2825,13 @@ const IC = {
   live: ic("M12 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"),
   treino: ic("M5 20h14M7.5 20 11 5h2l3.5 15M9 13h6"),
   scout: ic("M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 20c.8-3.5 3.4-5.5 7-5.5 1.2 0 2.3.2 3.2.6M17.5 13l1.1 2.3 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"),
+  arquivo: ic("M3 7h18v13H3zM3 7l2-3h14l2 3M9 12h6"),
   acesso: ic("M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6zM12 10.5v3.5M12 8.5h.01"),
 };
 const NAV = [
   ["Geral",[["inicio","Início",IC.inicio],["ao-vivo","Ao Vivo",IC.live],["treinos","Treinos",IC.treino]]],
   ["Saúde e performance",[["hub-performance","Hub de Performance",IC.hub],["elenco","Elenco",IC.elenco],["fisiologia","Fisiologia",IC.fisio],["fisioterapia","Fisioterapia",IC.fisioter],["preparacao-fisica","Prep. Física",IC.prep],["nutricao","Nutrição",IC.nutri]]],
-  ["Inteligência",[["inteligencia","Painel Intel.",IC.intel],["relatorio-jogo","Rel. de Jogo",IC.rel],["mercado","Mercado",IC.mercado],["scout-atletas","Scout de atletas",IC.scout],["analise-desempenho","Análise Desemp.",IC.desemp],["analise-dados","Análise de Dados",IC.dados],["cartoes","Cartões",IC.cartoes],["diagnostico","Diagnóstico Série C",IC.diag]]],
+  ["Inteligência",[["inteligencia","Painel Intel.",IC.intel],["relatorio-jogo","Rel. de Jogo",IC.rel],["mercado","Mercado",IC.mercado],["scout-atletas","Scout de atletas",IC.scout],["analise-desempenho","Análise Desemp.",IC.desemp],["arquivo-jogos","Arquivo de jogos",IC.arquivo],["analise-dados","Análise de Dados",IC.dados],["cartoes","Cartões",IC.cartoes],["diagnostico","Diagnóstico Série C",IC.diag]]],
   ["Gestão",[["gestao","Visão Geral",IC.gestao],["gestao-elenco","Gestão de Elenco",IC.gelenco],["comissao","Comissão técnica",IC.comissao],["financeiro","Financeiro",IC.fin],["contratos","Contratos",IC.contr],["planejamento-2027","Planejamento 2027",IC.plano],["exportar","Planilhas",IC.export],["acessos","Perfis e acessos",IC.acesso]]],
 ];
 const TITULOS = {
@@ -2788,6 +2839,7 @@ const TITULOS = {
   "ao-vivo":["Geral","Ao Vivo","Transmissão ao vivo de jogos e treinos. Sem live, passa o último vídeo gravado."],
   "treinos":["Geral","Treinos","Sessões de treino com vídeo na íntegra, filtros por período, local e treinador."],
   "scout-atletas":["Inteligência","Scout de atletas","Perfil, números do Sofascore, nota por jogo, nível, potencial e relatórios de scout de cada atleta."],
+  "arquivo-jogos":["Inteligência","Arquivo de jogos","Todos os jogos copiados do WilScout: Santa Cruz e clubes observados, com vídeos, súmulas, análises e escalações."],
   "acessos":["Gestão","Perfis e acessos","Perfis de usuário e o que cada um pode ver e editar."],
   "hub-performance":["Saúde e performance","Hub de Performance","Monitoramento em tempo real da disponibilidade e da prontidão do elenco."],
   "elenco":["Saúde e performance","Elenco","Disponibilidade, status médico e prontidão de cada atleta."],
@@ -2872,7 +2924,7 @@ function App(){
     "analise-dados":html`<${AnaliseDados} ...${P_}/>`, "cartoes":html`<${Cartoes} ...${P_}/>`, "diagnostico":html`<${Painel} st=${st}/>`,
     "gestao":html`<${VisaoGeral} ...${P_}/>`, "gestao-elenco":html`<${GestaoElenco} ...${P_}/>`, "comissao":html`<${Comissao} ...${P_}/>`, "financeiro":html`<${Financeiro} ...${P_}/>`,
     "contratos":html`<${Contratos} ...${P_}/>`, "planejamento-2027":html`<${Plano} ...${P_}/>`, "exportar":html`<${Exportar} ...${P_}/>`,
-    "ao-vivo":html`<${AoVivo} ...${P_}/>`, "treinos":html`<${Treinos} ...${P_}/>`, "scout-atletas":html`<${ScoutAtletas} ...${P_}/>`, "acessos":html`<${Acessos} ...${P_} verComo=${verComo} setVerComo=${setVerComoS}/>`,
+    "ao-vivo":html`<${AoVivo} ...${P_}/>`, "treinos":html`<${Treinos} ...${P_}/>`, "scout-atletas":html`<${ScoutAtletas} ...${P_}/>`, "arquivo-jogos":html`<${ArquivoJogos} ...${P_}/>`, "acessos":html`<${Acessos} ...${P_} verComo=${verComo} setVerComo=${setVerComoS}/>`,
   }[tab];
   const liberado=podeVer(st,perfil,tab);
   return html`<${EDIT.Provider} value=${podeEditar}><div class="shell">
