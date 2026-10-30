@@ -1420,8 +1420,8 @@ function lancesJogador(j,lado,nome){
 /* posições da formação no campo (x 0–100 largura, y 0–100 do próprio gol ao ataque) */
 function posFormacao(f,n){
   const linhas=String(f||"4-4-2").split("-").map(Number).filter(x=>x>0);
-  const out=[[50,6]]; const L=linhas.length;
-  linhas.forEach((q,li)=>{ const y=L===1?50:18+li*(70/(L-1||1)); for(let k=0;k<q;k++) out.push([(k+1)*100/(q+1),y]); });
+  const out=[[50,5]]; const L=linhas.length;
+  linhas.forEach((q,li)=>{ const y=L===1?50:24+li*(68/(L-1||1)); for(let k=0;k<q;k++) out.push([(k+1)*100/(q+1),y]); });
   while(out.length<n) out.push([50,50]);
   return out;
 }
@@ -1604,7 +1604,7 @@ const TIPO_PT={goal:"Gol",save:"Defendido",miss:"Para fora",block:"Bloqueado",po
 const CORPO_PT={"right-foot":"Pé direito","left-foot":"Pé esquerdo",head:"Cabeça",other:"Outro"};
 function SofaChutes({j,d}){
   const [lado,setLado]=useState(1); const [tipo,setTipo]=useState("todos"); const [sel,setSel]=useState(null);
-  const todos=(d.sh||[]).map((s,i)=>({i,lado:s[0],nome:s[1],x:s[3],y:s[4],xg:s[5],xgot:s[6],tipo:s[7],sit:s[8],corpo:s[9],min:s[10],add:s[11],gy:s[12],gz:s[13]}));
+  const todos=(d.sh||[]).map((s,i)=>({i,lado:s[0],nome:s[1],x:s[2],y:s[3],xg:s[4],xgot:s[5],tipo:s[6],sit:s[7],corpo:s[8],min:s[9],add:s[10],gy:s[11],gz:s[12]}));
   const daq=todos.filter(s=>s.lado===lado);
   const vis=daq.filter(s=>tipo==="todos"||s.tipo===tipo||(tipo==="alvo"&&(s.tipo==="goal"||s.tipo==="save")));
   const cor=t=>t==="goal"?"#00c424":t==="save"?"#f5c518":t==="post"?"#ed7e07":t==="block"?"#8b939b":"#e3262c";
