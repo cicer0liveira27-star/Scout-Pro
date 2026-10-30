@@ -354,6 +354,9 @@ select.cell{cursor:pointer}
 .fx-b{height:10px;border-radius:5px;background:var(--panel2);overflow:hidden}.fx-b i{display:block;height:100%;border-radius:5px}
 .cal-j{display:flex;align-items:center;gap:4px}.cal-j img{flex:none;background:rgba(255,255,255,.1);border-radius:50%;padding:1px}.cal-j span{overflow:hidden;text-overflow:ellipsis}
 a.btn{text-decoration:none;color:inherit}a.btn.primary{color:#fff}.alert>.btn{justify-self:end;align-self:center}
+.numatl{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;font-size:12px;color:var(--mute)}.numatl span{display:inline-flex;align-items:center;gap:3px}.numatl b{color:var(--fg);font-family:var(--f-mono)}
+.jg-wrap{display:flex;flex-direction:column;gap:6px}.jg-acoes{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:0 2px}
+img.av{object-fit:cover;object-position:top;padding:0}
 .yt{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;border:1px solid var(--line)}
 .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .yt-capa{all:unset;cursor:pointer;position:absolute;inset:0;display:block}.yt-capa img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .15s}.yt-capa:hover img{opacity:1}.yt-capa:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
@@ -957,7 +960,8 @@ function Elenco({st,up,toast}){
   const ord = POS.map(p=>p.k);
   const lista = st.elenco.filter(j=>(!fp||j.pos===fp)&&(!fs||j.status===fs)&&(!q||j.nome.toLowerCase().includes(q.toLowerCase())))
     .slice().sort((a,b)=>ord.indexOf(a.pos)-ord.indexOf(b.pos));
-  const numIn=(j,k,step,w)=>html`<input class="cell n" id=${k+"-"+j.id} inputmode="decimal" style=${{width:w||"64px"}} value=${j[k]} onInput=${e=>set(j.id,k,e.target.value)}/>`;
+  const numIn=(j,k,step,w,ph)=>html`<input class="cell n" id=${k+"-"+j.id} inputmode="decimal" style=${{width:w||"64px"}} value=${j[k]} placeholder=${ph==null?"":String(ph)} title=${ph!=null&&(j[k]===""||j[k]==null)?"Automático (Sofascore/Flashscore). Digite para substituir.":""} onInput=${e=>set(j.id,k,e.target.value)}/>`;
+  const auto=j=>{ const a=acharAtleta(j.nome); const x=a&&a.st?statsAtl(a,""):null; const l=lancesDe(st,j.nome); return {jogos:x?x.appearances:null,gols:Math.max(l.g,x?x.goals||0:0)||null,assist:Math.max(l.a,x?x.assists||0:0)||null}; };
 
   return html`<div>
     <div class="toolbar">
@@ -972,7 +976,7 @@ function Elenco({st,up,toast}){
       <thead><tr><th class="stbar"></th><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade</th><th class="r">Altura</th><th>Vínculo</th><th>Aprov.</th><th class="r money">Salário (R$)</th><th class="r">Contrato até</th><th class="r">% Min</th><th class="r">J</th><th class="r">G</th><th class="r">A</th><th class="r">Nota</th><th></th></tr></thead>
       <tbody>${lista.map(j=>html`<tr key=${j.id} class=${j.aproveitado?"":"dim-row"}>
         <td class="stbar"><i style=${{background:STATUS[j.status]?.c||"var(--line2)"}}></i></td>
-        <td><div style=${{display:"flex",alignItems:"center",gap:"8px"}}><span class="av" style=${{borderColor:STATUS[j.status]?.c}}>${iniciais(j.nome)}</span><input class="cell w-name" id=${"nome-"+j.id} value=${j.nome} onInput=${e=>set(j.id,"nome",e.target.value)}/></div></td>
+        <td><div style=${{display:"flex",alignItems:"center",gap:"8px"}}><${AvJ} nome=${j.nome} cor=${STATUS[j.status]?.c}/><input class="cell w-name" id=${"nome-"+j.id} value=${j.nome} onInput=${e=>set(j.id,"nome",e.target.value)}/></div></td>
         <td><select class="cell" id=${"pos-"+j.id} value=${j.pos} onChange=${e=>set(j.id,"pos",e.target.value)}>${POS.map(p=>html`<option key=${p.k} value=${p.k}>${p.k}</option>`)}</select></td>
         <td class="r"><input class="cell n" id=${"nasc-"+j.id} inputmode="numeric" maxlength="4" style=${{width:"60px",...(String(j.nasc??"").trim()!==""&&!nascOk(j.nasc)?{borderColor:"var(--bad)",color:"var(--bad)"}:{})}} value=${j.nasc} onInput=${e=>set(j.id,"nasc",e.target.value.replace(/\D/g,"").slice(0,4))}/></td>
         <td class="r num">${idade(j,ano)??"—"}</td>
@@ -982,9 +986,9 @@ function Elenco({st,up,toast}){
         <td class="r money">${numIn(j,"salario",1,"92px")}</td>
         <td class="r">${numIn(j,"contrato",1,"64px")}</td>
         <td class="r">${numIn(j,"minutos",1,"52px")}</td>
-        <td class="r">${numIn(j,"jogos",1,"42px")}</td>
-        <td class="r">${numIn(j,"gols",1,"42px")}</td>
-        <td class="r">${numIn(j,"assist",1,"42px")}</td>
+        <td class="r">${numIn(j,"jogos",1,"42px",auto(j).jogos)}</td>
+        <td class="r">${numIn(j,"gols",1,"42px",auto(j).gols)}</td>
+        <td class="r">${numIn(j,"assist",1,"42px",auto(j).assist)}</td>
         <td class="r">${numIn(j,"nota",.1,"46px")}</td>
         <td><${Del} onYes=${()=>del(j.id)}/></td>
       </tr>`)}</tbody></table></div>
@@ -992,7 +996,7 @@ function Elenco({st,up,toast}){
       <p class="note">Edite direto na célula: painel, alertas, planejamento 2027 e planilhas recalculam na hora. Desmarque “Aprov.” para tirar o atleta das médias. % Min acima de 50 conta como titular absoluto; entre 25 e 50, rotação.</p>`
     : html`<div class="pitch">${POS.filter(p=>!fp||p.k===fp).map(p=>{ const js=lista.filter(j=>j.pos===p.k); const ia=avg(js.filter(j=>j.aproveitado).map(j=>idade(j,ano)));
         return html`<section class="posbox" key=${p.k}><header><b>${p.n}</b><span class="note num">${js.length} · ${f1(ia)} anos · média acesso ${f1(BENCH_QTD[p.k])}</span></header>
-          <ul>${js.map(j=>html`<li key=${j.id} class=${j.aproveitado?"":"dim"}><span class="av" style=${{borderColor:STATUS[j.status]?.c}}>${iniciais(j.nome)}</span>
+          <ul>${js.map(j=>html`<li key=${j.id} class=${j.aproveitado?"":"dim"}><${AvJ} nome=${j.nome} cor=${STATUS[j.status]?.c}/>
             <div><div class="nm">${j.nome}</div><div class="meta">${n(j.nasc)?String(j.nasc).slice(-2):"—"} · ${idade(j,ano)??"—"} anos · ${n(j.alt)?f2(n(j.alt))+"m":"—"}</div></div>
             <div class="end"><${Badge} txt=${j.status} cor=${STATUS[j.status]?.c||"var(--mute)"}/></div></li>`)}
           ${!js.length?html`<li class="note">Sem atletas</li>`:null}</ul></section>`; })}</div>`}
@@ -1347,7 +1351,7 @@ function EstatJogos({st}){
       <div class="card"><div class="card-h"><div><h2>Jogadores</h2><p>Gols, assistências, cartões e entradas no decorrer dos jogos${contra?` · ${contra} gol(s) contra a favor`:""}</p></div>
         <div class="seg">${Object.entries(ORD).map(([k,[l]])=>html`<button key=${k} class=${ordJ===k?"on":""} onClick=${()=>setOrdJ(k)}>${l}</button>`)}</div></div>
         ${lista.length?html`<div class="tablewrap planilha"><table><thead><tr><th>#</th><th>Jogador</th><th class="r">Gols</th><th class="r">Pên.</th><th class="r">Assist.</th><th class="r">Amar.</th><th class="r">Exp.</th><th class="r">Entrou</th><th class="r">Saiu</th></tr></thead><tbody>
-          ${lista.slice(0,25).map((x,i)=>html`<tr key=${x.nome}><td class="num" style=${{padding:"7px 8px",color:"var(--mute)"}}>${i+1}</td><td style=${{padding:"7px 8px",fontWeight:600,whiteSpace:"nowrap"}}>${x.nome}</td><td class="r num"><b>${x.g||""}</b></td><td class="r num">${x.pen||""}</td><td class="r num">${x.a||""}</td><td class="r num">${x.am||""}</td><td class="r num">${x.v||""}</td><td class="r num">${x.ent||""}</td><td class="r num">${x.sai||""}</td></tr>`)}
+          ${lista.slice(0,25).map((x,i)=>html`<tr key=${x.nome}><td class="num" style=${{padding:"7px 8px",color:"var(--mute)"}}>${i+1}</td><td style=${{padding:"5px 8px",fontWeight:600,whiteSpace:"nowrap"}}><span style=${{display:"flex",alignItems:"center",gap:"8px"}}><${AvJ} nome=${x.nome} size=${26}/>${(acharAtleta(x.nome)||{}).nome||x.nome}</span></td><td class="r num"><b>${x.g||""}</b></td><td class="r num">${x.pen||""}</td><td class="r num">${x.a||""}</td><td class="r num">${x.am||""}</td><td class="r num">${x.v||""}</td><td class="r num">${x.ent||""}</td><td class="r num">${x.sai||""}</td></tr>`)}
         </tbody></table></div>`:html`<div class="empty">Sem lances registrados para esse filtro.</div>`}
         ${temAssist?null:html`<p class="note" style=${{marginTop:"8px"}}>O Flashscore não publica assistências do Pernambucano, da Copa do Brasil e da Série C. Abra um jogo no Calendário, clique em “Estatísticas e lances” e informe quem deu o passe — a tabela soma na hora.</p>`}</div>
       <div class="grid" style=${{gap:"14px",alignContent:"start"}}>
@@ -1412,7 +1416,7 @@ function YT({id,titulo,auto}){
   useEffect(()=>{ setOn(!!auto); },[v]);
   if(!v) return html`<div class="yt yt-vazio"><span>Sem vídeo cadastrado</span></div>`;
   return html`<div class="yt">${on
-    ? html`<iframe src=${`https://www.youtube.com/embed/${v}?rel=0&autoplay=1&playsinline=1`} title=${titulo||"Vídeo"} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+    ? html`<iframe src=${`https://www.youtube.com/embed/${v}?rel=0&autoplay=1&playsinline=1`} title=${titulo||"Vídeo"} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
     : html`<button type="button" class="yt-capa" onClick=${()=>setOn(true)} aria-label=${"Assistir "+(titulo||"vídeo")}><img src=${ytThumb(v)} alt="" loading="lazy"/><span class="yt-play" aria-hidden="true">▶</span>${titulo?html`<span class="yt-t">${titulo}</span>`:null}</button>`}</div>`;
 }
 function VideoModal({v,fechar}){
@@ -1545,7 +1549,7 @@ function JogoMidia({j,up}){
     ${temPos?html`<section><b class="eyebrow" style=${{color:"var(--mute)"}}>Pós-jogo</b>
       ${abasPos.length>1?html`<div class="seg" style=${{margin:"6px 0"}}>${abasPos.map(([k,l])=>html`<button key=${k} class=${atual===k?"on":""} onClick=${()=>setPos(k)}>${l}</button>`)}</div>`:null}
       ${atual?html`<${YT} id=${po[atual]} titulo=${(abasPos.find(x=>x[0]===atual)||[])[1]}/>`:null}
-      ${po.sumula?html`<a class="btn sm" style=${{marginTop:"6px"}} href=${po.sumula} target="_blank" rel="noopener">📄 Súmula</a>`:null}</section>`:null}
+      ${po.sumula?html`<a class="btn sm" style=${{marginTop:"6px"}} href=${sumulaUrl(po.sumula)} target="_blank" rel="noopener">📄 Súmula</a>`:null}</section>`:null}
     ${temPre?html`<section><b class="eyebrow" style=${{color:"var(--mute)"}}>Pré-jogo · análise do adversário</b>
       ${pre.video?html`<${YT} id=${pre.video} titulo="Análise em vídeo"/>`:null}
       <div style=${{display:"flex",gap:"6px",flexWrap:"wrap",marginTop:"6px"}}>${pre.relatorio?html`<a class="btn sm" href=${pre.relatorio} target="_blank" rel="noopener">📊 Análise em relatório</a>`:null}${pre.penaltis?html`<a class="btn sm" href=${pre.penaltis} target="_blank" rel="noopener">🥅 Relatório de pênaltis</a>`:null}${pre.zz?html`<a class="btn sm" href=${pre.zz} target="_blank" rel="noopener">ZeroZero do adversário</a>`:null}</div></section>`:null}
@@ -1589,14 +1593,73 @@ function ArquivoJogos({st,up,toast}){
         <div class="jogo-p"><span class="jogo-t">${escudoDe({nome:a.mandante})?html`<${EscImg} src=${escudoDe({nome:a.mandante})} size=${24}/>`:html`<span class="club">${siglaDe(a.mandante)}</span>`}<b>${a.mandante}</b></span><span class="placar num">${placar(a)}</span><span class="jogo-t adv">${escudoDe({nome:a.visitante})?html`<${EscImg} src=${escudoDe({nome:a.visitante})} size=${24}/>`:html`<span class="club">${siglaDe(a.visitante)}</span>`}<b>${a.visitante}</b></span></div>
         ${a.estadio?html`<span class="note">${a.estadio}${(a.acrescimos||[]).some(x=>x&&x!=="0")?` · acréscimos ${a.acrescimos[0]||0}' e ${a.acrescimos[1]||0}'`:""}</span>`:null}
         <div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>${ab(a,"transmissao","Transmissão")}${ab(a,"camera","Câmera aberta")}${ab(a,"video","Análise em vídeo")}
-          ${po.sumula?html`<a class="btn sm ghost" href=${po.sumula} target="_blank" rel="noopener">📄 Súmula</a>`:null}${pre.relatorio?html`<a class="btn sm ghost" href=${pre.relatorio} target="_blank" rel="noopener">📊 Relatório</a>`:null}${pre.penaltis?html`<a class="btn sm ghost" href=${pre.penaltis} target="_blank" rel="noopener">🥅 Pênaltis</a>`:null}${pre.zz?html`<a class="btn sm ghost" href=${pre.zz} target="_blank" rel="noopener">ZeroZero</a>`:null}</div>
+          ${po.sumula?html`<a class="btn sm ghost" href=${sumulaUrl(po.sumula)} target="_blank" rel="noopener">📄 Súmula</a>`:null}${pre.relatorio?html`<a class="btn sm ghost" href=${pre.relatorio} target="_blank" rel="noopener">📊 Relatório</a>`:null}${pre.penaltis?html`<a class="btn sm ghost" href=${pre.penaltis} target="_blank" rel="noopener">🥅 Pênaltis</a>`:null}${pre.zz?html`<a class="btn sm ghost" href=${pre.zz} target="_blank" rel="noopener">ZeroZero</a>`:null}</div>
         ${(e.tm||[]).length||(e.tv||[]).length||(e.rm||[]).length||(e.rv||[]).length?html`<button class="jogo-mais" aria-expanded=${ex} onClick=${()=>setAberto(ex?null:a.id)}>${ex?"Ocultar escalação":"Escalação registrada"}<span aria-hidden="true">${ex?"▴":"▾"}</span></button>`:null}
         ${ex?html`<div class="grid g-2" style=${{gap:"10px"}}>${[[a.mandante,e.fm,e.tm,e.rm],[a.visitante,e.fv,e.tv,e.rv]].map(([t,f,ti,re])=>html`<div key=${t}><b style=${{fontSize:"13px"}}>${t}${f?" · "+f:""}</b>${(ti||[]).length?html`<p class="note" style=${{margin:"4px 0"}}><b>Titulares:</b> ${ti.join(", ")}</p>`:null}${(re||[]).length?html`<p class="note" style=${{margin:"4px 0"}}><b>Observados / reservas:</b> ${re.join(", ")}</p>`:null}${!(ti||[]).length&&!(re||[]).length?html`<p class="note">—</p>`:null}</div>`)}</div>`:null}
       </div>`; })}</div>
       ${lista.length>lim?html`<div style=${{textAlign:"center"}}><button class="btn" onClick=${()=>setLim(lim+30)}>Mostrar mais (${lista.length-lim})</button></div>`:null}`
     :html`<div class="empty">Nenhum jogo com esses filtros.</div>`}
     <${VideoModal} v=${vid} fechar=${()=>setVid(null)}/>
-    <p class="note">Cópia de todos os jogos cadastrados no WilScout em 29/10/2026. Vídeos e relatórios ficam no YouTube e no Google Drive; súmulas apontam para o servidor do WilScout.</p>
+    <p class="note">Cópia de todos os jogos cadastrados no WilScout em 29/10/2026. Vídeos e relatórios ficam no YouTube e no Google Drive; as súmulas foram guardadas no próprio Scout Pro.</p>
+  </div>`;
+}
+
+
+/* ---------- Súmulas guardadas no Scout Pro ---------- */
+const SUMULAS_OK = new Set("116,242158se,242161se,242184se,242218se,342109se,34215se,34239se,3429se,39779,41381,41394,42202,42214,42394,42454se,43347,43467,43471,44085,45692,45694,45698,45699,45702,45704,45706,45710,45711,45712,45720,45722,45724,45725,45731,45733,45739,45741,46128,46144,50794,50797,50799,50805,50810,50812,50815,51409,51411,51501,51504,52,53,54,542322se,542353se,542370se,542449se,542460se,542462se,542465se,542476se,542478se,542485se,542493se,542499se,542503se,55,55694,56".split(","));
+const SUMULA_BASE = "https://cicer0liveira27-star.github.io/Scout-Pro/sumulas/";
+const sumulaUrl = u => { const m=String(u||"").match(/sumula\/([\w.-]+)\.pdf$/i); return m&&SUMULAS_OK.has(m[1])?SUMULA_BASE+m[1]+".pdf":u; };
+
+/* ---------- Identificação do atleta pelo nome (foto e números em todo o app) ---------- */
+const ALIAS_ATL = {"vinicius hora":"vini hora","patrick allan":"patrick alan","jefferson bahia":"jeferson bahia","ze mario":"ze mario","gabriel g":"gabriel galhardo","w balotelli":"wagner balotelli","m castilho":"mateus castilho","matheus castilho":"mateus castilho","diego quirino":"quirino","pedro":"pedro costa","matheus v":"matheus vinicius","thiago h":"thiago henrique","ariel n":"ariel nahuelpan","edson alves":"edson miranda","eurico lima":"eurico","willian alves":"william alves","adniellyson silva":"silva","gabriel rodrigues":"rodrigues","jeferson santos":"jeferson bahia","nahuelpan a":"ariel nahuelpan","cassiano":"cassiano bouzon"};
+const _atlMemo = new Map();
+function acharAtleta(nome){
+  const q0=normNome(nome); if(!q0) return null; if(_atlMemo.has(q0)) return _atlMemo.get(q0);
+  const q=ALIAS_ATL[q0]||q0; const L=(typeof ATLETAS_2026!=="undefined"?ATLETAS_2026:[]); let r=L.find(a=>normNome(a.nome)===q)||null;
+  if(!r){ const qt=q.split(" "); r=L.find(a=>{ const ct=normNome(a.nome).split(" "); return qt.length===ct.length&&qt.every((t,i)=>t===ct[i]||(t.length<=2&&ct[i].startsWith(t))); })||null;
+    if(!r&&qt.length>=2) r=L.find(a=>{ const ct=normNome(a.nome).split(" "); return ct.length>=2&&ct[0]===qt[0]&&ct[ct.length-1].startsWith(qt[qt.length-1]); })||null; }
+  _atlMemo.set(q0,r); return r;
+}
+function AvJ({nome,size=30,cor}){
+  const a=acharAtleta(nome); const st={width:size+"px",height:size+"px",borderColor:cor||undefined,fontSize:Math.max(10,Math.round(size/2.7))+"px"};
+  const fs=a?fotosAtl(a):[]; const [i,setI]=useState(0);
+  if(!fs.length||i>=fs.length) return html`<span class="av" style=${st}>${iniciais(nome)}</span>`;
+  return html`<img class="av foto-at" src=${fs[i]} alt="" loading="lazy" referrerpolicy="no-referrer" onError=${()=>setI(i+1)} style=${{...st,borderWidth:cor?"2px":undefined,borderStyle:"solid"}}/>`;
+}
+/* Lances dos jogos (Flashscore + assistências lançadas) somados por atleta */
+const _lancesMemo = new WeakMap();
+function indiceLances(jogos){
+  let m=_lancesMemo.get(jogos); if(m) return m; m=new Map();
+  const k=nome=>{ const a=acharAtleta(nome); return a?a.nome:normNome(nome); };
+  const add=(nome,campo,j)=>{ if(!nome||nome==="banco") return; const key=k(nome); let o=m.get(key); if(!o){ o={tot:{},comp:{},cartoes:[]}; m.set(key,o); } o.tot[campo]=(o.tot[campo]||0)+1; const c=j.competicao||""; o.comp[c]=o.comp[c]||{}; o.comp[c][campo]=(o.comp[c][campo]||0)+1; return o; };
+  (jogos||[]).forEach(j=>(j.eventos||[]).forEach((e,i)=>{ if(e[0]!==1||e[4]==="banco") return; const t=e[1];
+    if(t==="G"||t==="GP"){ add(e[3],"g",j); const as=assistDe(j,i); if(as) add(as,"a",j); }
+    else if(t==="A"){ const o=add(e[3],"am",j); if(o) o.cartoes.push({data:j.data,tipo:"Amarelo",min:e[2],comp:j.competicao,adv:j.adversario}); }
+    else if(t==="2A"||t==="V"){ const o=add(e[3],"vm",j); if(o) o.cartoes.push({data:j.data,tipo:t==="2A"?"Segundo amarelo":"Vermelho",min:e[2],comp:j.competicao,adv:j.adversario}); }
+    else if(t==="S"){ add(e[3],"ent",j); add(e[4],"sai",j); } }));
+  _lancesMemo.set(jogos,m); return m;
+}
+function lancesDe(st,nome,comp){ const a=acharAtleta(nome); const o=indiceLances(st.jogos).get(a?a.nome:normNome(nome)); if(!o) return {g:0,a:0,am:0,vm:0,ent:0,cartoes:[]}; const b=comp?(o.comp[comp]||{}):o.tot; return {g:b.g||0,a:b.a||0,am:b.am||0,vm:b.vm||0,ent:b.ent||0,cartoes:comp?o.cartoes.filter(c=>c.comp===comp):o.cartoes}; }
+function NumerosAtl({st,nome}){
+  const a=acharAtleta(nome); const s=a&&a.st?statsAtl(a,""):null; const l=lancesDe(st,nome);
+  if(!s&&!l.g&&!l.a&&!l.am&&!l.vm) return null;
+  return html`<div class="numatl">${s?html`<span title="Nota média no Sofascore"><${Nota} r=${s.rating}/></span><span title="Jogos (Sofascore)"><b>${s.appearances??0}</b>J</span><span title="Minutos (Sofascore)"><b>${s.minutesPlayed??0}</b>min</span>`:null}<span title="Gols"><b>${Math.max(l.g,s?s.goals||0:0)}</b>G</span><span title="Assistências"><b>${Math.max(l.a,s?s.assists||0:0)}</b>A</span><span title="Cartões amarelos"><i class="evi card-a"></i><b>${Math.max(l.am,s?s.yellowCards||0:0)}</b></span><span title="Cartões vermelhos"><i class="evi card-v"></i><b>${Math.max(l.vm,s?s.redCards||0:0)}</b></span></div>`;
+}
+
+/* ---------- Jogos (cartões com vídeos, como no WilScout) ---------- */
+function Jogos({st,up,toast,go}){
+  const [comp,setComp]=useState(""); const [vid,setVid]=useState(null); const [aberto,setAberto]=useState(null);
+  const comps=[...new Set(st.jogos.map(j=>j.competicao).filter(Boolean))];
+  const lista=st.jogos.filter(j=>!comp||j.competicao===comp).sort((a,b)=>b.data.localeCompare(a.data));
+  const v=(j,k,l,g)=>{ const id=ytId(((j[g||"pos"])||{})[k]); return id?html`<button class="btn sm" onClick=${()=>setVid({id,titulo:`${l} · Santa Cruz ${j.gp}×${j.gc} ${j.adversario} · ${fmtD(j.data)}`})}>▶ ${l}</button>`:null; };
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div class="toolbar" style=${{marginBottom:0,justifyContent:"space-between"}}><div class="seg" style=${{flexWrap:"wrap"}}>${[["","Todas"],...comps.map(c=>[c,c])].map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)}>${l}</button>`)}</div><a class="btn sm ghost" href="#arquivo-jogos">Arquivo completo do WilScout →</a></div>
+    <div class="jogos">${lista.map(j=>{ const po=j.pos||{}, pre=j.pre||{}; const ex=aberto===j.id; return html`<div key=${j.id} class="jg-wrap">
+      <${JogoCard} st=${st} j=${j} up=${up}/>
+      <div class="jg-acoes">${v(j,"transmissao","Transmissão")}${v(j,"camera","Câmera aberta")}${v(j,"video","Pós-jogo")}${v(j,"video","Análise do adversário","pre")}
+        ${po.sumula?html`<a class="btn sm ghost" href=${sumulaUrl(po.sumula)} target="_blank" rel="noopener">📄 Súmula</a>`:null}${pre.relatorio?html`<a class="btn sm ghost" href=${pre.relatorio} target="_blank" rel="noopener">📊 Relatório</a>`:null}
+        ${!po.transmissao&&!po.camera&&!po.video&&!pre.video?html`<span class="note">Sem vídeo cadastrado</span>`:null}</div></div>`; })}</div>
+    <${VideoModal} v=${vid} fechar=${()=>setVid(null)}/>
   </div>`;
 }
 
@@ -1683,7 +1746,7 @@ function ScoutAtletas({st,up,toast,go}){
     </div></div>`:null}
     ${aba==="Atletas"?html`<div class="acards">${sorted.map(({a,s,av})=>html`<button key=${a.nome} type="button" class="acard atl-card" onClick=${()=>setSel(atlKey(a))}>
       <div style=${{display:"flex",gap:"10px",alignItems:"center",minWidth:0}}><${FotoAtl} a=${a} size=${52}/><div style=${{minWidth:0,flex:1,textAlign:"left"}}><div class="nm" style=${{fontSize:"15px"}}>${a.nome}</div><span class="note">${a.pos}${a.nasc?" · "+(2026-+a.nasc.slice(0,4))+" anos":""}${a.pe?" · "+(a.pe==="C"?"canhoto":"destro"):""}</span></div><${Nota} r=${s.rating}/></div>
-      <div class="atl-n">${[["J",s.appearances],["Min",s.minutesPlayed],["G",s.goals],["A",s.assists]].map(([l,v])=>html`<div key=${l}><span class="note">${l}</span><b class="num">${v??0}</b></div>`)}</div>
+      <div class="atl-n">${[["J",s.appearances],["Min",s.minutesPlayed],["G",Math.max(s.goals||0,comp?0:lancesDe(st,a.nome).g)],["A",Math.max(s.assists||0,comp?0:lancesDe(st,a.nome).a)]].map(([l,v])=>html`<div key=${l}><span class="note">${l}</span><b class="num">${v??0}</b></div>`)}</div>
       <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px"}}><span class="note">Nível</span><${Estrelas} v=${av.nv}/></div>
       <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px"}}><span class="note">Potencial</span><${Estrelas} v=${av.pt}/></div>
       ${av.rec?html`<${Chip} txt=${av.rec} cor=${corRec(av.rec)}/>`:null}
@@ -1732,6 +1795,9 @@ function PerfilAtleta({st,up,toast,a,voltar}){
       </div>
     </div>
     <div class="seg" style=${{alignSelf:"start",flexWrap:"wrap"}}>${COMP_SOFA.map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)} disabled=${k&&!(a.st||{})[k]}>${l}</button>`)}</div>
+    ${(()=>{ const l=lancesDe(st,a.nome,{C:"Série C",P:"Pernambucano",B:"Copa do Brasil"}[comp]||""); return l.g||l.a||l.am||l.vm||l.ent?html`<div class="card" style=${{padding:"12px 16px"}}><b class="eyebrow" style=${{color:"var(--mute)"}}>Nos lances dos jogos (Flashscore + assistências lançadas)</b>
+      <div class="numatl" style=${{marginTop:"6px",fontSize:"14px"}}><span><b>${l.g}</b> gols</span><span><b>${l.a}</b> assistências</span><span><i class="evi card-a"></i><b>${l.am}</b> amarelos</span><span><i class="evi card-v"></i><b>${l.vm}</b> expulsões</span><span><b>${l.ent}</b> entradas no decorrer</span></div>
+      ${l.cartoes.length?html`<p class="note" style=${{margin:"6px 0 0"}}>Cartões: ${l.cartoes.map(c=>`${fmtD(c.data)} ${c.tipo==="Amarelo"?"🟨":"🟥"} ${c.min}' × ${c.adv}`).join(" · ")}</p>`:null}</div>`:null; })()}
     ${a.st?html`<div class="grid g-kpi">${kp.map(([l,v,d])=>html`<${Kpi} key=${l} l=${l} v=${v??0} d=${d}/>`)}</div>`:html`<div class="empty">O Sofascore não tem números deste atleta em 2026.</div>`}
     <div class="grid g-2">
       <div class="card"><div class="card-h"><div><h2>Nota por jogo</h2><p>Sofascore · ${notas.length} jogos avaliados</p></div></div><${Serie} tipo="linha" pts=${notas.map(x=>({x:fmtD(x.j.data),y:x.nota}))} ymin=${5} ymax=${9} refY=${7} refTxt="7,0" fmt=${v=>v.toFixed(1)}/></div>
@@ -1809,10 +1875,10 @@ function CompararAtletas({st,comp,setComp}){
 const MODULOS = () => NAV.flatMap(([g,it])=>it.map(([k,l])=>[k,l,g]));
 const PERFIS_PADRAO = {
   "Administrador":{edita:true,mods:"*"},
-  "Analista de Desempenho":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","inteligencia","relatorio-jogo","mercado","scout-atletas","analise-desempenho","arquivo-jogos","analise-dados","cartoes","diagnostico","gestao","gestao-elenco","comissao","planejamento-2027","exportar"]},
-  "Comissão Técnica":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","relatorio-jogo","scout-atletas","analise-desempenho","arquivo-jogos","analise-dados","cartoes","gestao-elenco"]},
-  "Diretoria":{edita:false,mods:["inicio","ao-vivo","gestao","financeiro","contratos","planejamento-2027","mercado","scout-atletas","analise-desempenho","diagnostico","exportar"]},
-  "Jogador":{edita:false,mods:["inicio","ao-vivo","treinos","analise-desempenho"]},
+  "Analista de Desempenho":{edita:true,mods:["inicio","ao-vivo","jogos","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","inteligencia","relatorio-jogo","mercado","scout-atletas","analise-desempenho","arquivo-jogos","analise-dados","cartoes","diagnostico","gestao","gestao-elenco","comissao","planejamento-2027","exportar"]},
+  "Comissão Técnica":{edita:true,mods:["inicio","ao-vivo","jogos","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","relatorio-jogo","scout-atletas","analise-desempenho","arquivo-jogos","analise-dados","cartoes","gestao-elenco"]},
+  "Diretoria":{edita:false,mods:["inicio","ao-vivo","jogos","gestao","financeiro","contratos","planejamento-2027","mercado","scout-atletas","analise-desempenho","diagnostico","exportar"]},
+  "Jogador":{edita:false,mods:["inicio","ao-vivo","jogos","treinos","analise-desempenho"]},
 };
 const USUARIOS_PADRAO = {ciceroav:{nome:"Cícero",perfil:"Administrador"},phsouzaleao:{nome:"Paulinho",perfil:"Administrador"}};
 function perfisDe(st){ return {...PERFIS_PADRAO,...((st.config||{}).perfis||{})}; }
@@ -2049,7 +2115,7 @@ function Plano({st,up,toast}){
       <div class="pitch">${POS.map(p=>{ const js=st.elenco.filter(j=>j.pos===p.k);
         return html`<section class="posbox" key=${p.k}><header><b>${p.n}</b><span class="note num">${js.filter(j=>FICA_2027.has(dec(j.id))).length} ficam</span></header>
           <ul>${js.map(j=>{ const d=dec(j.id); return html`<li key=${j.id} class=${FICA_2027.has(d)||d==="Avaliar"?"":"dim"}>
-            <span class="av" style=${{borderColor:DEC_COR[d]}}>${iniciais(j.nome)}</span>
+            <${AvJ} nome=${j.nome} cor=${DEC_COR[d]}/>
             <div style=${{minWidth:0}}><div class="nm">${j.nome}</div><div class="meta">${idade(j,ano)??"—"} anos em 27${n(j.contrato)?" · até "+j.contrato:""}</div></div>
             <select class="cell end" id=${"dec-"+j.id} style=${{width:"auto",maxWidth:"130px",color:DEC_COR[d],fontWeight:600}} value=${d} onChange=${e=>setDec(j.id,e.target.value)}>${DECISOES.map(x=>html`<option key=${x}>${x}</option>`)}</select>
           </li>`; })}
@@ -2247,7 +2313,7 @@ function Hub({st,go}){
       <div class="card-h"><div><h2>Algoritmo de prontidão</h2><p>Último PSR (sono, fadiga, dor, humor, recuperação) + ACWR da carga (PSE × minutos) + status médico</p></div>
         <div class="legend"><span><i style=${{background:"var(--good)"}}></i>≥ 75</span><span><i style=${{background:"var(--warn)"}}></i>55–74</span><span><i style=${{background:"var(--bad)"}}></i>${"< 55"}</span></div></div>
       ${pr.some(x=>x.sc!=null)||pr.some(x=>x.a!=null) ? html`<div class="pront">${pr.map(({j,sc,a,ps})=>html`<div key=${j.id} class="pront-i">
-          <span class="av" style=${{borderColor:corPront(sc)}}>${iniciais(j.nome)}</span>
+          <${AvJ} nome=${j.nome} cor=${corPront(sc)}/>
           <div style=${{minWidth:0,flex:1}}><div class="nm">${j.nome}</div><div class="meta">${POSN[j.pos]?.s} · ${ps?"PSR "+fmtD(ps.data):"sem PSR"} · ACWR <span style=${{color:corAcwr(a)}}>${a==null?"—":f2(a)}</span></div><${Barra} v=${sc} cor=${corPront(sc)}/></div>
           <b class="num" style=${{color:corPront(sc),fontFamily:"var(--f-display)",fontSize:"24px",minWidth:"40px",textAlign:"right"}}>${sc??"—"}</b></div>`)}</div>`
       : html`<div class="empty">Nenhum dado de atleta ainda. Registre o bem-estar (PSR) e a carga (PSE) em Fisiologia para ver a prontidão.</div>`}
@@ -2285,9 +2351,10 @@ function ElencoCards({st,up}){
     </div>
     <p class="note" style=${{margin:0}}>${lista.length} atleta(s)</p>
     ${!lista.length?html`<div class="empty">Nenhum atleta com esses filtros.</div>`:vis==="cards"?html`<div class="acards">${lista.map(j=>html`<div key=${j.id} class="acard">
-        <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><span class="av" style=${{width:"44px",height:"44px",fontSize:"16px",borderColor:SAUDE_COR[j.saude||"Liberado"]}}>${iniciais(j.nome)}</span>
+        <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><${AvJ} nome=${j.nome} size=${48} cor=${SAUDE_COR[j.saude||"Liberado"]}/>
           <div style=${{minWidth:0}}><div class="nm" style=${{fontSize:"15px"}}>${j.nome}</div><div style=${{color:"var(--red-ink)",fontSize:"12px",fontWeight:600}}>${POSN[j.pos]?.s}</div></div></div>
         <div class="meta">${idade(j,ano)??"—"} anos · ${n(j.alt)?f2(n(j.alt))+" m":"—"} · ${j.vinculo||"Ativo"}</div>
+        <${NumerosAtl} st=${st} nome=${j.nome}/>
         <select class="cell" id=${"sd-"+j.id} value=${j.saude||"Liberado"} onChange=${e=>set(j.id,"saude",e.target.value)} style=${{color:SAUDE_COR[j.saude||"Liberado"],fontWeight:600,border:"1px solid var(--line2)"}}>${SAUDE.map(v=>html`<option key=${v}>${v}</option>`)}</select>
         <div class="acard-f"><div><span class="note">Prontidão</span><b class="num" style=${{color:corPront(j._p.sc)}}>${j._p.sc??"—"}</b></div><div><span class="note">ACWR</span><b class="num" style=${{color:corAcwr(j._p.a)}}>${j._p.a==null?"—":f2(j._p.a)}</b></div>
           <label style=${{display:"flex",alignItems:"center",gap:"5px",fontSize:"12px"}}><input type="checkbox" id=${"dor-"+j.id} checked=${!!j.dor} onChange=${e=>set(j.id,"dor",e.target.checked)} style=${{accentColor:"var(--red)"}}/>Dor</label></div>
@@ -2390,7 +2457,7 @@ function Fisioterapia({st,up}){
     <div class="toolbar" style=${{marginBottom:0}}><${Abas} tabs=${["Painel clínico","Atendimentos","Lesões","Estatísticas"]} v=${aba} set=${setAba}/><input class="field grow" id="busca-fisio" placeholder="Buscar atleta" value=${q} onInput=${e=>setQ(e.target.value)}/></div>
     ${aba==="Painel clínico"?html`<div class="grid g-2">${grupos.map(([t,k])=>{ const js=at.filter(j=>(j.saude||"Liberado")===k&&(!q||j.nome.toLowerCase().includes(q.toLowerCase())));
       return html`<section class="posbox" key=${k}><header><b style=${{color:SAUDE_COR[k]}}>${t}</b><span class="chip">${js.length}</span></header>
-        <ul>${js.map(j=>{ const l=ativasL.find(x=>x.atleta===j.id); return html`<li key=${j.id}><span class="av" style=${{borderColor:SAUDE_COR[k]}}>${iniciais(j.nome)}</span>
+        <ul>${js.map(j=>{ const l=ativasL.find(x=>x.atleta===j.id); return html`<li key=${j.id}><${AvJ} nome=${j.nome} cor=${SAUDE_COR[k]}/>
           <div style=${{minWidth:0}}><div class="nm">${j.nome}</div><div class="meta">${POSN[j.pos]?.s}${l?` · ${l.tipo||"lesão"} ${l.regiao||""} · ${diasFora(l)} dias`:""}</div></div>
           <select class="cell end" id=${"cl-"+j.id} style=${{width:"auto",maxWidth:"150px",color:SAUDE_COR[j.saude||"Liberado"],fontWeight:600}} value=${j.saude||"Liberado"} onChange=${e=>setJ(j.id,"saude",e.target.value)}>${SAUDE.map(v=>html`<option key=${v}>${v}</option>`)}</select></li>`; })}
         ${!js.length?html`<li class="note">Nenhum atleta nesta categoria</li>`:null}</ul></section>`; })}</div>`:null}
@@ -2451,7 +2518,7 @@ function PrepFisica({st,up,toast}){
       ${st.lesoes.filter(l=>l.status!=="Recuperado").length?html`<div class="alerts">${st.lesoes.filter(l=>l.status!=="Recuperado").map(l=>html`<div key=${l.id} class="alert bad"><div><b>${nomeA(st,l.atleta)} · ${l.tipo} ${l.regiao||""}</b><span>Desde ${fmtD(l.data)} · ${l.grau||""}${l.retorno?" · retorno previsto "+fmtD(l.retorno):""}</span></div></div>`)}</div>`:html`<p class="note">Nenhuma lesão em aberto.</p>`}</div>`:null}
     ${aba==="Transição"?html`<div class="card"><div class="card-h"><div><h2>Retorno progressivo</h2><p>Atletas com status “Em transição”</p></div></div>
       ${at.filter(j=>j.saude==="Em transição").length?html`<div class="alerts">${at.filter(j=>j.saude==="Em transição").map(j=>{ const f=FASES.indexOf(j.fase||FASES[0]); return html`<div key=${j.id} class="need" style=${{flexWrap:"wrap"}}>
-        <span class="av">${iniciais(j.nome)}</span><div style=${{flex:"1 1 160px",minWidth:0}}><b>${j.nome}</b><${Barra} v=${f+1} max=${4} cor="var(--info)"/></div>
+        <${AvJ} nome=${j.nome}/><div style=${{flex:"1 1 160px",minWidth:0}}><b>${j.nome}</b><${Barra} v=${f+1} max=${4} cor="var(--info)"/></div>
         <select class="cell" id=${"fase-"+j.id} style=${{width:"auto"}} value=${j.fase||FASES[0]} onChange=${e=>setJ(j.id,"fase",e.target.value)}>${FASES.map(x=>html`<option key=${x}>${x}</option>`)}</select>
         <button class="btn sm ro-hide" onClick=${()=>setJ(j.id,"saude","Liberado")}>Liberar</button></div>`; })}</div>`
       :html`<p class="note">Nenhum atleta em transição. Mude o status médico na Fisioterapia ou no Elenco.</p>`}</div>`:null}
@@ -2554,7 +2621,7 @@ function Mercado({st,up,toast}){
     ${aba==="Dashboard"?html`<div>
       <p class="note">${st.alvos.length} jogadores no mercado · ${st.alvos.filter(a=>a.status==="Em negociação").length} em negociação · ${st.alvos.filter(a=>a.status==="Fechado").length} fechados · ${st.alvos.filter(a=>(overall(a)||0)>=75).length} acima de 75</p>
       ${lista.length?html`<div class="acards">${lista.map(a=>{ const ov=overall(a); return html`<div key=${a.id} class="acard">
-        <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><span class="av" style=${{width:"42px",height:"42px"}}>${iniciais(a.nome)}</span><div style=${{minWidth:0}}><div class="nm" style=${{fontSize:"15px"}}>${a.nome||"(sem nome)"}</div><div class="meta" style=${{display:"flex",gap:"4px",alignItems:"center",flexWrap:"wrap"}}>${POSN[a.pos]?.s}${a.posEsp?" ("+a.posEsp+")":""} · ${a.clube?html`<${Clube} nome=${a.clube} size=${16}/>`:"clube não informado"}${n(a.nasc)?" · "+(new Date().getFullYear()-n(a.nasc))+" anos":""}</div></div></div>
+        <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><${AvJ} nome=${a.nome} size=${42}/><div style=${{minWidth:0}}><div class="nm" style=${{fontSize:"15px"}}>${a.nome||"(sem nome)"}</div><div class="meta" style=${{display:"flex",gap:"4px",alignItems:"center",flexWrap:"wrap"}}>${POSN[a.pos]?.s}${a.posEsp?" ("+a.posEsp+")":""} · ${a.clube?html`<${Clube} nome=${a.clube} size=${16}/>`:"clube não informado"}${n(a.nasc)?" · "+(new Date().getFullYear()-n(a.nasc))+" anos":""}</div></div></div>
         <div class="acard-f"><div><span class="note">Overall</span><b class="num" style=${{color:corOv(ov),fontSize:"26px"}}>${ov??"—"}</b></div><div><span class="note">Nível</span><b style=${{fontSize:"12px"}}>${a.nivel||"—"}</b></div><div><span class="note">Situação</span><b style=${{fontSize:"12px",color:ALVO_COR[a.status]}}>${a.status}</b></div></div>
         <div class="atr">${ATR.map(([k,l])=>html`<div key=${k}><span class="note">${l}</span><${Barra} v=${n(a[k])} cor="var(--info)"/></div>`)}</div>
         ${tagsDe(a).length?html`<div style=${{display:"flex",gap:"4px",flexWrap:"wrap"}}>${tagsDe(a).map(t=>html`<span key=${t} class="chip">${t}</span>`)}</div>`:null}
@@ -2617,18 +2684,29 @@ function AnaliseDados({st,up,toast}){
 
 /* ---------- Cartões ---------- */
 function Cartoes({st,up}){
-  const ct=crud(up,"cartoes"); const lim=n(st.config.limiteAmarelos)||3;
-  const porAtl=st.elenco.map(j=>{ const cs=st.cartoes.filter(c=>c.atleta===j.id&&(c.competicao||"")===(st.config.competicao||"")); const am=cs.filter(c=>c.tipo==="Amarelo").length, vm=cs.filter(c=>c.tipo==="Vermelho").length;
-    const ult=cs.sort((a,b)=>(b.data||"").localeCompare(a.data||""))[0]; const susp=(ult&&ult.tipo==="Vermelho")||(am>0&&am%lim===0&&ult&&ult.tipo==="Amarelo"); return {j,am,vm,susp,risco:!susp&&am%lim===lim-1}; }).filter(x=>x.am||x.vm);
+  const ct=crud(up,"cartoes"); const lim=n(st.config.limiteAmarelos)||3; const comp=st.config.competicao||"";
+  const [fonte,setFonte]=useState("todos");
+  // cartões lançados à mão (por atleta do elenco) + cartões dos jogos (Flashscore), na competição escolhida
+  const mapa=new Map(); const key=nm=>{ const a=acharAtleta(nm); return a?a.nome:nm; };
+  const push=(nm,c)=>{ const k=key(nm); if(!mapa.has(k)) mapa.set(k,{nome:k,cs:[]}); mapa.get(k).cs.push(c); };
+  if(fonte!=="manual") st.jogos.filter(j=>!comp||normNome(j.competicao)===normNome(comp)).forEach(j=>(j.eventos||[]).forEach(e=>{ if(e[0]!==1||e[4]==="banco") return; if(e[1]==="A") push(e[3],{data:j.data,tipo:"Amarelo",fonte:"Jogo",jogo:j.adversario,min:e[2]}); if(e[1]==="2A"||e[1]==="V") push(e[3],{data:j.data,tipo:"Vermelho",fonte:"Jogo",jogo:j.adversario,min:e[2],seg:e[1]==="2A"}); }));
+  if(fonte!=="jogos") st.cartoes.filter(c=>(c.competicao||"")===comp&&c.atleta).forEach(c=>{ const j=st.elenco.find(x=>x.id===c.atleta); if(j) push(j.nome,{data:c.data,tipo:c.tipo,fonte:"Manual",jogo:c.jogo}); });
+  const porAtl=[...mapa.values()].map(x=>{ const cs=x.cs.sort((a,b)=>(a.data||"").localeCompare(b.data||"")); const am=cs.filter(c=>c.tipo==="Amarelo").length, vm=cs.filter(c=>c.tipo==="Vermelho").length; const ult=cs[cs.length-1];
+    const ultJogo=st.jogos.filter(j=>resJ(j)&&(!comp||normNome(j.competicao)===normNome(comp))).sort((a,b)=>b.data.localeCompare(a.data))[0];
+    const recente=ult&&ultJogo&&ult.data===ultJogo.data;
+    const susp=recente&&((ult.tipo==="Vermelho")||(ult.tipo==="Amarelo"&&am%lim===0)); return {nome:x.nome,cs,am,vm,susp,risco:!susp&&am%lim===lim-1}; });
+  const totAm=porAtl.reduce((s,x)=>s+x.am,0), totVm=porAtl.reduce((s,x)=>s+x.vm,0);
   return html`<div class="grid" style=${{gap:"14px"}}>
-    <div class="grid g-kpi"><${Kpi} l="Cartões amarelos" v=${st.cartoes.filter(c=>c.tipo==="Amarelo").length}/><${Kpi} l="Cartões vermelhos" v=${st.cartoes.filter(c=>c.tipo==="Vermelho").length}/><${Kpi} l="Suspensos" v=${porAtl.filter(x=>x.susp).length} d="próximo jogo"/><${Kpi} l="Risco de suspensão" v=${porAtl.filter(x=>x.risco).length} d=${`pendurados (${lim-1} amarelos)`}/></div>
+    <div class="grid g-kpi"><${Kpi} l="Cartões amarelos" v=${totAm} d=${comp||"todas as competições"}/><${Kpi} l="Cartões vermelhos" v=${totVm}/><${Kpi} l="Suspensos" v=${porAtl.filter(x=>x.susp).length} d="próximo jogo"/><${Kpi} l="Risco de suspensão" v=${porAtl.filter(x=>x.risco).length} d=${`pendurados (${lim-1} amarelos)`}/></div>
     <div class="toolbar" style=${{marginBottom:0}}>
       <button class="btn primary ro-hide" onClick=${()=>ct.add({data:hoje(),atleta:"",tipo:"Amarelo",competicao:st.config.competicao,jogo:""})}>${I.plus}Registrar cartão</button>
       <label class="note" style=${{display:"flex",gap:"6px",alignItems:"center"}}>Competição <input class="field" id="cfg-comp" style=${{width:"120px"}} value=${st.config.competicao} onInput=${e=>up(s=>({...s,config:{...s.config,competicao:e.target.value}}))}/></label>
       <label class="note" style=${{display:"flex",gap:"6px",alignItems:"center"}}>Amarelos para suspensão <input class="field num" id="cfg-lim" style=${{width:"56px"}} value=${st.config.limiteAmarelos} onInput=${e=>up(s=>({...s,config:{...s.config,limiteAmarelos:e.target.value}}))}/></label>
     </div>
-    ${porAtl.length?html`<div class="acards">${porAtl.sort((a,b)=>(b.susp-a.susp)||(b.risco-a.risco)||(b.am-a.am)).map(x=>html`<div key=${x.j.id} class="acard" style=${{borderColor:x.susp?"var(--bad)":x.risco?"var(--warn)":"var(--line)"}}>
-      <div class="nm">${x.j.nome}</div><div style=${{display:"flex",gap:"10px",alignItems:"center"}}><span class="card-am"></span><b class="num">${x.am}</b><span class="card-vm"></span><b class="num">${x.vm}</b>
+    <div class="seg" style=${{alignSelf:"start"}}>${[["todos","Jogos + lançados"],["jogos","Só dos jogos"],["manual","Só lançados à mão"]].map(([k,l])=>html`<button key=${k} class=${fonte===k?"on":""} onClick=${()=>setFonte(k)}>${l}</button>`)}</div>
+    ${porAtl.length?html`<div class="acards">${porAtl.sort((a,b)=>(b.susp-a.susp)||(b.risco-a.risco)||(b.vm-a.vm)||(b.am-a.am)).map(x=>html`<div key=${x.nome} class="acard" style=${{borderColor:x.susp?"var(--bad)":x.risco?"var(--warn)":"var(--line)"}}>
+      <div style=${{display:"flex",gap:"10px",alignItems:"center"}}><${AvJ} nome=${x.nome} size=${40}/><div class="nm">${x.nome}</div></div>
+      <div class="note">${x.cs.slice(-4).map(c=>`${fmtD(c.data)} ${c.tipo==="Amarelo"?"🟨":"🟥"}${c.jogo?" × "+c.jogo:""}`).join(" · ")}</div><div style=${{display:"flex",gap:"10px",alignItems:"center"}}><span class="card-am"></span><b class="num">${x.am}</b><span class="card-vm"></span><b class="num">${x.vm}</b>
       ${x.susp?html`<${Chip} txt="Suspenso" cor="var(--bad)"/>`:x.risco?html`<${Chip} txt="Pendurado" cor="var(--warn)"/>`:null}</div></div>`)}</div>`:null}
     <${Tabela} st=${st} rows=${st.cartoes.slice().sort((a,b)=>(b.data||"").localeCompare(a.data||""))} api=${ct} vazio="Nenhum cartão registrado." cols=${[{k:"data",l:"Data",t:"date"},{k:"atleta",l:"Atleta",t:"atleta"},{k:"tipo",l:"Cartão",t:"select",opts:["Amarelo","Vermelho"],cor:v=>v==="Amarelo"?"var(--warn)":"var(--bad)"},{k:"competicao",l:"Competição",w:"110px"},{k:"jogo",l:"Jogo",w:"150px",ph:"ex.: x Náutico"}]}/>
   </div>`;
@@ -2825,11 +2903,12 @@ const IC = {
   live: ic("M12 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"),
   treino: ic("M5 20h14M7.5 20 11 5h2l3.5 15M9 13h6"),
   scout: ic("M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 20c.8-3.5 3.4-5.5 7-5.5 1.2 0 2.3.2 3.2.6M17.5 13l1.1 2.3 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"),
+  jogos: ic("M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7.5l3.8 2.8-1.5 4.4H9.7l-1.5-4.4zM12 3v4.5M3.6 9.5l4.6.8M20.4 9.5l-4.6.8M7 19l2.7-4.3M17 19l-2.7-4.3"),
   arquivo: ic("M3 7h18v13H3zM3 7l2-3h14l2 3M9 12h6"),
   acesso: ic("M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6zM12 10.5v3.5M12 8.5h.01"),
 };
 const NAV = [
-  ["Geral",[["inicio","Início",IC.inicio],["ao-vivo","Ao Vivo",IC.live],["treinos","Treinos",IC.treino]]],
+  ["Geral",[["inicio","Início",IC.inicio],["ao-vivo","Ao Vivo",IC.live],["jogos","Jogos",IC.jogos],["treinos","Treinos",IC.treino]]],
   ["Saúde e performance",[["hub-performance","Hub de Performance",IC.hub],["elenco","Elenco",IC.elenco],["fisiologia","Fisiologia",IC.fisio],["fisioterapia","Fisioterapia",IC.fisioter],["preparacao-fisica","Prep. Física",IC.prep],["nutricao","Nutrição",IC.nutri]]],
   ["Inteligência",[["inteligencia","Painel Intel.",IC.intel],["relatorio-jogo","Rel. de Jogo",IC.rel],["mercado","Mercado",IC.mercado],["scout-atletas","Scout de atletas",IC.scout],["analise-desempenho","Análise Desemp.",IC.desemp],["arquivo-jogos","Arquivo de jogos",IC.arquivo],["analise-dados","Análise de Dados",IC.dados],["cartoes","Cartões",IC.cartoes],["diagnostico","Diagnóstico Série C",IC.diag]]],
   ["Gestão",[["gestao","Visão Geral",IC.gestao],["gestao-elenco","Gestão de Elenco",IC.gelenco],["comissao","Comissão técnica",IC.comissao],["financeiro","Financeiro",IC.fin],["contratos","Contratos",IC.contr],["planejamento-2027","Planejamento 2027",IC.plano],["exportar","Planilhas",IC.export],["acessos","Perfis e acessos",IC.acesso]]],
@@ -2837,6 +2916,7 @@ const NAV = [
 const TITULOS = {
   "inicio":["Geral","Início",""],
   "ao-vivo":["Geral","Ao Vivo","Transmissão ao vivo de jogos e treinos. Sem live, passa o último vídeo gravado."],
+  "jogos":["Geral","Jogos","Jogos do Santa Cruz com transmissão, câmera aberta, análises e súmulas."],
   "treinos":["Geral","Treinos","Sessões de treino com vídeo na íntegra, filtros por período, local e treinador."],
   "scout-atletas":["Inteligência","Scout de atletas","Perfil, números do Sofascore, nota por jogo, nível, potencial e relatórios de scout de cada atleta."],
   "arquivo-jogos":["Inteligência","Arquivo de jogos","Todos os jogos copiados do WilScout: Santa Cruz e clubes observados, com vídeos, súmulas, análises e escalações."],
@@ -2924,7 +3004,7 @@ function App(){
     "analise-dados":html`<${AnaliseDados} ...${P_}/>`, "cartoes":html`<${Cartoes} ...${P_}/>`, "diagnostico":html`<${Painel} st=${st}/>`,
     "gestao":html`<${VisaoGeral} ...${P_}/>`, "gestao-elenco":html`<${GestaoElenco} ...${P_}/>`, "comissao":html`<${Comissao} ...${P_}/>`, "financeiro":html`<${Financeiro} ...${P_}/>`,
     "contratos":html`<${Contratos} ...${P_}/>`, "planejamento-2027":html`<${Plano} ...${P_}/>`, "exportar":html`<${Exportar} ...${P_}/>`,
-    "ao-vivo":html`<${AoVivo} ...${P_}/>`, "treinos":html`<${Treinos} ...${P_}/>`, "scout-atletas":html`<${ScoutAtletas} ...${P_}/>`, "arquivo-jogos":html`<${ArquivoJogos} ...${P_}/>`, "acessos":html`<${Acessos} ...${P_} verComo=${verComo} setVerComo=${setVerComoS}/>`,
+    "ao-vivo":html`<${AoVivo} ...${P_}/>`, "jogos":html`<${Jogos} ...${P_}/>`, "treinos":html`<${Treinos} ...${P_}/>`, "scout-atletas":html`<${ScoutAtletas} ...${P_}/>`, "arquivo-jogos":html`<${ArquivoJogos} ...${P_}/>`, "acessos":html`<${Acessos} ...${P_} verComo=${verComo} setVerComo=${setVerComoS}/>`,
   }[tab];
   const liberado=podeVer(st,perfil,tab);
   return html`<${EDIT.Provider} value=${podeEditar}><div class="shell">
