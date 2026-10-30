@@ -353,6 +353,54 @@ select.cell{cursor:pointer}
 .fx{display:flex;flex-direction:column;gap:6px}.fx-r{display:grid;grid-template-columns:52px 1fr 22px 1fr 22px;align-items:center;gap:6px}.fx-r b{font-size:12px;text-align:right}
 .fx-b{height:10px;border-radius:5px;background:var(--panel2);overflow:hidden}.fx-b i{display:block;height:100%;border-radius:5px}
 .cal-j{display:flex;align-items:center;gap:4px}.cal-j img{flex:none;background:rgba(255,255,255,.1);border-radius:50%;padding:1px}.cal-j span{overflow:hidden;text-overflow:ellipsis}
+a.btn{text-decoration:none;color:inherit}a.btn.primary{color:#fff}.alert>.btn{justify-self:end;align-self:center}
+.yt{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;border:1px solid var(--line)}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-capa{all:unset;cursor:pointer;position:absolute;inset:0;display:block}.yt-capa img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .15s}.yt-capa:hover img{opacity:1}.yt-capa:focus-visible{outline:2px solid var(--red);outline-offset:-2px}
+.yt-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:40px;border-radius:12px;background:#e3262c;color:#fff;display:grid;place-items:center;font-size:18px;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.yt-t{position:absolute;left:0;right:0;bottom:0;padding:18px 12px 8px;background:linear-gradient(transparent,rgba(0,0,0,.8));color:#fff;font-size:12.5px;font-weight:600}
+.yt-vazio{display:grid;place-items:center;color:var(--mute);font-size:13px}
+.vmodal{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:16px}
+.vmodal-box{background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:14px;width:min(960px,100%);max-height:calc(100vh - 32px);overflow:auto;display:flex;flex-direction:column;gap:12px}
+.vmodal-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.live-grid{grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:14px;align-items:start}@media (max-width:1000px){.live-grid{grid-template-columns:1fr}}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#e3262c;margin-right:6px;box-shadow:0 0 0 0 rgba(227,38,44,.6);animation:pulsa 1.6s infinite}
+@keyframes pulsa{70%{box-shadow:0 0 0 8px rgba(227,38,44,0)}100%{box-shadow:0 0 0 0 rgba(227,38,44,0)}}
+@media (prefers-reduced-motion:reduce){.live-dot{animation:none}}
+.tcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:12px}
+.tcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.tcard-img{all:unset;cursor:pointer;position:relative;aspect-ratio:16/9;background:#000;display:grid;place-items:center}.tcard-img img{width:100%;height:100%;object-fit:cover;opacity:.85}.tcard-img:hover img{opacity:1}.tcard-img:disabled{cursor:default}.tcard-img .yt-play{width:46px;height:32px;font-size:14px}
+.tcard-b{padding:10px 12px 4px;display:flex;flex-direction:column;gap:2px;font-size:12.5px;color:var(--mute)}.tcard-b b{color:var(--fg);font-size:14px}
+.tcard-a{display:flex;gap:6px;padding:8px 12px 12px;margin-top:auto}
+.jmid{display:flex;flex-direction:column;gap:14px}.jmid section{display:flex;flex-direction:column;gap:6px}
+.jmid-ed{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:8px;margin-top:8px}.jmid-ed label{display:flex;flex-direction:column;gap:3px}
+.campo{background:repeating-linear-gradient(0deg,#1f6b3a 0 36px,#1c6236 36px 72px);border:2px solid rgba(255,255,255,.35);border-radius:10px;padding:12px 6px;display:flex;flex-direction:column;gap:12px;position:relative}
+.campo::before{content:"";position:absolute;left:8%;right:8%;top:50%;border-top:1px solid rgba(255,255,255,.3)}
+.campo-l{display:flex;justify-content:space-around;gap:4px;position:relative}
+.campo-p{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;flex:1;max-width:96px}
+.campo-p i{font-style:normal;width:30px;height:30px;border-radius:50%;background:#fff;color:#c4161c;display:grid;place-items:center;font-weight:800;font-size:11px;font-family:var(--f-display);border:2px solid #c4161c}
+.campo-p b{font-size:10.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.8);text-align:center;line-height:1.15;overflow:hidden;text-overflow:ellipsis;max-width:100%;white-space:nowrap}
+.foto-at{border-radius:50%;object-fit:cover;object-position:top;background:var(--panel2);border:1px solid var(--line2);flex:none}
+.foto-av{border-radius:50%;flex:none}
+.atl-card{all:unset;box-sizing:border-box;cursor:pointer;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0;transition:border-color .15s}
+.atl-card:hover{border-color:var(--red)}.atl-card:focus-visible{outline:2px solid var(--red)}
+.atl-n{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}.atl-n b{display:block;font-size:17px}
+.stars{display:inline-flex;align-items:center;gap:2px}.stars i{width:12px;height:12px;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:var(--line2)}.stars i.on{background:#f5c518}.stars i.half{background:linear-gradient(90deg,#f5c518 50%,var(--line2) 50%)}.stars b{font-size:12px;margin-left:4px}
+.nota{display:inline-grid;place-items:center;min-width:34px;padding:2px 5px;border-radius:5px;color:#071018;font-weight:800;font-size:12px;font-family:var(--f-mono)}
+.th-ord{all:unset;cursor:pointer;font:inherit;color:inherit;white-space:nowrap}.th-ord:focus-visible{outline:2px solid var(--red)}
+.lnk{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;min-width:0}.lnk span{display:flex;flex-direction:column;line-height:1.15;min-width:0}.lnk small{color:var(--mute);font-size:10.5px}.lnk:hover b{color:var(--red-ink)}
+.perfil-top{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start}
+.perfil-dados{display:flex;flex-direction:column;gap:8px;min-width:0}
+.perfil-dados dl{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px 14px;margin:4px 0}.perfil-dados dt{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}.perfil-dados dd{margin:0;font-size:13.5px;font-weight:600}
+.perfil-av{display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:150px}.perfil-av>div{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+@media (max-width:760px){.perfil-top{grid-template-columns:1fr;justify-items:center;text-align:center}.perfil-av{align-items:center}.perfil-av>div{align-items:center}.perfil-dados dl{text-align:left}}
+.tag-f{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,transparent)}.tag-r{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+.rs-form{width:min(720px,100%)}.rs-form label{display:flex;flex-direction:column;gap:4px}
+.rs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:4px}
+.rs-leg{font-size:12px;color:var(--mute)}.rs-leg p{margin:4px 0}.rs-leg summary{cursor:pointer}
+.cmp-atl{display:flex;flex-direction:column;gap:10px}.cmp-r{display:grid;grid-template-columns:150px repeat(3,minmax(0,1fr));gap:10px;align-items:center}.cmp-c{display:grid;grid-template-columns:1fr 46px;gap:6px;align-items:center}.cmp-c b{font-size:12px;text-align:right}
+@media (max-width:640px){.cmp-r{grid-template-columns:1fr}}
+@media print{.rail,.mhead,.toast,.ro-hide,.btn,.seg{display:none!important}.main{padding:0!important}body{background:#fff!important;color:#000!important}.card{box-shadow:none!important;break-inside:avoid}}
 .h2h{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:8px}
 .h2h-i{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--panel2)}
 .h2h-i b{font-size:13px}
@@ -516,7 +564,7 @@ function padrao(){
   elenco.forEach(j=>{ decisoes[j.id] = j.status==="Emprestado" ? "Avaliar" : "Manter"; });
   return {v:3, temporada:2026, elenco, bench:benchPadrao(), decisoes, alvos:[], comissao:[], orc2026:"", orc2027:"", comp2027:"Série C", incluirNeg:false,
     eventos:[], psr:[], pse:[], cmj:[], gps:[], atend:[], lesoes:[], sessoes:[], modelos:[], nutri:[], hidrat:[], planos:[],
-    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true}};
+    tarefas:[], relatorios:[], adversarios:adversariosPadrao(), jogos:jogosPadrao(), arbitros:[], cartoes:[], metas:[], fin:[], sombra:{}, config:{limiteAmarelos:3, competicao:"Série C", advSeed:true, jogosSeed:true, statsSeed:true, wsSeed:true, wsPacote:!!PACOTE(), live:{jogo:"",treino:""}}, treinos:treinosPadrao(), relScout:[], scoutAtl:{}};
 }
 const SAUDE = ["Liberado","Sob observação","Em transição","Não liberado"];
 const SAUDE_COR = {"Liberado":"var(--good)","Sob observação":"var(--warn)","Em transição":"var(--info)","Não liberado":"var(--bad)"};
@@ -563,6 +611,9 @@ function migrar(s){
   o.config.jogosSeed=true;
   if(!(s.config&&s.config.statsSeed)) o.jogos=(o.jogos||[]).map(comFS);
   o.config.statsSeed=true;
+  if(!(s.config&&s.config.wsSeed)){ o.jogos=(o.jogos||[]).map(comWS); if(!(s.treinos||[]).length) o.treinos=treinosPadrao(); }
+  o.config.wsSeed=true;
+  if(PACOTE()&&!o.config.wsPacote){ try{ Object.assign(o,aplicarPacote(o,PACOTE()).s); }catch(e){} }
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
 }
@@ -1121,7 +1172,7 @@ const COMP_INFO = {
   "Copa do Brasil":{nome:"Copa do Brasil 2026",status:"Eliminado na 2ª fase, nos pênaltis",cartoes:"—"},
   "Pernambucano":{nome:"Campeonato Pernambucano 2026",status:"Eliminado na semifinal",cartoes:"29 amarelos · 1 segundo amarelo · 1 vermelho"},
 };
-function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})).map(comFS); }
+function jogosPadrao(){ return JOGOS_2026.map(([data,hora,competicao,fase,mando,adversario,gp,gc,pen])=>({id:"jg-"+data,data,hora,competicao,fase,mando,adversario,gp:String(gp),gc:String(gc),pen,xg:"",xga:"",posse:"",fin:"",fonte:"oGol"})).map(comFS).map(comWS); }
 const COMPS = ["Série C","Copa do Brasil","Pernambucano"];
 const resJ = j => n(j.gp)==null||n(j.gc)==null ? null : n(j.gp)>n(j.gc)?"V":n(j.gp)<n(j.gc)?"D":"E";
 const COR_RES = {V:"var(--good)",E:"var(--warn)",D:"var(--bad)"};
@@ -1182,7 +1233,7 @@ const golTxt = (j,{e,i}) => `${e[3]} ${e[2]}'${e[1]==="GP"?" (pên.)":e[1]==="GC
 function JogoCard({st,j,up}){
   const [aberto,setAberto]=useState(false);
   const r=resJ(j); const adv=advDe(st,j.adversario);
-  const gS=golsDe(j,1), gA=golsDe(j,0); const detalhe=(j.eventos||[]).length||j.stats;
+  const gS=golsDe(j,1), gA=golsDe(j,0); const detalhe=(j.eventos||[]).length||j.stats||j.pre||j.pos||j.escalacao;
   return html`<div class="jogo" style=${{borderLeftColor:r?COR_RES[r]:"var(--line2)"}}>
     <div class="jogo-top"><div class="jogo-d"><b>${fmtD(j.data)}</b><span>${j.hora||""}</span></div>
       <span class="chip">${j.competicao}${j.fase?" · "+(FASE_JOGO[j.fase]||j.fase):""}</span><span class="chip">${j.mando==="Casa"?"Casa":"Fora"}</span>
@@ -1193,7 +1244,7 @@ function JogoCard({st,j,up}){
       <span class="jogo-t adv">${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${26}/>`:html`<span class="club">${siglaDe(j.adversario)}</span>`}<b>${j.adversario||"A definir"}</b></span>
     </div>
     ${gS.length||gA.length?html`<div class="jogo-g"><div>${gS.map(g=>html`<span key=${g.i}>${golTxt(j,g)}</span>`)}</div><div class="r">${gA.map(g=>html`<span key=${g.i}>${golTxt(j,g)}</span>`)}</div></div>`:null}
-    ${detalhe?html`<button class="jogo-mais" aria-expanded=${aberto} onClick=${()=>setAberto(!aberto)}>${aberto?"Ocultar estatísticas":"Estatísticas e lances"}<span aria-hidden="true">${aberto?"▴":"▾"}</span></button>`:null}
+    ${detalhe?html`<button class="jogo-mais" aria-expanded=${aberto} onClick=${()=>setAberto(!aberto)}>${aberto?"Ocultar detalhes":(j.pos||j.pre||j.escalacao?"Vídeos, escalação e estatísticas":"Estatísticas e lances")}<span aria-hidden="true">${aberto?"▴":"▾"}</span></button>`:null}
     ${aberto?html`<${JogoDetalhe} st=${st} j=${j} up=${up}/>`:null}
   </div>`;
 }
@@ -1206,6 +1257,7 @@ function JogoDetalhe({st,j,up}){
   const setAssist=(i,v)=>up&&up(S=>({...S,jogos:S.jogos.map(x=>x.id===j.id?{...x,assist:{...(x.assist||{}),[i]:v}}:x)}));
   const golsSC=golsDe(j,1).filter(g=>g.e[1]!=="GC");
   return html`<div class="jdet">
+    ${j.pre||j.pos||j.escalacao||up?html`<${JogoMidia} j=${j} up=${up}/>`:null}
     <div class="jdet-info">${j.arbitro?html`<span><b>Árbitro</b>${j.arbitro}</span>`:null}${j.estadio?html`<span><b>Estádio</b>${j.estadio}</span>`:null}${n(j.publico)?html`<span><b>Público</b>${Number(j.publico).toLocaleString("pt-BR")}</span>`:null}</div>
     ${linhas.length?html`<div class="jstats">${linhas.map(([l,[a,b],u])=>{ const t=(a||0)+(b||0)||1; return html`<div key=${l} class="jst">
       <b class="num">${a}${u||""}</b><span>${l}</span><b class="num r">${b}${u||""}</b>
@@ -1340,6 +1392,406 @@ function EstatJogos({st}){
         ${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${30}/>`:html`<span class="club">${siglaDe(x.nome)}</span>`}
         <div style=${{minWidth:0,flex:1}}><b>${x.nome}</b><div class="note">${x.r.J}J · ${x.r.V}V ${x.r.E}E ${x.r.D}D · ${x.r.gp}–${x.r.gc}</div></div><${Forma} f=${x.js.slice().sort((a,b)=>a.data.localeCompare(b.data)).map(resJ)}/></div>`; })}</div></div>
     <p class="note">Lances, posse, finalizações, árbitro e público importados do Flashscore em 29/10/2026. Jogos em que o Flashscore não publicou finalizações ficam fora das médias de finalização.</p>
+  </div>`;
+}
+
+/* Dados importados do WilScout (análises, escalações, treinos, elenco 2026) e do Sofascore (estatísticas e notas dos atletas), consulta em 29/10/2026 */
+const WS_FOTO="https://www.wilscout.com.br/cadastro/fotos/";
+const SOFA_K=["appearances","matchesStarted","minutesPlayed","rating","goals","assists","totalShots","shotsOnTarget","keyPasses","accuratePasses","totalPasses","successfulDribbles","totalDuelsWon","aerialDuelsWon","ballRecovery","clearances","wasFouled","fouls","yellowCards","redCards","saves","goalsConceded","cleanSheet","offsides"];
+const ATLETAS_2026=[{"nome":"Felipe Alves","alt":"185","pos":"Goleiro","peso":"79","pe":"C","nasc":"1988-05-21","cid":"São Paulo","uf":"SP","pais":"Brasil","foto":"FELIPE_ALVES1","zz":"84782","sofa":927704},{"nome":"Felipe Henrique","alt":"186","pos":"Goleiro","peso":"80","pe":"D","nasc":"2009-01-19","cid":"Recife","uf":"PE","pais":"Brasil","foto":"c6c4c08","zz":"2778548"},{"nome":"Gabriel Souza","alt":"193","pos":"Goleiro","peso":"90","pe":"D","nasc":"2004-08-03","cid":"Vila Velha","uf":"ES","pais":"Brasil","foto":"GABRIEL","zz":"790207","sofa":1117033,"st":{"C":[9,8,799,7.09,0,0,0,0,0,79,117,0,10,7,34,5,3,1,1,0,26,6,3,0],"P":[1,1,99,7.6,0,0,0,0,0,14,17,0,2,0,7,0,2,0,0,0,5,2,0,0],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,0,1,null]}},{"nome":"Rokenedy","alt":"186","pos":"Goleiro","peso":"83","pe":"D","nasc":"2002-08-16","cid":"Itabaiana","uf":"SE","pais":"Brasil","foto":"ROKENEDY","zz":"684066","sofa":1047757,"st":{"C":[1,1,90,6.5,0,0,0,0,0,14,17,0,1,0,5,0,0,0,0,0,2,2,0,0],"P":[10,10,997,7.43,0,0,0,0,0,163,185,0,8,5,49,6,2,0,3,0,41,10,4,0]}},{"nome":"Thiago Coelho","alt":"186","pos":"Goleiro","peso":"85","pe":"D","nasc":"1995-05-26","cid":"Cascavel","uf":"PR","pais":"Brasil","foto":"THIAGO_COELHO","zz":"503590","sofa":1019248,"st":{"C":[16,16,1358,7.04,0,0,0,0,0,153,224,0,10,9,67,13,2,1,0,1,55,10,6,0]}},{"nome":"Thiago Henrique","alt":"185","pos":"Goleiro","peso":"79","pe":"C","nasc":"2003-07-11","cid":"Fernandópolis","uf":"SP","pais":"Brasil","foto":"THIAGO_HENRIQUE","zz":"895032","sofa":1589517},{"nome":"Denis","alt":"190","pos":"Zagueiro","peso":"88","pe":"C","nasc":"2005-12-24","cid":"Recife","uf":"PE","pais":"Brasil","foto":"DENIS1","zz":"982867","sofa":2638196},{"nome":"Edson Miranda","alt":"184","pos":"Zagueiro","peso":"86","pe":"D","nasc":"1999-04-18","cid":"Leme","uf":"SP","pais":"Brasil","foto":"EDSON_MIRANDA","zz":"547090","sofa":1175544,"st":{"C":[18,12,1184,6.95,1,0,6,1,0,378,439,2,116,45,139,65,10,18,7,0,0,10,3,0]}},{"nome":"Eurico","alt":"182","pos":"Zagueiro","peso":"79","pe":"D","nasc":"1994-04-16","cid":"Santa Luzia","uf":"MG","pais":"Brasil","foto":"EURICO1","zz":"259967","sofa":551762,"st":{"C":[21,21,1796,6.9,2,0,15,2,3,643,781,2,149,57,196,42,28,12,3,0,0,13,5,0],"P":[9,9,847,7.06,1,1,4,2,2,348,395,0,50,20,93,39,8,7,2,0,0,0,0,0],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Harley","alt":"183","pos":"Zagueiro","peso":"80","pe":"D","nasc":"2006-04-25","cid":"São Luiz","uf":"MA","pais":"Brasil","foto":"HARLEI1","zz":"1292977","sofa":1633525},{"nome":"Ianson","alt":"190","pos":"Zagueiro","peso":"80","pe":"D","nasc":"1995-07-15","cid":"Caxias do Sul","uf":"RS","pais":"Brasil","foto":"IANSON1","zz":"333287","sofa":870789,"st":{"C":[18,18,1607,7.19,0,0,4,2,4,656,748,3,114,44,175,76,9,16,3,0,0,11,5,1],"P":[6,5,486,6.7,0,0,0,0,0,148,166,0,29,12,39,30,2,3,1,0,0,0,0,1]}},{"nome":"Janderson","alt":"188","pos":"Zagueiro","peso":"87","pe":"D","nasc":"2006-04-12","cid":"Salvador","uf":"BA","pais":"Brasil","foto":"JANDERSON","zz":"1353281"},{"nome":"Jeferson Bahia","alt":"192","pos":"Zagueiro","peso":"85","pe":"C","nasc":"1992-05-28","cid":"Salvador","uf":"BA","pais":"Brasil","foto":"JEFERSON_BAHIA","zz":"267645","sofa":842290,"st":{"C":[3,3,245,6.63,0,0,0,0,0,90,110,0,12,2,29,5,0,5,0,0,0,2,1,0]}},{"nome":"Matheus Vinícius","alt":"192","pos":"Zagueiro","peso":"83","pe":"C","nasc":"1999-03-08","cid":"Jaboticabal","uf":"SP","pais":"Brasil","foto":"MATHEUS_VINICIUS","zz":"711993","sofa":1640677,"st":{"C":[15,15,1275,7.06,3,2,15,8,5,327,437,3,138,48,142,63,9,22,3,0,0,11,6,0],"P":[8,6,674,6.98,2,0,4,2,1,223,280,1,55,16,69,31,5,8,2,2,0,0,0,0],"B":[1,0,10,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"William Alves","alt":"188","pos":"Zagueiro","peso":"89","pe":"D","nasc":"1987-04-29","cid":"Marília","uf":"SP","pais":"Brasil","foto":"WILLIAMALVES1","zz":"86986","sofa":156322,"st":{"C":[20,20,1753,6.92,0,1,8,1,0,603,677,0,104,42,194,49,2,19,6,0,0,9,7,3],"P":[3,3,236,6.9,0,0,2,2,0,110,116,0,14,6,23,7,0,3,0,0,0,0,0,0],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Alex Ruan","alt":"171","pos":"Lateral Esquerdo","peso":"74","pe":"C","nasc":"1993-02-05","cid":"Belém","uf":"PA","pais":"Brasil","foto":"ALEX_RUAN","zz":"309344","sofa":871073,"st":{"C":[17,9,818,6.69,0,1,8,3,10,254,319,6,77,9,64,21,7,20,4,1,0,7,0,0],"P":[8,7,653,6.83,0,0,2,0,5,175,223,10,54,10,54,16,7,10,1,0,0,0,0,0],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"David Cabeça","alt":"177","pos":"Lateral Esquerdo","peso":"69","pe":"C","nasc":"2006-01-26","cid":"Jaboatão dos Guararapes","uf":"PE","pais":"Brasil","foto":"DAVID_CABECA","zz":"979716","sofa":1858830},{"nome":"Rodrigues","alt":"169","pos":"Lateral Esquerdo","peso":"69","pe":"C","nasc":"1999-12-27","cid":"Goiânia","uf":"GO","pais":"Brasil","foto":"RODRIGUES","zz":"508964","sofa":1008010,"st":{"C":[1,0,10,6.8,0,0,2,1,0,2,2,0,2,0,0,0,0,0,0,0,0,0,null,0],"P":[7,4,443,6.71,0,0,2,2,5,171,223,3,28,0,25,10,1,10,1,0,0,0,0,0]}},{"nome":"Zé Mário","alt":"176","pos":"Lateral Esquerdo","peso":"80","pe":"C","nasc":"1992-02-20","cid":"Medianeira","uf":"PR","pais":"Brasil","foto":"ZE_MARIO","zz":"209760","sofa":220359,"st":{"C":[14,8,738,6.92,0,1,6,1,14,325,398,5,59,6,80,12,12,12,2,0,0,3,0,1]}},{"nome":"Israel","alt":"180","pos":"Lateral Direito","peso":"86","pe":"D","nasc":"1993-12-05","cid":"Salvador","uf":"BA","pais":"Brasil","foto":"ISRAEL","zz":"505527","sofa":986376,"st":{"C":[4,4,293,6.8,0,1,3,0,1,131,171,1,33,8,38,6,5,6,0,0,0,null,null,0],"P":[9,7,683,6.68,1,0,9,2,6,167,226,6,67,9,46,19,8,17,2,0,0,0,0,2],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Pedro Costa","alt":"185","pos":"Lateral Direito","peso":"79","pe":"D","nasc":"1993-08-17","cid":"Cabo Frio","uf":"RJ","pais":"Brasil","foto":"PEDRO_COSTA","zz":"456801","sofa":868018,"st":{"C":[15,13,1153,6.91,1,1,8,2,21,336,432,8,86,14,86,25,12,9,0,0,0,11,3,0],"P":[9,4,529,6.81,0,0,0,0,10,163,217,11,50,8,49,7,2,3,0,0,0,0,0,0]}},{"nome":"Thiago Ennes","alt":"178","pos":"Lateral Direito","peso":"80","pe":"D","nasc":"1996-03-05","cid":"Magé","uf":"RJ","pais":"Brasil","foto":"THIAGO_ENNES","zz":"432177","sofa":843077,"st":{"C":[14,9,742,6.93,0,0,4,0,12,211,286,4,59,7,62,21,11,3,0,0,0,5,3,0],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Tom","alt":"178","pos":"Lateral Direito","peso":"77","pe":"D","nasc":"2004-09-15","cid":"Belo Horizonte","uf":"MG","pais":"Brasil","foto":"HAMILTON","zz":"790114"},{"nome":"Andrey","alt":"178","pos":"Volante","peso":"82","pe":"D","nasc":"1998-02-15","cid":"Rio de Janeiro","uf":"RJ","pais":"Brasil","foto":"ANDREY","zz":"448981","sofa":822513,"st":{"C":[5,0,140,6.72,0,0,3,1,2,49,55,0,15,2,17,4,2,6,2,0,0,2,null,0],"P":[7,4,280,6.56,0,0,5,0,2,139,155,0,26,6,34,8,3,10,3,2,0,0,0,0]}},{"nome":"Fabinho","alt":"181","pos":"Volante","peso":"76","pe":"D","nasc":"1986-11-19","cid":"Cruzeiro","uf":"SP","pais":"Brasil","foto":"FABINHO","zz":"217525","sofa":795254,"st":{"C":[17,5,557,6.69,1,0,5,3,3,140,167,1,60,19,38,11,7,6,2,0,0,5,null,0]}},{"nome":"Gabriel Galhardo","alt":"173","pos":"Volante","peso":"65","pe":"D","nasc":"1994-02-06","cid":"São João del-Rei","uf":"MG","pais":"Brasil","foto":"GABRIEL_GALHARDO","zz":"249675","sofa":1105287,"st":{"P":[9,1,213,6.77,0,0,2,0,3,115,127,1,27,0,24,0,6,1,1,0,0,0,0,0],"B":[1,0,10,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Léo Costa","alt":"181","pos":"Volante","peso":"81","pe":"D","nasc":"1995-11-12","cid":"Cruzeiro","uf":"SP","pais":"Brasil","foto":"LEO_COSTA","zz":"195898","sofa":874035,"st":{"C":[3,0,107,6.63,0,0,0,0,0,14,21,0,7,2,11,5,2,4,0,0,0,2,null,0]}},{"nome":"Lucas Fabiel","alt":"177","pos":"Volante","peso":"71","pe":"D","nasc":"2006-03-05","cid":"Serra Talhada","uf":"PE","pais":"Brasil","foto":"LUCAS_FABIEL","zz":"1369697","sofa":1633778},{"nome":"Pedro Favela","alt":"180","pos":"Volante","peso":"85","pe":"D","nasc":"1999-07-10","cid":"Boa Vista","uf":"RR","pais":"Brasil","foto":"PEDRO_FAVELA","zz":"588247","sofa":1465704,"st":{"C":[23,22,1893,7.01,3,0,47,10,9,622,722,13,195,48,189,44,17,53,5,0,0,13,null,0],"P":[11,6,736,6.64,0,0,9,2,1,284,326,3,51,8,61,18,9,17,3,0,0,0,0,0],"B":[1,1,80,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Silva","alt":"183","pos":"Volante","peso":"84","pe":"D","nasc":"1995-09-07","cid":"Cabedelo","uf":"PB","pais":"Brasil","foto":"SILVA","zz":"460472","sofa":795258,"st":{"C":[19,15,1230,6.69,0,0,13,4,2,290,384,3,89,10,116,15,7,31,2,0,0,6,null,1]}},{"nome":"Wagner Balotelli","alt":"182","pos":"Volante","peso":"86","pe":"D","nasc":"1992-09-01","cid":"Brasília","uf":"DF","pais":"Brasil","foto":"WAG_BALOTELLI","zz":"621552","sofa":1102255,"st":{"C":[4,4,336,6.9,0,0,1,0,7,113,143,4,50,13,50,1,9,10,2,2,0,null,null,0],"P":[11,11,999,6.73,0,0,9,0,4,400,483,8,116,22,100,21,20,28,4,0,0,0,0,1],"B":[1,1,80,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Mateus Castilho","alt":"176","pos":"Meia","peso":"81","pe":"D","nasc":"2005-02-24","cid":"Uberlândia","uf":"MG","pais":"Brasil","foto":"CASTILHO","zz":"866587","sofa":1631784,"st":{"P":[4,0,50,6.58,0,0,1,0,0,10,11,0,5,0,2,0,4,1,0,0,0,0,0,0]}},{"nome":"Patrick Alan","alt":"169","pos":"Meia","peso":"72","pe":"C","nasc":"1994-12-24","cid":"Ouro Preto","uf":"MG","pais":"Brasil","foto":"PATRICK_ALLAN","zz":"391700","sofa":870651,"st":{"C":[10,2,306,6.72,0,0,8,3,7,113,136,3,22,4,17,0,3,2,0,0,0,1,null,0],"P":[11,11,937,7.26,3,1,17,12,18,260,310,4,38,5,23,3,10,8,1,0,0,0,0,1],"B":[1,1,20,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Régis","alt":"170","pos":"Meia","peso":"73","pe":"C","nasc":"1992-11-30","cid":"Jales","uf":"SP","pais":"Brasil","foto":"REGIS_SALMAZZO","zz":"137651","sofa":335365,"st":{"C":[4,4,209,6.55,0,0,3,1,2,30,46,5,11,0,10,0,4,1,1,0,0,null,null,0]}},{"nome":"Vitinho","alt":"179","pos":"Meia","peso":"64","pe":"C","nasc":"2004-04-28","cid":"Aracaju","uf":"SE","pais":"Brasil","foto":"VITINHO1","zz":"1046388","sofa":1469518,"st":{"C":[15,12,1042,6.89,0,1,24,8,13,291,344,16,83,4,67,7,26,10,4,0,0,10,null,0],"P":[9,8,622,6.96,1,0,15,8,7,140,169,13,36,3,31,6,8,13,1,0,0,0,0,0],"B":[1,1,90,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Willian Júnior","alt":"173","pos":"Meia","peso":"80","pe":"D","nasc":"1998-11-28","cid":"São Mateus","uf":"ES","pais":"Brasil","foto":"WILLIANJR1","zz":"620654","sofa":1187255,"st":{"C":[5,1,174,6.82,0,0,1,0,8,52,70,3,9,0,12,0,1,4,0,0,0,0,null,0],"P":[11,6,714,7.22,1,4,22,7,17,198,255,16,48,2,21,0,12,4,0,0,0,0,0,1],"B":[1,0,70,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Everaldo","alt":"172","pos":"Extremo","peso":"69","pe":"D","nasc":"1994-05-28","cid":"Recife","uf":"PE","pais":"Brasil","foto":"EVERALDO","zz":"388447","sofa":923951,"st":{"C":[21,20,1437,7.12,1,3,28,8,34,366,452,31,127,11,56,5,43,19,7,0,0,10,null,5]}},{"nome":"Marquinhos","alt":"181","pos":"Extremo","peso":"70","pe":"D","nasc":"2003-03-01","cid":"São Luiz","uf":"MA","pais":"Brasil","foto":"MARQUINHOS","zz":"609348"},{"nome":"Matheus Régis","alt":"182","pos":"Extremo","peso":"74","pe":"D","nasc":"1999-08-11","cid":"Ingá","uf":"PB","pais":"Brasil","foto":"MATHEUS_REGIS","zz":"741161","sofa":1067451,"st":{"C":[3,2,193,7.03,0,0,9,2,2,69,83,10,28,2,11,1,6,0,0,0,0,3,null,0],"P":[5,2,189,6.82,0,0,7,3,3,34,42,3,22,1,8,1,5,5,0,0,0,0,0,2]}},{"nome":"Nilton","alt":"174","pos":"Extremo","peso":"70","pe":"D","nasc":"2002-11-22","cid":"Piaçabuçu","uf":"AL","pais":"Brasil","foto":"NILTON_BATISTA","zz":"1230296","sofa":2579838,"st":{"C":[3,0,88,6.57,0,0,1,1,1,19,23,3,13,1,3,1,4,2,0,0,0,0,null,1]}},{"nome":"Renato","alt":"181","pos":"Extremo","peso":"72","pe":"D","nasc":"1990-01-19","cid":"Maceió","uf":"AL","pais":"Brasil","foto":"RENATO","zz":"143024","sofa":243111,"st":{"C":[19,13,1190,6.83,3,1,16,4,14,253,337,13,98,24,76,20,15,8,2,1,0,7,0,2],"P":[7,4,373,6.9,2,0,6,4,2,60,73,5,30,2,18,1,17,0,0,0,0,0,0,2],"B":[1,1,65,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Robinho","alt":"168","pos":"Extremo","peso":"70","pe":"D","nasc":"1995-01-19","cid":"Madalena","uf":"CE","pais":"Brasil","foto":"ROBINHO","zz":"404871","sofa":870764,"st":{"C":[1,0,10,6.3,0,0,0,0,0,0,1,0,4,0,1,0,1,0,0,0,0,0,null,0],"P":[5,1,135,6.76,0,0,6,2,3,24,30,4,13,1,6,1,1,1,0,0,0,0,0,0]}},{"nome":"Ronald","alt":"162","pos":"Extremo","peso":"64","pe":"D","nasc":"1997-02-05","cid":"Bom Jesus do Itabapoana","uf":"RJ","pais":"Brasil","foto":"RONALD","zz":"555398","sofa":923057,"st":{"C":[22,22,1685,7.06,2,4,19,8,24,236,328,59,195,12,66,6,58,15,2,0,0,11,null,7],"B":[2,2,180,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,1,0,null,null,null,null]}},{"nome":"Ryan","alt":"181","pos":"Extremo","peso":"77","pe":"C","nasc":"2007-08-02","cid":"Belford Roxo","uf":"RJ","pais":"Brasil","foto":"RYAN","zz":"968182","sofa":1828969,"st":{"P":[1,0,13,6.3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0]}},{"nome":"Vini Hora","alt":"182","pos":"Extremo","peso":"76","pe":"D","nasc":"2005-07-22","cid":"Rio de Janeiro","uf":"RJ","pais":"Brasil","foto":"VINI_HORA","zz":"1003023","sofa":1633592,"st":{"C":[2,0,80,6.4,0,0,1,0,2,17,20,1,7,0,6,2,2,2,0,0,0,0,null,1],"P":[5,0,86,6.46,0,0,1,0,1,12,14,1,7,2,3,0,2,2,0,0,0,0,0,1]}},{"nome":"Ariel Nahuelpán","alt":"187","pos":"Atacante","peso":"87","pe":"C","nasc":"1987-10-15","cid":"Ciudad Evita","uf":"","pais":"Argentina","foto":"ARIEL","zz":"48090","sofa":77558,"st":{"B":[1,0,26,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Eron","alt":"175","pos":"Atacante","peso":"85","pe":"D","nasc":"1998-07-16","cid":"Sobradinho","uf":"BA","pais":"Brasil","foto":"ERON","zz":"432184","sofa":822525,"st":{"C":[18,10,908,6.61,3,0,17,6,5,92,127,5,62,8,28,2,12,16,1,0,0,5,null,5],"B":[1,1,64,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Quirino","alt":"181","pos":"Atacante","peso":"89","pe":"D","nasc":"1993-10-14","cid":"Cambará","uf":"PR","pais":"Brasil","foto":"QUIRINO","zz":"358703","sofa":1086464,"st":{"C":[14,7,743,6.59,1,0,14,6,2,79,104,3,77,27,18,12,22,22,0,0,0,9,null,1],"P":[11,11,995,7.09,4,1,28,12,8,115,135,10,75,17,25,11,17,16,3,0,0,0,0,6]}},{"nome":"Tiago Marques","alt":"191","pos":"Atacante","peso":"86","pe":"D","nasc":"1988-03-03","cid":"Jataí","uf":"GO","pais":"Brasil","foto":"TIAGO_MARQUES","zz":"242030","sofa":866350,"st":{"C":[17,12,912,6.55,1,1,9,3,2,54,67,5,60,12,25,5,17,12,1,0,0,7,null,6]}},{"nome":"Matheus Cadorini","pos":"Atacante","extra":1,"sofa":1105596,"st":{"C":[5,0,112,6.58,0,0,2,0,2,10,20,2,26,9,3,1,4,4,1,0,0,1,null,0],"B":[2,1,66,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Matheus Melo","pos":"Atacante","extra":1,"sofa":1856447,"st":{"C":[1,0,31,6.6,0,0,0,0,0,7,11,1,6,2,3,0,3,3,0,0,0,0,null,0]}},{"nome":"Alex Sandro","pos":"Atacante","extra":1,"sofa":936929},{"nome":"Guilherme Barthel","pos":"Atacante","extra":1,"sofa":1633929},{"nome":"Jhoninha","pos":"Atacante","extra":1,"sofa":979876,"st":{"C":[2,0,34,6.75,0,0,2,1,0,4,6,1,4,0,1,1,2,2,0,0,0,0,null,0],"B":[2,2,162,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Leo Carvalho","pos":"Atacante","extra":1,"sofa":2028071,"st":{"B":[1,1,67,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"João Pedro","pos":"Meio-campo","extra":1,"sofa":931510,"st":{"C":[5,2,195,6.54,0,0,3,1,3,44,55,2,10,0,8,1,1,5,0,0,0,2,null,1]}},{"nome":"Cassiano Bouzon","pos":"Meio-campo","extra":1,"sofa":1885685,"st":{"C":[5,0,94,6.5,0,0,6,2,1,26,31,4,9,1,2,0,2,1,1,0,0,0,null,0],"B":[2,2,149,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,0,0,null,null,null,null]}},{"nome":"Arilson","pos":"Meio-campo","extra":1,"sofa":922580,"st":{"C":[7,1,189,6.66,0,0,1,0,1,65,78,0,14,2,20,11,1,6,2,0,0,2,null,0],"B":[2,2,135,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,1,0,null,null,null,null]}},{"nome":"Marcos André","pos":"Meio-campo","extra":1,"sofa":1523834,"st":{"C":[7,1,251,6.91,2,0,8,5,1,60,82,2,31,13,20,1,7,7,2,0,0,2,null,1],"P":[6,5,410,7.08,0,0,15,6,3,70,89,4,37,9,25,6,8,8,2,0,0,0,0,1],"B":[3,2,177,null,0,null,null,null,null,null,null,null,null,null,null,null,null,null,1,0,null,null,null,null]}}];
+const WS_ESC={"2026-01-11":{"f":"4-2-3-1","t":["Rokenedy","Rodrigues","William Alves","Eurico","Pedro Costa","Wagner Balotelli","Andrey","Renato","Patrick Alan","Robinho","Quirino"],"r":["Felipe Alves","Willian Júnior","Matheus Régis","Matheus Vinícius","Israel","Pedro Favela","David Cabeça","Gabriel Galhardo","Vitinho","Harley","Vini Hora","Ryan"]},"2026-01-31":{"f":"4-2-3-1","t":["Rokenedy","Alex Ruan","Matheus Vinícius","Eurico","Israel","Wagner Balotelli","Pedro Favela","Willian Júnior","Patrick Alan","Vitinho","Quirino"],"r":["Vini Hora","Ianson","Pedro Costa","Andrey","Felipe Alves","Robinho","Rodrigues","Mateus Castilho","Gabriel Galhardo","Lucas Fabiel","Harley","Matheus Régis"]},"2026-02-05":{"f":"4-2-3-1","t":["Rokenedy","Alex Ruan","Matheus Vinícius","Ianson","Israel","Wagner Balotelli","Pedro Favela","Willian Júnior","Patrick Alan","Vitinho","Quirino"],"r":["Gabriel Souza","Pedro Costa","Rodrigues","Vini Hora","Gabriel Galhardo","Mateus Castilho","Andrey","Harley","Lucas Fabiel"]},"2026-02-08":{"f":"4-2-3-1","t":["Rokenedy","Alex Ruan","Matheus Vinícius","Ianson","Israel","Wagner Balotelli","Gabriel Galhardo","Willian Júnior","Patrick Alan","Vitinho","Quirino"],"r":["Gabriel Souza","Felipe Alves","Pedro Favela","Pedro Costa","Renato","Andrey","Rodrigues","Vini Hora","Mateus Castilho","Harley","Lucas Fabiel"]},"2026-02-11":{"f":"4-2-3-1","t":["Rokenedy","Alex Ruan","Matheus Vinícius","Eurico","Israel","Wagner Balotelli","Pedro Favela","Willian Júnior","Patrick Alan","Vitinho","Quirino"],"r":["Rodrigues","Felipe Alves","Ianson","Andrey","Gabriel Galhardo","Gabriel Souza","Harley","Mateus Castilho","Pedro Costa","Renato","Vini Hora"]},"2026-02-22":{"f":"4-2-3-1","t":["Gabriel Souza","Alex Ruan","Ianson","Eurico","Israel","Wagner Balotelli","Pedro Favela","Willian Júnior","Patrick Alan","Vitinho","Quirino"],"r":["Renato","Pedro Costa","Rokenedy","Andrey","Ryan","Rodrigues","Vini Hora","Matheus Vinícius","William Alves","Mateus Castilho","Gabriel Galhardo"]},"2026-03-05":{"f":"4-2-3-1","t":["Gabriel Souza","Israel","Eurico","William Alves","Pedro Costa","Wagner Balotelli","Pedro Favela","Renato","Patrick Alan","Vitinho","Eron"],"r":["Willian Júnior","Ariel Nahuelpán","Marquinhos","Matheus Vinícius","Gabriel Galhardo","Felipe Alves","Ianson","Quirino","Matheus Régis","Andrey","Alex Ruan"]},"2026-04-06":{"f":"4-2-3-1","t":["Gabriel Souza","Zé Mário","William Alves","Eurico","Israel","Wagner Balotelli","Pedro Favela","Renato","Régis","Ronald","Tiago Marques"],"r":["Thiago Coelho","Silva","Thiago Ennes","Marquinhos","Fabinho","Jeferson Bahia","Patrick Alan","Quirino","Rodrigues","Vitinho","Robinho","Edson Miranda"]},"2026-04-11":{"f":"4-2-3-1","t":["Gabriel Souza","Zé Mário","William Alves","Eurico","Israel","Wagner Balotelli","Pedro Favela","Renato","Régis","Ronald","Tiago Marques"],"r":["Edson Miranda","Eron","Marquinhos","Patrick Alan","Quirino","Silva","Thiago Coelho","Thiago Ennes","Rodrigues","Fabinho","Vitinho","Jeferson Bahia"]},"2026-04-26":{"f":"4-1-4-1","t":["Thiago Coelho","Zé Mário","William Alves","Eurico","Israel","Silva","Ronald","Wagner Balotelli","Fabinho","Régis","Tiago Marques"],"r":["Everaldo","Edson Miranda","Thiago Ennes","Gabriel Souza","Pedro Favela","Alex Ruan","Quirino","Vitinho","Renato","Patrick Alan","Eron","Jeferson Bahia"]}};
+const WS_SCOUT={"Tiago Marques":[["2026-04-26",71,"S67",3.0,3.0,0,0],["2026-04-11",101,"",3.0,3.0,1,0],["2026-04-06",66,"S64",3.0,3.0,0,0]],"Thiago Coelho":[["2026-04-26",101,"",3.0,3.0,0,0]],"Thiago Ennes":[["2026-04-26",30,"E67",null,null,0,0]],"Rokenedy":[["2026-02-11",103,"",2.5,3.0,0,0],["2026-02-08",98,"",2.5,3.0,0,0],["2026-02-05",99,"",2.5,3.0,0,0],["2026-01-31",108,"",2.5,3.0,0,0],["2026-01-11",94,"",2.5,3.0,0,0]],"Eurico":[["2026-04-26",101,"",3.5,4.0,0,0],["2026-04-11",101,"",3.5,4.0,0,0],["2026-04-06",97,"",3.5,4.0,0,0],["2026-03-05",105,"",3.5,4.0,0,0],["2026-02-22",97,"",3.5,4.0,0,0],["2026-02-11",103,"",3.5,4.0,0,0],["2026-01-31",57,"S45",3.5,4.0,1,0],["2026-01-11",94,"",3.5,4.0,0,0]],"Ianson":[["2026-02-22",44,"S44",2.5,2.5,0,0],["2026-02-08",98,"",2.5,2.5,0,0],["2026-02-05",99,"",2.5,2.5,0,0],["2026-01-31",51,"E45",null,null,0,0]],"Matheus Vinícius":[["2026-03-05",17,"E81",2.5,3.5,0,0],["2026-02-22",53,"E44",2.5,3.5,0,0],["2026-02-11",103,"",2.5,3.5,0,0],["2026-02-08",98,"",2.5,3.5,0,0],["2026-02-05",99,"",2.5,3.5,0,0],["2026-01-31",90,"",null,null,0,0]],"Rodrigues":[["2026-02-22",13,"E79",2.5,2.5,0,0],["2026-02-05",33,"E63",2.5,2.5,0,0],["2026-01-11",94,"",2.5,2.5,0,0]],"Alex Ruan":[["2026-04-26",20,"E77",3.0,3.0,0,0],["2026-02-22",84,"S79",3.0,3.0,0,0],["2026-02-11",103,"",3.0,3.0,0,0],["2026-02-08",98,"",3.0,3.0,0,0],["2026-02-05",66,"S63",3.0,3.0,0,0],["2026-01-31",90,"",null,null,0,0]],"Pedro Costa":[["2026-03-05",88,"S81",3.0,3.5,0,0],["2026-02-08",34,"E61",3.0,3.5,0,0],["2026-02-05",33,"E63",3.0,3.5,0,0],["2026-01-31",26,"E70",null,null,0,0],["2026-01-11",94,"",3.0,3.5,0,1]],"Israel":[["2026-04-26",71,"S67",3.0,3.0,0,0],["2026-04-11",101,"",3.0,3.0,0,0],["2026-04-06",97,"",3.0,3.0,0,1],["2026-03-05",105,"",3.0,3.0,0,0],["2026-02-22",97,"",3.0,3.0,0,0],["2026-02-11",103,"",3.0,3.0,0,0],["2026-02-08",98,"",3.0,3.0,0,0],["2026-02-05",88,"S85",3.0,3.0,0,0],["2026-01-31",99,"S87",3.0,3.0,0,0]],"Andrey":[["2026-02-08",8,"E87",2.0,2.0,0,0],["2026-01-31",16,"E80",null,null,0,0],["2026-01-11",56,"S55",2.0,2.0,0,0]],"Wagner Balotelli":[["2026-04-26",98,"",3.0,3.0,0,0],["2026-04-11",84,"S79",3.0,3.0,0,1],["2026-04-06",97,"",3.0,3.0,0,0],["2026-03-05",88,"S81",3.0,3.0,0,0],["2026-02-22",97,"",3.0,3.0,0,0],["2026-02-11",103,"",3.0,3.0,0,0],["2026-02-08",90,"S87",3.0,3.0,0,0],["2026-02-05",99,"",3.0,3.0,0,0],["2026-01-31",99,"S87",3.0,3.0,0,0],["2026-01-11",94,"",3.0,3.0,0,0]],"Pedro Favela":[["2026-04-11",84,"S79",2.5,3.0,0,0],["2026-04-06",72,"S70",2.5,3.0,0,0],["2026-03-05",105,"",2.5,3.0,0,0],["2026-02-22",84,"S79",2.5,3.0,0,0],["2026-02-11",99,"S93",2.5,3.0,0,0],["2026-02-08",34,"E61",2.5,3.0,0,0],["2026-02-05",99,"",2.5,3.0,0,0],["2026-01-31",90,"",null,null,0,0],["2026-01-11",38,"",2.5,3.0,0,0]],"Gabriel Galhardo":[["2026-03-05",17,"E81",2.0,2.0,0,0],["2026-02-22",13,"E79",2.0,2.0,0,0],["2026-02-11",4,"E93",2.0,2.0,0,0],["2026-02-08",64,"S61",2.0,2.0,0,0],["2026-02-05",11,"E85",2.0,2.0,0,0],["2026-01-31",9,"E87",null,null,0,0]],"Willian Júnior":[["2026-03-05",85,"E20",2.5,2.5,0,0],["2026-02-22",84,"S79",2.5,2.5,0,0],["2026-02-11",103,"",2.5,2.5,0,0],["2026-02-08",90,"S87",2.5,2.5,0,0],["2026-02-05",78,"S70",2.5,2.5,0,0],["2026-01-31",90,"",null,null,0,0],["2026-01-11",27,"",2.5,2.5,0,0]],"Mateus Castilho":[["2026-02-22",21,"E71",null,null,0,0],["2026-02-11",10,"E87",null,null,0,0],["2026-02-08",8,"E87",2.0,3.0,0,0],["2026-02-05",11,"E85",2.0,3.0,0,0]],"Vitinho":[["2026-04-26",52,"E45",2.5,4.0,0,0],["2026-04-11",24,"E72",2.5,4.0,0,0],["2026-03-05",105,"",2.5,4.0,0,0],["2026-02-22",50,"S45",2.5,4.0,0,0],["2026-02-11",93,"S87",2.5,4.0,0,0],["2026-02-08",64,"S61",2.5,4.0,0,0],["2026-02-05",66,"S63",2.5,4.0,0,0],["2026-01-31",82,"S70",2.5,4.0,0,0],["2026-01-11",38,"",2.5,4.0,0,0]],"Patrick Alan":[["2026-04-11",35,"E61",2.5,2.5,0,0],["2026-04-06",31,"E64",2.5,2.5,0,0],["2026-03-05",20,"S20",2.5,2.5,0,0],["2026-02-22",97,"",2.5,2.5,0,0],["2026-02-11",93,"S87",2.5,2.5,0,0],["2026-02-08",80,"S79",2.5,2.5,1,0],["2026-02-05",88,"S85",2.5,2.5,0,0],["2026-01-31",92,"S80",2.5,2.5,0,0],["2026-01-11",67,"S66",2.5,2.5,1,0]],"Robinho":[["2026-01-31",9,"E87",null,null,0,0],["2026-01-11",56,"S55",2.0,2.0,0,0]],"Matheus Régis":[["2026-01-11",27,"",2.0,2.0,0,0]],"Vini Hora":[["2026-02-22",13,"E79",null,null,0,0],["2026-02-11",10,"E87",null,null,0,0],["2026-02-05",21,"E70",1.5,2.5,0,0]],"Quirino":[["2026-04-26",30,"E67",2.5,2.5,0,0],["2026-04-06",50,"E45",2.5,2.5,0,0],["2026-02-22",76,"S71",2.5,2.5,0,0],["2026-02-11",73,"S67",2.5,2.5,0,0],["2026-02-08",98,"",2.5,2.5,0,0],["2026-02-05",99,"",2.5,2.5,0,0],["2026-01-31",108,"",2.5,2.5,0,0],["2026-01-11",67,"S66",2.5,2.5,1,0]],"Eron":[["2026-03-05",72,"S65",2.5,2.5,0,0]],"Ariel Nahuelpán":[["2026-03-05",33,"E65",1.0,1.0,0,0]],"William Alves":[["2026-04-26",101,"",2.5,2.5,0,0],["2026-04-11",101,"",2.5,2.5,0,0],["2026-04-06",97,"",2.5,2.5,0,0],["2026-03-05",105,"",2.5,2.5,0,0],["2026-01-11",94,"",2.5,2.5,0,0]],"Gabriel Souza":[["2026-04-11",101,"",3.0,4.0,0,0],["2026-04-06",97,"",3.0,4.0,0,0],["2026-03-05",105,"",3.0,4.0,0,0],["2026-02-22",97,"",3.0,4.0,0,0]],"Renato":[["2026-04-11",66,"S61",2.0,2.0,0,0],["2026-04-06",47,"S45",2.0,2.0,0,0],["2026-03-05",72,"S65",2.0,2.0,0,0],["2026-02-22",47,"E45",2.0,2.0,0,0],["2026-02-11",30,"E67",2.0,2.0,0,0],["2026-02-08",18,"E79",2.0,2.0,0,0],["2026-01-11",81,"S80",2.0,2.0,1,0]],"Marquinhos":[["2026-04-11",35,"E61",2.0,3.5,0,0],["2026-04-06",50,"E45",2.0,3.5,1,0],["2026-03-05",33,"E65",2.0,3.5,0,0]],"Zé Mário":[["2026-04-26",81,"S77",3.0,3.0,0,0],["2026-04-11",101,"",3.0,3.0,0,0],["2026-04-06",97,"",3.0,3.0,0,0]],"Fabinho":[["2026-04-26",101,"",2.0,2.0,0,0],["2026-04-11",17,"E79",2.0,2.0,0,0],["2026-04-06",17,"E78",2.0,2.0,0,0]],"Silva":[["2026-04-26",49,"S45",1.5,1.5,0,0],["2026-04-11",17,"E79",2.5,2.5,0,0],["2026-04-06",25,"E70",2.5,2.5,0,0]],"Régis":[["2026-04-26",60,"S56",2.5,2.5,0,0],["2026-04-11",66,"S61",3.0,3.0,0,0],["2026-04-06",47,"S45",3.0,3.0,0,0]],"Ronald":[["2026-04-26",101,"",3.0,3.0,0,0],["2026-04-11",77,"S72",3.0,3.0,0,0],["2026-04-06",80,"S78",3.0,3.0,0,0]],"Everaldo":[["2026-04-26",41,"E56",null,null,0,0]]};
+const SOFA_NOTAS={"2026-01-11":{"1047757":7.3,"868018":7.3,"551762":7.3,"156322":7.1,"1008010":6.8,"1102255":7.1,"822513":6.6,"870764":6.6,"870651":7.2,"243111":7.6,"1086464":7.1,"1465704":6.9,"1469518":6.8,"1067451":7.2,"1187255":7.4,"1828969":6.3},"2026-01-14":{"1047757":8.6,"868018":7.4,"551762":7.3,"156322":6.9,"1008010":6.7,"1465704":6.8,"1102255":6.2,"1469518":7.0,"870651":6.5,"243111":7.3,"1086464":6.6,"1105287":6.8,"822513":6.8,"1187255":6.9,"1067451":7.1},"2026-01-17":{"1047757":7.7,"868018":7.9,"551762":8.2,"156322":6.7,"1008010":7.3,"822513":6.8,"1102255":7.6,"1469518":7.6,"870651":7.7,"1067451":6.8,"1086464":6.8,"1640677":7.6,"1187255":7.3,"870764":6.9,"1633592":6.5,"1465704":6.7},"2026-01-21":{"1047757":6.8,"868018":6.5,"551762":7.0,"1640677":6.7,"1008010":7.1,"822513":6.2,"1102255":6.8,"1067451":6.2,"870651":7.0,"243111":6.6,"1086464":6.8,"1187255":6.7,"986376":6.2,"871073":6.6,"1465704":6.3,"870764":6.5},"2026-01-25":{"1047757":6.0,"986376":5.8,"551762":6.1,"870789":6.4,"1640677":6.3,"1465704":6.6,"1102255":6.2,"870651":6.6,"243111":6.8,"871073":6.8,"1086464":6.7,"868018":6.3,"1008010":6.3,"1105287":6.7,"1187255":6.2,"1633592":6.5},"2026-01-28":{"1047757":7.2,"986376":6.7,"551762":7.1,"870789":6.9,"871073":7.0,"1469518":7.7,"822513":6.1,"1102255":7.2,"1187255":9.2,"870651":9.0,"1086464":10.0,"1105287":7.1,"868018":6.7,"1465704":6.8,"870764":7.4,"1067451":6.8},"2026-01-31":{"1047757":7.4,"986376":6.8,"551762":7.3,"1640677":7.3,"871073":6.2,"1469518":6.6,"1465704":6.9,"1102255":6.5,"1187255":7.3,"870651":7.2,"1086464":6.6,"870789":6.7,"868018":6.5,"822513":6.6,"870764":6.4,"1105287":6.4},"2026-02-05":{"1047757":7.3,"986376":7.9,"870789":6.2,"1640677":7.6,"871073":6.7,"1469518":6.8,"1465704":6.5,"1102255":7.0,"1187255":8.4,"1086464":7.5,"870651":7.3,"868018":6.3,"1008010":6.3,"1633592":6.3,"1631784":6.6,"1105287":6.5},"2026-02-08":{"1047757":7.1,"986376":7.5,"870789":7.4,"1640677":7.5,"871073":7.5,"1105287":7.2,"1102255":7.1,"1469518":6.6,"870651":7.8,"1187255":6.9,"1086464":6.6,"868018":6.4,"1465704":6.0,"243111":6.6,"822513":6.8,"1631784":6.6},"2026-02-11":{"1047757":8.9,"986376":6.2,"551762":7.2,"1640677":6.4,"871073":6.9,"1465704":6.8,"1102255":6.6,"1469518":6.9,"870651":6.7,"1187255":6.6,"1086464":6.4,"243111":6.6,"1633592":6.7,"1631784":6.5},"2026-02-22":{"1117033":7.6,"986376":6.3,"551762":6.0,"870789":6.6,"871073":6.9,"1469518":6.6,"1465704":6.7,"1102255":5.7,"1187255":6.5,"1086464":6.9,"870651":6.9,"1640677":6.4,"243111":6.8,"1631784":6.6,"1008010":6.5,"1633592":6.3,"1105287":6.7},"2026-04-06":{"1117033":7.0,"986376":6.8,"551762":7.5,"156322":7.2,"220359":7.2,"1465704":7.1,"1102255":7.1,"923057":7.0,"335365":6.1,"243111":6.4,"866350":6.4,"1523834":7.3,"1086464":6.6,"870651":6.4,"795258":6.7,"795254":6.6},"2026-04-11":{"1117033":6.8,"986376":6.5,"551762":6.6,"156322":7.1,"220359":7.3,"923057":6.4,"1465704":6.5,"1102255":7.0,"243111":6.8,"335365":6.9,"866350":7.1,"870651":6.8,"1523834":7.0,"1469518":6.6,"795254":6.7,"795258":6.4},"2026-04-18":{"1117033":6.9,"986376":6.8,"551762":6.4,"156322":6.6,"220359":7.5,"1465704":6.5,"923057":6.4,"335365":6.3,"1102255":6.8,"243111":6.4,"866350":6.6,"843077":7.4,"795254":6.9,"1523834":7.0,"1086464":6.4,"870651":7.0},"2026-04-26":{"1019248":6.9,"986376":7.1,"551762":6.6,"156322":6.9,"220359":6.8,"795254":7.1,"795258":6.0,"1102255":6.7,"335365":6.9,"866350":6.4,"923057":7.6,"1469518":6.5,"923951":7.0,"843077":7.4,"1086464":6.8,"871073":6.6},"2026-05-02":{"1019248":6.7,"843077":6.5,"551762":7.0,"1175544":6.8,"220359":6.9,"795254":6.8,"795258":6.6,"870651":6.4,"923057":6.5,"866350":6.4,"923951":6.7,"243111":6.4,"1469518":6.5,"1465704":6.6,"1523834":6.8,"822525":6.4},"2026-05-11":{"1019248":7.5,"551762":6.5,"156322":6.7,"1640677":7.1,"220359":6.5,"795258":6.4,"1465704":6.6,"923057":7.5,"1469518":6.3,"923951":6.5,"866350":6.8,"871073":6.5,"874035":6.6,"822513":6.5,"1086464":6.5,"1175544":6.9},"2026-05-16":{"1019248":6.9,"551762":6.7,"156322":6.8,"842290":7.1,"220359":7.1,"795258":6.9,"1465704":7.4,"923057":8.2,"1469518":7.1,"923951":6.8,"866350":6.6,"1175544":6.8,"1523834":7.5,"795254":6.7,"871073":6.9,"822525":6.8},"2026-05-23":{"1019248":6.9,"243111":6.1,"551762":6.2,"156322":6.5,"842290":6.4,"871073":5.9,"923057":6.8,"795254":6.7,"1465704":7.1,"1523834":6.2,"1086464":6.7,"874035":6.8,"870651":6.6,"822513":6.8,"822525":6.4,"1175544":6.4},"2026-05-31":{"1019248":3.0,"551762":6.9,"1175544":6.9,"842290":6.4,"220359":6.0,"795254":6.7,"1465704":6.8,"923951":6.5,"923057":6.9,"1469518":6.8,"866350":6.2,"1117033":6.7,"871073":6.7,"243111":6.5,"822513":6.6,"822525":6.5},"2026-06-14":{"1117033":8.0,"551762":7.3,"156322":6.5,"1175544":8.0,"871073":6.9,"923057":6.4,"795254":6.5,"1465704":7.2,"1469518":6.5,"923951":7.2,"822525":6.4,"1523834":6.6,"822513":6.9,"870651":6.7,"866350":6.4,"220359":6.5},"2026-06-20":{"1019248":6.5,"551762":6.9,"156322":6.6,"1175544":6.8,"871073":6.7,"1465704":7.0,"923057":7.4,"870651":6.7,"923951":7.8,"1469518":6.9,"866350":6.5,"243111":6.4,"822525":6.6,"843077":6.9,"220359":7.2,"1086464":6.7},"2026-06-27":{"1117033":7.3,"843077":6.5,"551762":7.4,"1175544":7.0,"1640677":6.6,"795258":6.3,"1465704":6.7,"923057":7.1,"923951":7.3,"1469518":6.9,"1086464":7.0,"874035":6.5,"795254":6.7,"866350":7.0,"1008010":6.8,"870764":6.3},"2026-07-04":{"1117033":8.3,"843077":6.6,"1175544":6.7,"156322":7.2,"1640677":6.9,"1465704":7.1,"1469518":7.1,"871073":6.9,"923057":7.1,"866350":6.4,"923951":7.7,"243111":7.8,"1086464":6.6,"795258":6.5,"2579838":6.6,"795254":6.5},"2026-07-12":{"1117033":6.6,"551762":6.7,"156322":6.9,"1640677":7.2,"871073":6.8,"1465704":6.7,"1469518":6.9,"923057":7.5,"243111":7.0,"923951":7.6,"1086464":7.3,"822525":6.6,"2579838":6.9,"795254":6.7,"843077":6.5,"795258":6.4},"2026-07-25":{"1117033":6.2,"1175544":7.7,"156322":7.4,"1640677":6.5,"871073":6.6,"1465704":7.1,"551762":7.1,"923951":6.8,"923057":6.9,"866350":6.4,"1469518":7.0,"243111":6.6,"2579838":6.2,"220359":6.9,"822525":6.5,"795254":6.7,"870651":6.7},"2026-08-08":{"1047757":6.5,"843077":7.4,"551762":7.3,"1175544":6.2,"1640677":6.7,"795258":6.7,"1465704":7.2,"923057":8.1,"923951":6.9,"1469518":7.9,"866350":6.4,"822525":7.1,"243111":6.7,"979876":6.7,"795254":6.5,"220359":6.6},"2026-08-15":{"1019248":7.2,"551762":7.2,"1175544":6.4,"1640677":7.1,"871073":6.9,"795258":6.9,"1465704":6.9,"923057":7.9,"923951":8.1,"1469518":7.1,"822525":6.8,"220359":7.6,"1885685":7.0,"870651":7.4,"866350":6.7,"979876":6.8},"2026-08-22":{"1019248":7.3,"243111":6.7,"551762":6.7,"156322":6.5,"1640677":7.9,"795258":6.9,"1465704":6.5,"923057":7.1,"923951":7.3,"1469518":7.3,"822525":7.3,"1175544":7.0,"922580":6.6,"870651":6.5,"843077":6.7,"1885685":6.3},"2026-08-29":{"1019248":7.1,"243111":6.8,"551762":7.3,"156322":7.4,"1640677":6.4,"923057":7.0,"795258":6.5,"922580":6.9,"871073":6.9,"822525":6.2,"923951":7.2,"220359":6.8,"795254":6.5,"866350":6.5},"2026-09-06":{"1019248":7.8,"843077":7.8,"551762":7.0,"156322":7.4,"1640677":7.1,"795258":7.3,"1465704":7.1,"243111":7.3,"923057":6.7,"822525":7.5,"923951":6.9,"1187255":6.7,"1105596":6.6,"1885685":6.5,"871073":6.6,"922580":6.7},"2026-09-12":{"1019248":8.8,"843077":7.2,"551762":7.2,"156322":7.6,"1640677":7.8,"243111":6.8,"795258":7.2,"1465704":6.9,"871073":6.8,"822525":6.1,"923951":6.8,"922580":6.8,"1633592":6.4,"931510":6.8,"1105596":6.5,"795254":6.8},"2026-09-20":{"1019248":7.8,"843077":7.6,"1175544":7.3,"156322":7.5,"1640677":8.0,"931510":6.3,"795258":7.1,"1465704":7.4,"243111":7.7,"822525":6.2,"923951":6.4,"1187255":6.8,"1105596":6.7,"871073":6.6,"1885685":6.2,"922580":6.7},"2026-09-26":{"1019248":7.8,"843077":6.1,"1175544":7.1,"156322":6.3,"1640677":6.4,"931510":6.5,"795258":6.6,"1465704":7.7,"243111":7.6,"822525":6.6,"923951":7.7,"871073":6.9,"1633592":6.4,"1856447":6.6,"1187255":6.7,"866350":6.5},"2026-10-03":{"1019248":8.1,"843077":6.4,"551762":6.3,"156322":6.6,"1640677":7.0,"795258":6.8,"1465704":7.5,"923951":7.3,"923057":6.3,"822525":6.4,"243111":6.7,"1175544":6.8,"1187255":7.1,"931510":6.5,"922580":6.5,"1105596":6.6},"2026-10-10":{"1019248":6.3,"243111":7.1,"1175544":7.4,"156322":6.6,"1640677":7.2,"795258":7.0,"1465704":7.6,"923057":6.6,"923951":7.1,"1187255":6.8,"822525":6.6,"931510":6.6,"1105596":6.5,"871073":6.5,"822513":6.8,"922580":6.4}};
+const SCOUT_TAGS=[["1x1 ofensivo","F"],["Aceleração","F"],["Ataque à linha","F"],["Ataque ao espaço","F"],["Bola parada","F"],["Competitividade","F"],["Condução","F"],["Construção curta","F"],["Controle emocional","A"],["Controle orientado","F"],["Cruzamento","F"],["Desarme","F"],["Disciplina tática","A"],["Duelo defensivo","A"],["Explosão","F"],["Finalização","A"],["Força física","A"],["Infiltração","F"],["Intensidade","A"],["Interceptação","F"],["Jogo aéreo","A"],["Jogo entrelinhas","F"],["Leitura defensiva","A"],["Liderança","F"],["Mobilidade","F"],["Passe longo","F"],["Passe sob pressão","A"],["Passe vertical","F"],["Posicionamento","A"],["Pressão pós-perda","F"],["Primeiro toque","A"],["Profundidade","F"],["Proteção de bola","F"],["Recomposição","A"],["Regularidade","A"],["Resistência","F"],["Tomada de decisão","A"],["Velocidade","A"]];
+
+/* ---------- Vídeos (YouTube) ---------- */
+const ytId = u => { u=String(u||"").trim(); if(/^[\w-]{11}$/.test(u)) return u; const m=u.match(/(?:youtu\.be\/|[?&]v=|embed\/|live\/|shorts\/)([\w-]{11})/); return m?m[1]:""; };
+const ytThumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+function YT({id,titulo,auto}){
+  const [on,setOn]=useState(!!auto); const v=ytId(id);
+  useEffect(()=>{ setOn(!!auto); },[v]);
+  if(!v) return html`<div class="yt yt-vazio"><span>Sem vídeo cadastrado</span></div>`;
+  return html`<div class="yt">${on
+    ? html`<iframe src=${`https://www.youtube.com/embed/${v}?rel=0&autoplay=1&playsinline=1`} title=${titulo||"Vídeo"} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`
+    : html`<button type="button" class="yt-capa" onClick=${()=>setOn(true)} aria-label=${"Assistir "+(titulo||"vídeo")}><img src=${ytThumb(v)} alt="" loading="lazy"/><span class="yt-play" aria-hidden="true">▶</span>${titulo?html`<span class="yt-t">${titulo}</span>`:null}</button>`}</div>`;
+}
+function VideoModal({v,fechar}){
+  useEffect(()=>{ const f=e=>{ if(e.key==="Escape") fechar(); }; addEventListener("keydown",f); return ()=>removeEventListener("keydown",f); },[]);
+  if(!v) return null;
+  return html`<div class="vmodal" role="dialog" aria-modal="true" aria-label=${v.titulo||"Vídeo"} onClick=${fechar}><div class="vmodal-box" onClick=${e=>e.stopPropagation()}>
+    <div class="vmodal-h"><b>${v.titulo||"Vídeo"}</b><div style=${{display:"flex",gap:"6px"}}><a class="btn sm ghost" href=${"https://youtu.be/"+ytId(v.id)} target="_blank" rel="noopener">Abrir no YouTube</a><button class="btn sm" onClick=${fechar}>Fechar</button></div></div>
+    <${YT} id=${v.id} titulo=${v.titulo} auto=${true}/>
+  </div></div>`;
+}
+
+/* ---------- Ao Vivo ---------- */
+function AoVivo({st,up,toast}){
+  const [aba,setAba]=useAba("aovivo","Live de jogo");
+  const k=aba==="Live de jogo"?"jogo":"treino";
+  const live=(st.config.live||{});
+  const [txt,setTxt]=useState(live[k]||""); useEffect(()=>setTxt(live[k]||""),[k,live[k]]);
+  const ultJogo=st.jogos.filter(j=>j.pos&&(j.pos.transmissao||j.pos.camera)).sort((a,b)=>b.data.localeCompare(a.data))[0];
+  const ultTreino=(st.treinos||[]).filter(t=>ytId(t.video)).sort((a,b)=>(b.data+b.hora).localeCompare(a.data+a.hora))[0];
+  const backup=k==="jogo"?(ultJogo?{id:ultJogo.pos.transmissao||ultJogo.pos.camera,titulo:`${fmtD(ultJogo.data)} · Santa Cruz ${ultJogo.gp}×${ultJogo.gc} ${ultJogo.adversario}`}:null):(ultTreino?{id:ultTreino.video,titulo:`${ultTreino.titulo||"Treino"} · ${fmtD(ultTreino.data)} · ${ultTreino.local}`}:null);
+  const atual=ytId(live[k]);
+  const salvar=()=>{ const id=ytId(txt); up(s=>({...s,config:{...s.config,live:{...(s.config.live||{}),[k]:id?("https://youtu.be/"+id):""}}})); };
+  const prox=st.jogos.filter(j=>!resJ(j)&&j.data>=hoje()).sort((a,b)=>a.data.localeCompare(b.data))[0];
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <${Abas} tabs=${["Live de jogo","Live de treino"]} v=${aba} set=${setAba}/>
+    <div class="grid live-grid">
+      <div class="card">
+        <div class="card-h"><div><h2>${aba}</h2><p>${atual?html`<span class="live-dot" aria-hidden="true"></span>Transmissão configurada`:"Sem transmissão agora — exibindo o vídeo de backup"}</p></div></div>
+        <${YT} id=${atual||(backup&&backup.id)} titulo=${atual?aba:(backup&&backup.titulo)} auto=${!!atual}/>
+        <div class="ro-hide" style=${{marginTop:"12px"}}>
+          <label class="note" for="live-url">Link do vídeo ao vivo (YouTube)</label>
+          <div style=${{display:"flex",gap:"8px",marginTop:"4px"}}><input class="field" id="live-url" value=${txt} onInput=${e=>setTxt(e.target.value)} placeholder="Cole o link da live"/><button class="btn primary" onClick=${salvar}>Atualizar</button>${atual?html`<button class="btn" onClick=${()=>{ setTxt(""); up(s=>({...s,config:{...s.config,live:{...(s.config.live||{}),[k]:""}}})); }}>Encerrar</button>`:null}</div>
+          ${!st.config.wsPacote?html`<div style=${{marginTop:"8px"}}><${ImportarPacote} up=${up} toast=${toast} compacto=${true}/> <span class="note">traz os vídeos de jogos e treinos do WilScout</span></div>`:null}
+          <p class="note" style=${{marginTop:"6px"}}>Aceita o link normal (watch?v=…), o curto (youtu.be/…), o de live (/live/…) ou o embed. O app converte sozinho. Sem link, mostra ${k==="jogo"?"a transmissão do último jogo":"o último treino gravado"}.</p>
+        </div>
+      </div>
+      <div class="grid" style=${{gap:"14px",alignContent:"start"}}>
+        ${k==="jogo"?html`<div class="card"><div class="card-h"><div><h2>Próximo jogo</h2></div></div>${prox?html`<${JogoCard} st=${st} j=${prox}/>`:html`<p class="note">Nenhum jogo futuro cadastrado.</p>`}</div>
+          ${ultJogo?html`<div class="card"><div class="card-h"><div><h2>Último jogo com vídeo</h2></div></div><${JogoCard} st=${st} j=${ultJogo} up=${up}/></div>`:null}`
+        :html`<div class="card"><div class="card-h"><div><h2>Treinos recentes</h2><p>${(st.treinos||[]).length} sessões gravadas</p></div><a class="btn sm ghost" href="#treinos">Todos →</a></div>
+          <div class="alerts">${(st.treinos||[]).slice().sort((a,b)=>(b.data+b.hora).localeCompare(a.data+a.hora)).slice(0,6).map(t=>html`<div key=${t.id} class="evt" style=${{borderLeftColor:"var(--good)"}}><b>${t.titulo||"Treino"} · ${fmtD(t.data)}</b><span>${t.local||""}${t.treinador?" · "+t.treinador:""}</span></div>`)}</div></div>`}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Treinos ---------- */
+/* Pacote do WilScout (vídeos de treino, análises pré/pós-jogo e súmulas): fica fora do código público e entra por importação */
+const PACOTE = () => (typeof window!=="undefined" && window.SCOUTPRO_PACOTE) || null;
+const treinoDoPacote = (t,i) => ({id:"tr-"+t.data+"-"+i,data:t.data,hora:t.hora||"",local:t.local||"",treinador:t.treinador||"",titulo:t.titulo||"Treino",video:t.video||"",obs:"",fonte:"WilScout"});
+function treinosPadrao(){ const p=PACOTE(); return p?(p.treinos||[]).map(treinoDoPacote):[]; }
+function aplicarPacote(s,p){
+  if(!p||p.tipo!=="scoutpro-pacote-wilscout") throw new Error("Arquivo não é um pacote do WilScout");
+  const tem=new Set((s.treinos||[]).map(t=>ytId(t.video)||t.data+t.hora));
+  const novos=(p.treinos||[]).map(treinoDoPacote).filter(t=>!tem.has(ytId(t.video)||t.data+t.hora));
+  const jogos=(s.jogos||[]).map(j=>{ const f=(p.jogos||{})[j.data]; if(!f) return j; return {...j,pre:{...(f.pre||{}),...(j.pre||{})},pos:{...(f.pos||{}),...(j.pos||{})}}; });
+  return {s:{...s,treinos:[...(s.treinos||[]),...novos],jogos,config:{...s.config,wsPacote:true}},novos:novos.length,jogos:Object.keys(p.jogos||{}).length};
+}
+function ImportarPacote({up,toast,compacto}){
+  const ref=useRef();
+  const ler=e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const p=JSON.parse(r.result); let info=null; up(s=>{ const x=aplicarPacote(s,p); info=x; return x.s; }); setTimeout(()=>toast&&toast(info?`Pacote importado: ${info.novos} treinos e mídias de ${info.jogos} jogos`:"Pacote importado"),50); }catch(err){ toast&&toast(err.message||"Não foi possível ler o arquivo"); } }; r.readAsText(f); e.target.value=""; };
+  return html`<span class="ro-hide"><button class=${"btn "+(compacto?"sm":"primary")} onClick=${()=>ref.current.click()}>Importar pacote do WilScout</button><input type="file" accept=".json,application/json" ref=${ref} hidden onChange=${ler}/></span>`;
+}
+function Treinos({st,up,toast}){
+  const [aba,setAba]=useAba("treinos","Listagem");
+  const [per,setPer]=useState(""); const [de,setDe]=useState(""); const [ate,setAte]=useState(""); const [tr,setTr]=useState(""); const [lc,setLc]=useState(""); const [lim,setLim]=useState(24); const [vid,setVid]=useState(null);
+  const api=crud(up,"treinos"); const all=(st.treinos||[]);
+  const treinadores=[...new Set(all.map(t=>t.treinador).filter(Boolean))].sort(); const locais=[...new Set(all.map(t=>t.local).filter(Boolean))].sort();
+  const lim0=per==="7"?addDias(hoje(),-7):per==="30"?addDias(hoje(),-30):"";
+  const lista=all.filter(t=>(!lim0||t.data>=lim0)&&(!de||t.data>=de)&&(!ate||t.data<=ate)&&(!tr||t.treinador===tr)&&(!lc||t.local===lc)).sort((a,b)=>(b.data+(b.hora||"")).localeCompare(a.data+(a.hora||"")));
+  const mes=hoje().slice(0,7);
+  const porMes=Object.entries(all.reduce((o,t)=>{ const m=(t.data||"").slice(0,7); if(m) o[m]=(o[m]||0)+1; return o; },{})).sort((a,b)=>a[0].localeCompare(b[0])).slice(-12);
+  const porTr=Object.entries(all.reduce((o,t)=>{ const k=t.treinador||"—"; o[k]=(o[k]||0)+1; return o; },{})).sort((a,b)=>b[1]-a[1]);
+  const novo=()=>{ api.add({data:hoje(),hora:"15:00",local:locais[0]||"",treinador:"",titulo:"Treino",video:"",obs:""}); setAba("Cadastro"); toast&&toast("Treino adicionado. Preencha os dados."); };
+  const limpar=()=>{ setPer(""); setDe(""); setAte(""); setTr(""); setLc(""); };
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div class="toolbar" style=${{marginBottom:0,justifyContent:"space-between"}}><${Abas} tabs=${["Listagem","Cadastro","Resumo"]} v=${aba} set=${setAba}/><div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>${all.length&&!st.config.wsPacote?html`<${ImportarPacote} up=${up} toast=${toast} compacto=${true}/>`:null}<button class="btn primary ro-hide" onClick=${novo}>${I.plus}Novo treino</button></div></div>
+    <div class="grid g-kpi">
+      <${Kpi} l="Sessões gravadas" v=${all.length} d=${all.filter(t=>ytId(t.video)).length+" com vídeo"}/>
+      <${Kpi} l="Neste mês" v=${all.filter(t=>(t.data||"").startsWith(mes)).length}/>
+      <${Kpi} l="Últimos 7 dias" v=${all.filter(t=>t.data>=addDias(hoje(),-7)&&t.data<=hoje()).length}/>
+      <${Kpi} l="Treinadores" v=${treinadores.length} d=${porTr[0]?porTr[0][0]+" lidera ("+porTr[0][1]+")":""}/>
+    </div>
+    ${aba!=="Resumo"?html`<div class="card"><div class="toolbar" style=${{marginBottom:0}}>
+      <select class="field" id="tr-per" style=${{width:"auto"}} value=${per} onChange=${e=>setPer(e.target.value)}><option value="">Todo o período</option><option value="7">Últimos 7 dias</option><option value="30">Último mês</option></select>
+      <label class="note" style=${{display:"flex",gap:"6px",alignItems:"center"}}>De<input class="field" type="date" id="tr-de" value=${de} onInput=${e=>setDe(e.target.value)} style=${{width:"auto"}}/></label>
+      <label class="note" style=${{display:"flex",gap:"6px",alignItems:"center"}}>Até<input class="field" type="date" id="tr-ate" value=${ate} onInput=${e=>setAte(e.target.value)} style=${{width:"auto"}}/></label>
+      <select class="field" id="tr-tr" style=${{width:"auto"}} value=${tr} onChange=${e=>setTr(e.target.value)}><option value="">Todos os treinadores</option>${treinadores.map(x=>html`<option key=${x}>${x}</option>`)}</select>
+      <select class="field" id="tr-lc" style=${{width:"auto"}} value=${lc} onChange=${e=>setLc(e.target.value)}><option value="">Todos os locais</option>${locais.map(x=>html`<option key=${x}>${x}</option>`)}</select>
+      <button class="btn ghost" onClick=${limpar}>Limpar</button><span class="note">${lista.length} treino(s)</span>
+    </div></div>`:null}
+    ${!all.length?html`<div class="empty"><p style=${{marginTop:0}}>Nenhum treino cadastrado ainda.</p><p class="note">Os vídeos de treino do WilScout vêm num pacote separado, que não fica no código público do app. Importe uma vez e ele sincroniza para todos.</p><${ImportarPacote} up=${up} toast=${toast}/></div>`:null}
+    ${aba==="Listagem"&&all.length?html`${lista.length?html`<div class="tcards">${lista.slice(0,lim).map(t=>{ const v=ytId(t.video); return html`<article key=${t.id} class="tcard">
+        <button type="button" class="tcard-img" onClick=${()=>v&&setVid({id:v,titulo:`${t.titulo||"Treino"} · ${fmtD(t.data)} · ${t.local||""}`})} disabled=${!v} aria-label=${"Assistir treino de "+fmtD(t.data)}>${v?html`<img src=${ytThumb(v)} alt="" loading="lazy"/><span class="yt-play" aria-hidden="true">▶</span>`:html`<span class="note">Sem vídeo</span>`}</button>
+        <div class="tcard-b"><b>${t.titulo||"Treino"}</b><span>${fmtDL(t.data).replace(/ de \d{4}$/,"")}${t.hora?" · "+t.hora:""}</span><span>${t.local||"—"}${t.treinador?" · "+t.treinador:""}</span></div>
+        <div class="tcard-a">${v?html`<button class="btn sm primary" onClick=${()=>setVid({id:v,titulo:`${t.titulo||"Treino"} · ${fmtD(t.data)} · ${t.local||""}`})}>▶ Íntegra</button><a class="btn sm ghost" href=${"https://youtu.be/"+v} target="_blank" rel="noopener">YouTube</a>`:null}</div>
+      </article>`; })}</div>
+      ${lista.length>lim?html`<div style=${{textAlign:"center"}}><button class="btn" onClick=${()=>setLim(lim+24)}>Mostrar mais (${lista.length-lim})</button></div>`:null}`
+      :html`<div class="empty">Nenhum treino com esses filtros.</div>`}`:null}
+    ${aba==="Cadastro"?html`<${Tabela} st=${st} rows=${lista} api=${api} vazio="Nenhum treino." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"titulo",l:"Título",w:"120px"},{k:"local",l:"Local",w:"120px"},{k:"treinador",l:"Treinador",w:"140px"},{k:"video",l:"Vídeo (YouTube)",t:"link"},{k:"obs",l:"Observações",w:"180px"}]}/>`:null}
+    ${aba==="Resumo"?html`<div class="grid g-2">
+      <div class="card"><div class="card-h"><div><h2>Sessões por mês</h2><p>Últimos 12 meses com registro</p></div></div><${Serie} pts=${porMes.map(([m,v])=>({x:MESES[+m.slice(5)-1].slice(0,3)+"/"+m.slice(2,4),y:v}))} fmt=${v=>Math.round(v)}/></div>
+      <div class="card"><div class="card-h"><div><h2>Por treinador</h2></div></div><div class="alerts">${porTr.map(([k,v])=>html`<div key=${k} style=${{display:"grid",gridTemplateColumns:"150px 1fr 40px",gap:"8px",alignItems:"center"}}><span style=${{fontSize:"13px"}}>${k}</span><${Barra} v=${v} max=${porTr[0][1]}/><b class="num r">${v}</b></div>`)}</div></div>
+    </div>`:null}
+    <${VideoModal} v=${vid} fechar=${()=>setVid(null)}/>
+    <p class="note">Treinos e vídeos vindos do WilScout (pacote de 29/10/2026). Novos treinos podem ser lançados em “Cadastro”.</p>
+  </div>`;
+}
+
+/* ---------- Mídias e escalação do jogo (WilScout) ---------- */
+const comWS = j => { const f=((PACOTE()||{}).jogos||{})[j.data]||{}; const e=WS_ESC[j.data]; return {...j, pre:j.pre||f.pre||null, pos:j.pos||f.pos||null, escalacao:j.escalacao||e||null}; };
+const LINHAS_F = f => { const p=String(f||"").split("-").map(Number).filter(x=>x>0); return p.length&&p.reduce((s,x)=>s+x,0)===10?p:[4,4,2]; };
+function Campo({esc}){
+  const lin=LINHAS_F(esc.f); const t=esc.t||[]; const rows=[[t[0]]]; let i=1; lin.forEach(c=>{ rows.push(t.slice(i,i+c)); i+=c; });
+  return html`<div class="campo" aria-label=${"Escalação "+(esc.f||"")}>${rows.slice().reverse().map((r,ri)=>html`<div key=${ri} class="campo-l">${r.map((p,pi)=>html`<span key=${pi} class="campo-p"><i>${iniciais(p||"?")}</i><b>${p||"—"}</b></span>`)}</div>`)}</div>`;
+}
+function JogoMidia({j,up}){
+  const [pos,setPos]=useState("transmissao"); const [ed,setEd]=useState(false);
+  const pre=j.pre||{}, po=j.pos||{}, esc=j.escalacao;
+  const temPre=pre.video||pre.relatorio||pre.penaltis||pre.zz, temPos=po.camera||po.transmissao||po.video||po.sumula;
+  const set=(grp,k,v)=>up&&up(S=>({...S,jogos:S.jogos.map(x=>x.id===j.id?{...x,[grp]:{...(x[grp]||{}),[k]:v}}:x)}));
+  const abasPos=[["camera","Câmera aberta"],["transmissao","Transmissão"],["video","Análise em vídeo"]].filter(([k])=>po[k]);
+  const atual=abasPos.find(([k])=>k===pos)?pos:(abasPos[0]||[])[0];
+  return html`<div class="jmid">
+    ${temPos?html`<section><b class="eyebrow" style=${{color:"var(--mute)"}}>Pós-jogo</b>
+      ${abasPos.length>1?html`<div class="seg" style=${{margin:"6px 0"}}>${abasPos.map(([k,l])=>html`<button key=${k} class=${atual===k?"on":""} onClick=${()=>setPos(k)}>${l}</button>`)}</div>`:null}
+      ${atual?html`<${YT} id=${po[atual]} titulo=${(abasPos.find(x=>x[0]===atual)||[])[1]}/>`:null}
+      ${po.sumula?html`<a class="btn sm" style=${{marginTop:"6px"}} href=${po.sumula} target="_blank" rel="noopener">📄 Súmula</a>`:null}</section>`:null}
+    ${temPre?html`<section><b class="eyebrow" style=${{color:"var(--mute)"}}>Pré-jogo · análise do adversário</b>
+      ${pre.video?html`<${YT} id=${pre.video} titulo="Análise em vídeo"/>`:null}
+      <div style=${{display:"flex",gap:"6px",flexWrap:"wrap",marginTop:"6px"}}>${pre.relatorio?html`<a class="btn sm" href=${pre.relatorio} target="_blank" rel="noopener">📊 Análise em relatório</a>`:null}${pre.penaltis?html`<a class="btn sm" href=${pre.penaltis} target="_blank" rel="noopener">🥅 Relatório de pênaltis</a>`:null}${pre.zz?html`<a class="btn sm" href=${pre.zz} target="_blank" rel="noopener">ZeroZero do adversário</a>`:null}</div></section>`:null}
+    ${esc&&(esc.t||[]).length?html`<section><b class="eyebrow" style=${{color:"var(--mute)"}}>Escalação · ${esc.f}</b><${Campo} esc=${esc}/>${(esc.r||[]).length?html`<p class="note" style=${{margin:"6px 0 0"}}><b>Reservas:</b> ${esc.r.join(", ")}</p>`:null}</section>`:null}
+    ${up?html`<div class="ro-hide"><button class="btn sm ghost" onClick=${()=>setEd(!ed)}>${ed?"Fechar edição de mídias":"Editar vídeos e links do jogo"}</button>
+      ${ed?html`<div class="jmid-ed">${[["pre","video","Pré: análise em vídeo (YouTube)"],["pre","relatorio","Pré: relatório (link)"],["pre","penaltis","Pré: relatório de pênaltis (link)"],["pre","zz","Pré: ZeroZero/oGol do adversário"],["pos","camera","Pós: câmera aberta (YouTube)"],["pos","transmissao","Pós: transmissão (YouTube)"],["pos","video","Pós: análise em vídeo (YouTube)"],["pos","sumula","Pós: súmula (link do PDF)"]].map(([g,k,l])=>html`<label key=${g+k} class="note">${l}<input class="cell" id=${"jm-"+j.id+g+k} value=${((j[g]||{})[k])||""} onChange=${e=>set(g,k,e.target.value.trim())}/></label>`)}</div>`:null}</div>`:null}
+  </div>`;
+}
+
+/* ---------- Atletas e scout ---------- */
+const PERFIL_POS = {"Goleiro":"GOL","Zagueiro":"ZAG","Lateral Direito":"LD","Lateral Esquerdo":"LE","Volante":"VOL","Meia":"MEI","Extremo":"EXT","Atacante":"ATA","Defensor":"DEF","Meio-campo":"MC"};
+const atlKey = a => normNome(a.nome);
+const fotosAtl = a => [a.foto?WS_FOTO+a.foto:null, a.sofa?`https://api.sofascore.app/api/v1/player/${a.sofa}/image`:null].filter(Boolean);
+function FotoAtl({a,size=44}){
+  const fs=fotosAtl(a); const [i,setI]=useState(0);
+  if(i>=fs.length) return html`<span class="av foto-av" style=${{width:size+"px",height:size+"px",fontSize:Math.round(size/2.8)+"px"}}>${iniciais(a.nome)}</span>`;
+  return html`<img class="foto-at" src=${fs[i]} alt="" loading="lazy" referrerpolicy="no-referrer" onError=${()=>setI(i+1)} style=${{width:size+"px",height:size+"px"}}/>`;
+}
+const SK = k => SOFA_K.indexOf(k);
+function statsAtl(a,comp){
+  const st=a.st||{}; const cs=comp?[comp]:Object.keys(st); const o={};
+  SOFA_K.forEach(k=>{ if(k==="rating") return; let tot=null; cs.forEach(c=>{ const v=(st[c]||[])[SK(k)]; if(v!=null) tot=(tot||0)+v; }); o[k]=tot; });
+  let w=0,s=0; cs.forEach(c=>{ const r=(st[c]||[])[SK("rating")], ap=(st[c]||[])[SK("appearances")]; if(r!=null&&ap){ s+=r*ap; w+=ap; } }); o.rating=w?s/w:null;
+  o.ga=(o.goals||0)+(o.assists||0); o.passPct=o.totalPasses?o.accuratePasses/o.totalPasses*100:null; o.p90=k=>o.minutesPlayed?(o[k]||0)/o.minutesPlayed*90:null;
+  return o;
+}
+const COMP_SOFA = [["","Temporada 2026"],["C","Série C"],["P","Pernambucano"],["B","Copa do Brasil"]];
+function avaliacaoAtl(st,a){
+  const rel=(st.relScout||[]).filter(r=>r.atleta===atlKey(a)).sort((x,y)=>(y.data||"").localeCompare(x.data||""))[0];
+  if(rel&&(n(rel.nivel)!=null||n(rel.potencial)!=null)) return {nv:n(rel.nivel),pt:n(rel.potencial),fonte:"Relatório",rec:rel.recomendacao,rel};
+  const ws=(WS_SCOUT[a.nome]||[]).filter(r=>r[3]!=null); const av=i=>ws.length?ws.reduce((s,r)=>s+r[i],0)/ws.length:null;
+  return {nv:av(3),pt:av(4),fonte:ws.length?"Média das partidas":"",rec:rel?rel.recomendacao:"",rel};
+}
+const REC = [["Avançar","var(--good)","Jogador aprovado para a próxima etapa: contato, reunião, negociação ou apresentação à comissão/diretoria."],["Manter no radar","var(--info)","Interessante, sem urgência imediata. Deve seguir acompanhado."],["Observar mais","var(--warn)","Ainda não há segurança suficiente. Precisa de mais jogos, vídeos ou contexto."],["Apenas oportunidade","#b48cff","Só vale em condição favorável: baixo custo, fim de contrato ou necessidade emergencial."],["Não recomendado","var(--bad)","Não atende ao perfil desejado ou apresenta riscos relevantes."]];
+const corRec = r => (REC.find(x=>x[0]===r)||[])[1]||"var(--mute)";
+const NOTAS05 = Array.from({length:11},(_,i)=>(i/2).toFixed(1));
+function Estrelas({v}){ if(v==null) return html`<span class="note">—</span>`; return html`<span class="stars" title=${f1(v)+" de 5"} aria-label=${f1(v)+" de 5"}>${[1,2,3,4,5].map(i=>html`<i key=${i} class=${v>=i?"on":v>=i-.5?"half":""}></i>`)}<b class="num">${f1(v)}</b></span>`; }
+const corNota = r => r==null?"var(--mute)":r>=7.5?"#1fb6ff":r>=7?"var(--good)":r>=6.5?"#9bcf53":r>=6?"var(--warn)":"var(--bad)";
+function Nota({r}){ return r==null?html`<span class="note">—</span>`:html`<span class="nota" style=${{background:corNota(r)}}>${r.toFixed(1)}</span>`; }
+
+function jogosDoAtleta(st,a){
+  const k=atlKey(a), alias=k==="patrick alan"?"patrick allan":k;
+  const ws=Object.fromEntries((WS_SCOUT[a.nome]||[]).map(r=>[r[0],r]));
+  return st.jogos.filter(j=>resJ(j)).sort((x,y)=>y.data.localeCompare(x.data)).map(j=>{
+    const nota=a.sofa?(SOFA_NOTAS[j.data]||{})[a.sofa]:null;
+    const ev=(j.eventos||[]).filter(e=>e[0]===1);
+    const nm=x=>{ const z=normNome(x); return z===k||z===alias; };
+    const g=ev.filter(e=>(e[1]==="G"||e[1]==="GP")&&nm(e[3])).length;
+    const as=ev.filter((e,i)=>ehGol(e[1])&&nm(assistDe(j,(j.eventos||[]).indexOf(e)))).length;
+    const am=ev.filter(e=>e[1]==="A"&&nm(e[3])).length, vm=ev.filter(e=>(e[1]==="2A"||e[1]==="V")&&nm(e[3])).length;
+    const ent=ev.find(e=>e[1]==="S"&&nm(e[3])), sai=ev.find(e=>e[1]==="S"&&nm(e[4]||""));
+    const titular=(j.escalacao&&(j.escalacao.t||[]).some(nm))||(!ent&&(nota!=null||ws[j.data]));
+    const w=ws[j.data];
+    const jogou=nota!=null||w||g||ent||sai||titular&&(j.escalacao&&(j.escalacao.t||[]).some(nm));
+    return jogou?{j,nota,g:Math.max(g,w?w[5]:0),a:Math.max(as,w?w[6]:0),am,vm,ent:ent?ent[2]:(w&&w[2][0]==="E"?w[2].slice(1):""),sai:sai?sai[2]:(w&&w[2][0]==="S"?w[2].slice(1):""),min:w?w[1]:null,nv:w?w[3]:null,pt:w?w[4]:null,tit:!ent&&!(w&&w[2][0]==="E")}:null;
+  }).filter(Boolean);
+}
+
+function ScoutAtletas({st,up,toast,go}){
+  const [aba,setAba]=useAba("scoutatl","Atletas");
+  const [sel,setSel]=useState(null);
+  const [q,setQ]=useState(""); const [fp,setFp]=useState(""); const [comp,setComp]=useState(""); const [ord,setOrd]=useState("rating"); const [dir,setDir]=useState(-1); const [fonte,setFonte]=useState("elenco");
+  const atl=ATLETAS_2026;
+  if(sel){ const a=atl.find(x=>atlKey(x)===sel); if(a) return html`<${PerfilAtleta} st=${st} up=${up} toast=${toast} a=${a} voltar=${()=>setSel(null)}/>`; }
+  const posicoes=[...new Set(atl.map(a=>a.pos))];
+  const base=atl.filter(a=>(fonte==="todos"||!a.extra)&&(!fp||a.pos===fp)&&(!q||normNome(a.nome).includes(normNome(q))));
+  const rows=base.map(a=>({a,s:statsAtl(a,comp),av:avaliacaoAtl(st,a)}));
+  const val=(r,k)=>k==="nome"?r.a.nome:k==="nv"?r.av.nv:k==="pt"?r.av.pt:k==="idade"?(r.a.nasc?2026-+r.a.nasc.slice(0,4):null):k==="passPct"?r.s.passPct:k==="ga"?r.s.ga:r.s[k];
+  const sorted=rows.slice().sort((x,y)=>{ const a=val(x,ord), b=val(y,ord); if(a==null&&b==null) return 0; if(a==null) return 1; if(b==null) return -1; return (typeof a==="string"?a.localeCompare(b):a-b)*(ord==="nome"?-dir:dir); });
+  const top=k=>rows.filter(r=>r.s[k]).sort((x,y)=>y.s[k]-x.s[k])[0];
+  const tg=top("goals"), ta=top("assists"), tm=top("minutesPlayed"); const tr=rows.filter(r=>r.s.rating!=null&&(r.s.appearances||0)>=5).sort((x,y)=>y.s.rating-x.s.rating)[0];
+  const COLS=[["rating","Nota"],["appearances","J"],["matchesStarted","Tit."],["minutesPlayed","Min"],["goals","Gols"],["assists","Assist."],["ga","G+A"],["totalShots","Final."],["shotsOnTarget","No alvo"],["keyPasses","Passe dec."],["passPct","Passe %"],["successfulDribbles","Dribles"],["totalDuelsWon","Duelos"],["aerialDuelsWon","Aéreos"],["ballRecovery","Recup."],["clearances","Cortes"],["wasFouled","Faltas sof."],["yellowCards","Amar."],["redCards","Verm."],["saves","Defesas"],["nv","Nível"],["pt","Potencial"]];
+  const th=(k,l)=>html`<th key=${k} class=${k==="nome"?"":"r"}><button class="th-ord" onClick=${()=>{ if(ord===k) setDir(-dir); else { setOrd(k); setDir(-1); } }}>${l}${ord===k?(dir<0?" ▾":" ▴"):""}</button></th>`;
+  const fmtC=(k,v)=>v==null?"—":k==="rating"?html`<${Nota} r=${v}/>`:k==="passPct"?Math.round(v)+"%":k==="nv"||k==="pt"?f1(v):Math.round(v);
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <${Abas} tabs=${["Atletas","Ranking","Relatórios","Comparar"]} v=${aba} set=${setAba}/>
+    ${aba==="Atletas"||aba==="Ranking"?html`<div class="grid g-kpi">
+      <${Kpi} l="Atletas" v=${base.length} d=${atl.filter(a=>a.st).length+" com números no Sofascore"}/>
+      <${Kpi} l="Melhor nota" v=${tr?tr.s.rating.toFixed(2):"—"} d=${tr?tr.a.nome+" · mín. 5 jogos":""}/>
+      <${Kpi} l="Artilheiro" v=${tg?tg.s.goals:"—"} d=${tg?tg.a.nome:""}/>
+      <${Kpi} l="Garçom" v=${ta?ta.s.assists:"—"} d=${ta?ta.a.nome:""}/>
+      <${Kpi} l="Mais minutos" v=${tm?tm.s.minutesPlayed.toLocaleString("pt-BR"):"—"} d=${tm?tm.a.nome:""}/>
+    </div>
+    <div class="card"><div class="toolbar" style=${{marginBottom:0}}>
+      <input class="field grow" id="sa-q" placeholder="Buscar atleta" value=${q} onInput=${e=>setQ(e.target.value)} style=${{maxWidth:"240px"}}/>
+      <select class="field" id="sa-pos" style=${{width:"auto"}} value=${fp} onChange=${e=>setFp(e.target.value)}><option value="">Todas as posições</option>${posicoes.map(p=>html`<option key=${p}>${p}</option>`)}</select>
+      <div class="seg">${COMP_SOFA.map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)}>${l}</button>`)}</div>
+      <select class="field" id="sa-fonte" style=${{width:"auto"}} value=${fonte} onChange=${e=>setFonte(e.target.value)}><option value="elenco">Elenco WilScout</option><option value="todos">Elenco + quem passou em 2026</option></select>
+      ${aba==="Atletas"?html`<select class="field" id="sa-ord" style=${{width:"auto"}} value=${ord} onChange=${e=>{ setOrd(e.target.value); setDir(-1); }}>${[["rating","Ordenar: nota"],["minutesPlayed","Minutos"],["goals","Gols"],["assists","Assistências"],["ga","G+A"],["nv","Nível"],["pt","Potencial"],["nome","Nome"]].map(([k,l])=>html`<option key=${k} value=${k}>${l}</option>`)}</select>`:null}
+    </div></div>`:null}
+    ${aba==="Atletas"?html`<div class="acards">${sorted.map(({a,s,av})=>html`<button key=${a.nome} type="button" class="acard atl-card" onClick=${()=>setSel(atlKey(a))}>
+      <div style=${{display:"flex",gap:"10px",alignItems:"center",minWidth:0}}><${FotoAtl} a=${a} size=${52}/><div style=${{minWidth:0,flex:1,textAlign:"left"}}><div class="nm" style=${{fontSize:"15px"}}>${a.nome}</div><span class="note">${a.pos}${a.nasc?" · "+(2026-+a.nasc.slice(0,4))+" anos":""}${a.pe?" · "+(a.pe==="C"?"canhoto":"destro"):""}</span></div><${Nota} r=${s.rating}/></div>
+      <div class="atl-n">${[["J",s.appearances],["Min",s.minutesPlayed],["G",s.goals],["A",s.assists]].map(([l,v])=>html`<div key=${l}><span class="note">${l}</span><b class="num">${v??0}</b></div>`)}</div>
+      <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px"}}><span class="note">Nível</span><${Estrelas} v=${av.nv}/></div>
+      <div style=${{display:"flex",justifyContent:"space-between",alignItems:"center",gap:"8px"}}><span class="note">Potencial</span><${Estrelas} v=${av.pt}/></div>
+      ${av.rec?html`<${Chip} txt=${av.rec} cor=${corRec(av.rec)}/>`:null}
+    </button>`)}</div>`:null}
+    ${aba==="Ranking"?html`<div class="card" style=${{padding:0}}><div class="tablewrap planilha" style=${{maxHeight:"70vh"}}><table><thead><tr>${th("nome","Atleta")}${COLS.map(([k,l])=>th(k,l))}</tr></thead><tbody>
+      ${sorted.map(({a,s,av})=>html`<tr key=${a.nome}><td style=${{padding:"6px 8px"}}><button class="lnk" onClick=${()=>setSel(atlKey(a))}><${FotoAtl} a=${a} size=${26}/><span><b>${a.nome}</b><small>${PERFIL_POS[a.pos]||a.pos}</small></span></button></td>${COLS.map(([k])=>html`<td key=${k} class="r num">${fmtC(k,k==="nv"?av.nv:k==="pt"?av.pt:k==="ga"?s.ga:k==="passPct"?s.passPct:s[k])}</td>`)}</tr>`)}
+    </tbody></table></div></div><p class="note">Fonte: Sofascore (consulta em 29/10/2026). Nível e potencial: último relatório de scout ou média das notas de partida do WilScout. Toque no título da coluna para ordenar.</p>`:null}
+    ${aba==="Relatórios"?html`<${RelatoriosScout} st=${st} up=${up} abrir=${k=>setSel(k)}/>`:null}
+    ${aba==="Comparar"?html`<${CompararAtletas} st=${st} comp=${comp} setComp=${setComp}/>`:null}
+  </div>`;
+}
+
+function PerfilAtleta({st,up,toast,a,voltar}){
+  const [comp,setComp]=useState(""); const [novo,setNovo]=useState(null);
+  const s=statsAtl(a,comp); const av=avaliacaoAtl(st,a); const gk=a.pos==="Goleiro";
+  const js=jogosDoAtleta(st,a);
+  const notas=js.filter(x=>x.nota!=null).slice().reverse();
+  const idd=a.nasc?2026-+a.nasc.slice(0,4)-((a.nasc.slice(5)>hoje().slice(5))?1:0):null;
+  const extra=(st.scoutAtl||{})[atlKey(a)]||{};
+  const setExtra=(k,v)=>up(S=>({...S,scoutAtl:{...(S.scoutAtl||{}),[atlKey(a)]:{...((S.scoutAtl||{})[atlKey(a)]||{}),[k]:v}}}));
+  const rels=(st.relScout||[]).filter(r=>r.atleta===atlKey(a)).sort((x,y)=>(y.data||"").localeCompare(x.data||""));
+  const k90=k=>s.minutesPlayed?f2((s[k]||0)/s.minutesPlayed*90):"—";
+  const kp=gk?[["Jogos",s.appearances,`${s.matchesStarted??0} como titular`],["Minutos",s.minutesPlayed?.toLocaleString("pt-BR"),""],["Nota média",s.rating?s.rating.toFixed(2):"—",""],["Defesas",s.saves,k90("saves")+" por 90 min"],["Gols sofridos",s.goalsConceded,s.minutesPlayed?f2((s.goalsConceded||0)/s.minutesPlayed*90)+" por 90 min":""],["Sem sofrer gol",s.cleanSheet,"jogos"],["Passes certos",s.passPct!=null?Math.round(s.passPct)+"%":"—",`${s.accuratePasses??0} de ${s.totalPasses??0}`],["Recuperações",s.ballRecovery,k90("ballRecovery")+" por 90 min"]]
+    :[["Jogos",s.appearances,`${s.matchesStarted??0} como titular`],["Minutos",s.minutesPlayed?.toLocaleString("pt-BR"),""],["Nota média",s.rating?s.rating.toFixed(2):"—",""],["Gols",s.goals,k90("goals")+" por 90 min"],["Assistências",s.assists,k90("assists")+" por 90 min"],["Finalizações",s.totalShots,`${s.shotsOnTarget??0} no alvo`],["Passes certos",s.passPct!=null?Math.round(s.passPct)+"%":"—",`${s.keyPasses??0} decisivos`],["Dribles certos",s.successfulDribbles,k90("successfulDribbles")+" por 90 min"],["Duelos ganhos",s.totalDuelsWon,`${s.aerialDuelsWon??0} pelo alto`],["Recuperações",s.ballRecovery,`${s.clearances??0} cortes`],["Faltas",`${s.wasFouled??0}·${s.fouls??0}`,"sofridas · cometidas"],["Cartões",`${s.yellowCards??0}·${s.redCards??0}`,"amarelos · vermelhos"]];
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div><button class="btn sm ghost" onClick=${voltar}>← Voltar aos atletas</button></div>
+    <div class="card perfil-top">
+      <${FotoAtl} a=${a} size=${120}/>
+      <div class="perfil-dados">
+        <h2 style=${{margin:0,fontSize:"26px"}}>${a.nome}</h2>
+        <span class="note">${a.pos}${idd!=null?` · ${idd} anos`:""}${a.extra?" · passou pelo elenco em 2026":""}</span>
+        <dl>${[["Nascimento",a.nasc?fmtDL(a.nasc).replace(/^[^,]+, /,""):"—"],["Altura",a.alt?a.alt+" cm":"—"],["Peso",a.peso?a.peso+" kg":"—"],["Pé",a.pe==="C"?"Canhoto":a.pe==="D"?"Destro":"—"],["Naturalidade",a.cid?a.cid+(a.uf?"-"+a.uf:""):"—"],["Nacionalidade",a.pais||"—"]].map(([k,v])=>html`<div key=${k}><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>
+        <div style=${{display:"flex",gap:"6px",flexWrap:"wrap"}}>
+          ${a.sofa?html`<a class="btn sm" href=${"https://www.sofascore.com/pt/football/player/"+normNome(a.nome).replace(/ /g,"-")+"/"+a.sofa} target="_blank" rel="noopener">Sofascore</a>`:null}
+          ${a.zz?html`<a class="btn sm" href=${"https://www.ogol.com.br/jogador/"+a.zz.replace(/^\d+$/,"x/$&")} target="_blank" rel="noopener">oGol / ZeroZero</a>`:null}
+          ${extra.playlist?html`<a class="btn sm primary" href=${extra.playlist} target="_blank" rel="noopener">▶ Playlist YouTube</a>`:null}
+          <button class="btn sm" onClick=${()=>window.print()}>📄 Salvar PDF</button>
+        </div>
+      </div>
+      <div class="perfil-av">
+        <div><span class="note">Nível</span><${Estrelas} v=${av.nv}/></div>
+        <div><span class="note">Potencial</span><${Estrelas} v=${av.pt}/></div>
+        <span class="note">${av.fonte||"Sem avaliação"}</span>
+        ${av.rec?html`<${Chip} txt=${av.rec} cor=${corRec(av.rec)}/>`:null}
+        <button class="btn sm primary ro-hide" onClick=${()=>setNovo({atleta:atlKey(a),nome:a.nome,data:hoje(),nivel:av.nv!=null?(Math.round(av.nv*2)/2).toFixed(1):"",potencial:av.pt!=null?(Math.round(av.pt*2)/2).toFixed(1):"",recomendacao:"",fortes:["","",""],fracos:["","",""],carreira:"",fisicas:"",taticas:"",tecnicas:"",parecer:""})}>+ Relatório de scout</button>
+      </div>
+    </div>
+    <div class="seg" style=${{alignSelf:"start",flexWrap:"wrap"}}>${COMP_SOFA.map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)} disabled=${k&&!(a.st||{})[k]}>${l}</button>`)}</div>
+    ${a.st?html`<div class="grid g-kpi">${kp.map(([l,v,d])=>html`<${Kpi} key=${l} l=${l} v=${v??0} d=${d}/>`)}</div>`:html`<div class="empty">O Sofascore não tem números deste atleta em 2026.</div>`}
+    <div class="grid g-2">
+      <div class="card"><div class="card-h"><div><h2>Nota por jogo</h2><p>Sofascore · ${notas.length} jogos avaliados</p></div></div><${Serie} tipo="linha" pts=${notas.map(x=>({x:fmtD(x.j.data),y:x.nota}))} ymin=${5} ymax=${9} refY=${7} refTxt="7,0" fmt=${v=>v.toFixed(1)}/></div>
+      <div class="card"><div class="card-h"><div><h2>Ficha do scout</h2><p>Observações internas</p></div></div>
+        <div class="grid" style=${{gap:"8px"}}>
+          <label class="note">Playlist do YouTube<input class="cell" id="pa-pl" value=${extra.playlist||""} onChange=${e=>setExtra("playlist",e.target.value.trim())} placeholder="https://youtube.com/playlist?list=…"/></label>
+          <label class="note">Observações<textarea class="cell" rows="4" id="pa-obs" value=${extra.obs||""} onChange=${e=>setExtra("obs",e.target.value)}></textarea></label>
+          ${rels.length?html`<div class="alerts">${rels.map(r=>html`<div key=${r.id} class="need" style=${{flexDirection:"column",alignItems:"stretch",gap:"4px"}}>
+            <div style=${{display:"flex",justifyContent:"space-between",gap:"6px",flexWrap:"wrap"}}><b>${fmtD(r.data)} · nível ${String(r.nivel||"—").replace(".",",")} · potencial ${String(r.potencial||"—").replace(".",",")}</b>${r.recomendacao?html`<${Chip} txt=${r.recomendacao} cor=${corRec(r.recomendacao)}/>`:null}</div>
+            ${[...(r.fortes||[]),...(r.fracos||[])].some(Boolean)?html`<div style=${{display:"flex",gap:"4px",flexWrap:"wrap"}}>${(r.fortes||[]).filter(Boolean).map(t=>html`<span key=${"f"+t} class="chip tag-f">+ ${t}</span>`)}${(r.fracos||[]).filter(Boolean).map(t=>html`<span key=${"r"+t} class="chip tag-r">− ${t}</span>`)}</div>`:null}
+            ${r.parecer?html`<span class="note">${r.parecer}</span>`:null}
+            <div class="ro-hide" style=${{display:"flex",gap:"6px"}}><button class="btn sm ghost" onClick=${()=>setNovo({...r})}>Editar</button><${Del} onYes=${()=>up(S=>({...S,relScout:(S.relScout||[]).filter(x=>x.id!==r.id)}))}/></div></div>`)}</div>`:html`<p class="note">Nenhum relatório de scout ainda.</p>`}
+        </div></div>
+    </div>
+    <div class="card" style=${{padding:0}}><div class="card-h" style=${{padding:"16px 16px 0"}}><div><h2>Jogos em 2026</h2><p>Nota Sofascore, minutos e avaliação do WilScout, lances do Flashscore</p></div></div>
+      ${js.length?html`<div class="tablewrap planilha" style=${{border:0,borderRadius:0}}><table><thead><tr><th>Data</th><th>Jogo</th><th class="r">Nota</th><th class="r">Min</th><th class="r">Entrou</th><th class="r">Saiu</th><th class="r">Gols</th><th class="r">Assist.</th><th class="r">Cartões</th><th class="r">Nível</th><th class="r">Pot.</th></tr></thead><tbody>
+        ${js.map(x=>{ const adv=advDe(st,x.j.adversario); const r=resJ(x.j); return html`<tr key=${x.j.id}><td class="num" style=${{padding:"6px 8px",whiteSpace:"nowrap"}}>${fmtD(x.j.data)}</td>
+          <td style=${{padding:"6px 8px"}}><span style=${{display:"flex",alignItems:"center",gap:"6px",whiteSpace:"nowrap"}}><span class="res" style=${{background:COR_RES[r]}}>${r}</span>${x.j.mando==="Fora"?"@ ":""}<${EscImg} src=${escudoDe(adv)} size=${18}/>${x.j.adversario} <b class="num">${x.j.gp}–${x.j.gc}</b><small class="note">${x.j.competicao}</small></span></td>
+          <td class="r"><${Nota} r=${x.nota}/></td><td class="r num">${x.min??"—"}</td><td class="r num">${x.ent?x.ent+"'":""}</td><td class="r num">${x.sai?x.sai+"'":""}</td><td class="r num">${x.g||""}</td><td class="r num">${x.a||""}</td>
+          <td class="r">${x.am?html`<span class="evi card-a" title="Amarelo"></span>`:null}${x.vm?html`<span class="evi card-v" title="Vermelho"></span>`:null}</td><td class="r num">${x.nv!=null?f1(x.nv):"—"}</td><td class="r num">${x.pt!=null?f1(x.pt):"—"}</td></tr>`; })}
+      </tbody></table></div>`:html`<div class="empty" style=${{margin:"16px"}}>Sem jogos registrados para este atleta.</div>`}</div>
+    ${novo?html`<${FormRelScout} st=${st} r=${novo} fechar=${()=>setNovo(null)} salvar=${r=>{ up(S=>{ const L=S.relScout||[]; return {...S,relScout:r.id?L.map(x=>x.id===r.id?r:x):[{...r,id:uid("rs")},...L]}; }); setNovo(null); toast&&toast("Relatório salvo"); }}/>`:null}
+  </div>`;
+}
+
+function FormRelScout({st,r,fechar,salvar}){
+  const [f,setF]=useState(r); const set=(k,v)=>setF(x=>({...x,[k]:v})); const setTag=(g,i,v)=>setF(x=>{ const a=[...(x[g]||["","",""])]; a[i]=v; return {...x,[g]:a}; });
+  const opts=tipo=>SCOUT_TAGS.filter(([,t])=>t==="A"||t===tipo).map(([t])=>t).concat((st.config.tagsExtra||[]).map(t=>t.nome));
+  useEffect(()=>{ const k=e=>{ if(e.key==="Escape") fechar(); }; addEventListener("keydown",k); return ()=>removeEventListener("keydown",k); },[]);
+  return html`<div class="vmodal" role="dialog" aria-modal="true" aria-label="Relatório de scout" onClick=${fechar}><form class="vmodal-box rs-form" onClick=${e=>e.stopPropagation()} onSubmit=${e=>{ e.preventDefault(); salvar(f); }}>
+    <div class="vmodal-h"><div><b>Relatório de scout</b><div class="note">Parecer técnico padronizado · ${f.nome||""}</div></div><button type="button" class="btn sm" onClick=${fechar}>Fechar</button></div>
+    <div class="rs-grid">
+      <label class="note">Data<input class="field" type="date" id="rs-data" value=${f.data||""} onInput=${e=>set("data",e.target.value)}/></label>
+      <label class="note">Nível<select class="field" id="rs-nv" value=${f.nivel||""} onChange=${e=>set("nivel",e.target.value)}><option value="">—</option>${NOTAS05.map(x=>html`<option key=${x} value=${x}>${x.replace(".",",")}</option>`)}</select></label>
+      <label class="note">Potencial<select class="field" id="rs-pt" value=${f.potencial||""} onChange=${e=>set("potencial",e.target.value)}><option value="">—</option>${NOTAS05.map(x=>html`<option key=${x} value=${x}>${x.replace(".",",")}</option>`)}</select></label>
+      <label class="note">Recomendação<select class="field" id="rs-rec" value=${f.recomendacao||""} onChange=${e=>set("recomendacao",e.target.value)}><option value="">Sem recomendação</option>${REC.map(([x])=>html`<option key=${x}>${x}</option>`)}</select></label>
+    </div>
+    <details class="rs-leg"><summary>Legenda das recomendações</summary>${REC.map(([x,c,d])=>html`<p key=${x}><b style=${{color:c}}>${x}:</b> ${d}</p>`)}</details>
+    ${[["fortes","Pontos fortes","F"],["fracos","Pontos fracos","R"]].map(([g,l,t])=>html`<div key=${g}><b class="eyebrow" style=${{color:"var(--mute)"}}>${l}</b><div class="rs-grid">${[0,1,2].map(i=>html`<select key=${i} class="field" id=${"rs-"+g+i} value=${(f[g]||[])[i]||""} onChange=${e=>setTag(g,i,e.target.value)}><option value="">Tag ${i+1}</option>${opts(t).map(x=>html`<option key=${x}>${x}</option>`)}</select>`)}</div></div>`)}
+    ${[["carreira","Carreira"],["fisicas","Características físicas"],["taticas","Características táticas"],["tecnicas","Características técnicas"],["parecer","Parecer final"]].map(([k,l])=>html`<label key=${k} class="note">${l}<textarea class="field" rows="2" id=${"rs-"+k} value=${f[k]||""} onInput=${e=>set(k,e.target.value)}></textarea></label>`)}
+    <div style=${{display:"flex",justifyContent:"flex-end",gap:"8px"}}><button type="button" class="btn" onClick=${fechar}>Cancelar</button><button class="btn primary" type="submit">Salvar relatório</button></div>
+  </form></div>`;
+}
+
+function RelatoriosScout({st,up,abrir}){
+  const [fr,setFr]=useState(""); const rels=(st.relScout||[]).filter(r=>!fr||r.recomendacao===fr).sort((a,b)=>(b.data||"").localeCompare(a.data||""));
+  const cont=k=>(st.relScout||[]).filter(r=>r.recomendacao===k).length;
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div class="grid g-kpi"><${Kpi} l="Relatórios" v=${(st.relScout||[]).length}/>${REC.map(([k,c])=>html`<${Kpi} key=${k} l=${k} v=${cont(k)}/>`)}</div>
+    <div class="toolbar" style=${{marginBottom:0}}><select class="field" id="rs-f" style=${{width:"auto"}} value=${fr} onChange=${e=>setFr(e.target.value)}><option value="">Todas as recomendações</option>${REC.map(([k])=>html`<option key=${k}>${k}</option>`)}</select><span class="note">Para criar um relatório, abra o atleta e toque em “+ Relatório de scout”.</span></div>
+    ${rels.length?html`<div class="tablewrap"><table><thead><tr><th>Data</th><th>Atleta</th><th class="r">Nível</th><th class="r">Potencial</th><th>Recomendação</th><th>Pontos fortes</th><th>Pontos fracos</th></tr></thead><tbody>
+      ${rels.map(r=>html`<tr key=${r.id}><td class="num" style=${{padding:"8px"}}>${fmtD(r.data)}</td><td style=${{padding:"8px"}}><button class="lnk" onClick=${()=>abrir(r.atleta)}><b>${r.nome}</b></button></td><td class="r num">${r.nivel||"—"}</td><td class="r num">${r.potencial||"—"}</td><td>${r.recomendacao?html`<${Chip} txt=${r.recomendacao} cor=${corRec(r.recomendacao)}/>`:"—"}</td><td>${(r.fortes||[]).filter(Boolean).join(", ")||"—"}</td><td>${(r.fracos||[]).filter(Boolean).join(", ")||"—"}</td></tr>`)}
+    </tbody></table></div>`:html`<div class="empty">Nenhum relatório de scout ${fr?"com essa recomendação":"ainda"}.</div>`}
+    <div class="card"><div class="card-h"><div><h2>Tags de scout</h2><p>${SCOUT_TAGS.length} tags padrão para pontos fortes e fracos</p></div></div>
+      <div style=${{display:"flex",gap:"4px",flexWrap:"wrap"}}>${SCOUT_TAGS.map(([t,k])=>html`<span key=${t} class=${"chip "+(k==="F"?"tag-f":"")}>${t}</span>`)}</div>
+      <p class="note" style=${{marginTop:"8px"}}>Verde: usada como ponto forte. Cinza: serve como ponto forte ou fraco.</p></div>
+  </div>`;
+}
+
+function CompararAtletas({st,comp,setComp}){
+  const [sel,setSel]=useState(["","",""]); const atl=ATLETAS_2026.filter(a=>a.st);
+  const esc=sel.map(k=>atl.find(a=>atlKey(a)===k)).filter(Boolean);
+  const M=[["rating","Nota média",v=>v?v.toFixed(2):"—",0],["minutesPlayed","Minutos",v=>v??0,0],["goals","Gols /90",null,1],["assists","Assistências /90",null,1],["totalShots","Finalizações /90",null,1],["keyPasses","Passes decisivos /90",null,1],["successfulDribbles","Dribles /90",null,1],["totalDuelsWon","Duelos ganhos /90",null,1],["aerialDuelsWon","Aéreos ganhos /90",null,1],["ballRecovery","Recuperações /90",null,1],["passPct","Passes certos %",v=>v!=null?Math.round(v)+"%":"—",0]];
+  const cores=["var(--red)","var(--info)","var(--warn)"];
+  return html`<div class="card"><div class="card-h"><div><h2>Comparar atletas</h2><p>Números do Sofascore, por 90 minutos quando indicado</p></div>
+      <div class="seg">${COMP_SOFA.map(([k,l])=>html`<button key=${l} class=${comp===k?"on":""} onClick=${()=>setComp(k)}>${l}</button>`)}</div></div>
+    <div class="toolbar">${[0,1,2].map(i=>html`<select key=${i} class="field" id=${"ca-"+i} style=${{width:"auto",borderLeft:"3px solid "+cores[i]}} value=${sel[i]} onChange=${e=>{ const c=[...sel]; c[i]=e.target.value; setSel(c); }}><option value="">Atleta ${i+1}…</option>${atl.map(a=>html`<option key=${a.nome} value=${atlKey(a)}>${a.nome} (${PERFIL_POS[a.pos]||a.pos})</option>`)}</select>`)}</div>
+    ${esc.length?html`<div class="cmp-atl">${M.map(([k,l,fmt,p90])=>{ const vs=sel.map(x=>{ const a=atl.find(z=>atlKey(z)===x); if(!a) return null; const s=statsAtl(a,comp); return p90?s.p90(k):k==="passPct"?s.passPct:s[k]; }); const mx=Math.max(...vs.filter(v=>v!=null),0.0001);
+      return html`<div key=${k} class="cmp-r"><span class="note">${l}</span>${vs.map((v,i)=>sel[i]?html`<div key=${i} class="cmp-c"><div class="bar"><i style=${{width:(v||0)/mx*100+"%",background:cores[i]}}></i></div><b class="num">${fmt?fmt(v):v==null?"—":f2(v)}</b></div>`:html`<div key=${i}></div>`)}</div>`; })}</div>`
+      :html`<div class="empty">Escolha até 3 atletas para comparar.</div>`}
+  </div>`;
+}
+
+/* ---------- Perfis e acessos ---------- */
+const MODULOS = () => NAV.flatMap(([g,it])=>it.map(([k,l])=>[k,l,g]));
+const PERFIS_PADRAO = {
+  "Administrador":{edita:true,mods:"*"},
+  "Analista de Desempenho":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","inteligencia","relatorio-jogo","mercado","scout-atletas","analise-desempenho","analise-dados","cartoes","diagnostico","gestao","gestao-elenco","comissao","planejamento-2027","exportar"]},
+  "Comissão Técnica":{edita:true,mods:["inicio","ao-vivo","treinos","hub-performance","elenco","fisiologia","fisioterapia","preparacao-fisica","nutricao","relatorio-jogo","scout-atletas","analise-desempenho","analise-dados","cartoes","gestao-elenco"]},
+  "Diretoria":{edita:false,mods:["inicio","ao-vivo","gestao","financeiro","contratos","planejamento-2027","mercado","scout-atletas","analise-desempenho","diagnostico","exportar"]},
+  "Jogador":{edita:false,mods:["inicio","ao-vivo","treinos","analise-desempenho"]},
+};
+const USUARIOS_PADRAO = {ciceroav:{nome:"Cícero",perfil:"Administrador"},phsouzaleao:{nome:"Paulinho",perfil:"Administrador"}};
+function perfisDe(st){ return {...PERFIS_PADRAO,...((st.config||{}).perfis||{})}; }
+function perfilDoUsuario(st,nick){ const u=((st.config||{}).usuarios||USUARIOS_PADRAO)[nick]; return (u&&u.perfil)||"Administrador"; }
+function podeVer(st,perfil,k){ const p=perfisDe(st)[perfil]; if(!p) return true; if(p.mods==="*") return true; return k==="inicio"||(p.mods||[]).includes(k); }
+function Acessos({st,up,user,toast,verComo,setVerComo}){
+  const perfis=perfisDe(st); const nomes=Object.keys(perfis); const usuarios={...USUARIOS_PADRAO,...((st.config||{}).usuarios||{})};
+  const meu=perfilDoUsuario(st,user&&user.nick);
+  const setP=fn=>up(s=>{ const ps={...PERFIS_PADRAO,...((s.config||{}).perfis||{})}; return {...s,config:{...s.config,perfis:fn(ps)}}; });
+  const toggle=(p,k)=>setP(ps=>{ const cur=ps[p].mods==="*"?MODULOS().map(m=>m[0]):[...(ps[p].mods||[])]; const nx=cur.includes(k)?cur.filter(x=>x!==k):[...cur,k]; return {...ps,[p]:{...ps[p],mods:nx}}; });
+  const setU=(nick,k,v)=>up(s=>{ const us={...USUARIOS_PADRAO,...((s.config||{}).usuarios||{})}; const novo={...us,[nick]:{...us[nick],[k]:v}}; if(!Object.values(novo).some(u=>u.perfil==="Administrador")){ toast&&toast("Mantenha pelo menos um Administrador"); return s; } return {...s,config:{...s.config,usuarios:novo}}; });
+  const [np,setNp]=useState("");
+  const grupos=NAV.map(([g,it])=>[g,it]);
+  return html`<div class="grid" style=${{gap:"14px"}}>
+    <div class="grid g-kpi"><${Kpi} l="Seu perfil" v=${meu} d=${perfis[meu]&&perfis[meu].edita?"pode editar":"somente leitura"}/><${Kpi} l="Perfis" v=${nomes.length}/><${Kpi} l="Usuários com acesso" v=${Object.keys(usuarios).length}/></div>
+    <div class="card"><div class="card-h"><div><h2>Usuários</h2><p>Quem entra no app e com qual perfil</p></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Usuário</th><th>Nome</th><th>Perfil</th><th>Acesso</th></tr></thead><tbody>
+        ${Object.entries(usuarios).map(([nick,u])=>html`<tr key=${nick}><td style=${{padding:"8px"}}><b>${nick}</b></td><td><input class="cell" id=${"u-n-"+nick} value=${u.nome||""} onChange=${e=>setU(nick,"nome",e.target.value)}/></td>
+          <td><select class="cell" id=${"u-p-"+nick} value=${u.perfil} onChange=${e=>setU(nick,"perfil",e.target.value)}>${nomes.map(p=>html`<option key=${p}>${p}</option>`)}</select></td><td class="note" style=${{padding:"8px"}}>${perfis[u.perfil]&&perfis[u.perfil].edita?"Edita":"Somente leitura"}</td></tr>`)}
+      </tbody></table></div>
+      <p class="note" style=${{marginTop:"8px"}}>Novos logins (apelido ou CPF + senha) precisam ser liberados no banco de dados. Peça a inclusão e o usuário aparece aqui para receber um perfil.</p></div>
+    <div class="card"><div class="card-h"><div><h2>Perfis e permissões</h2><p>Marque os módulos que cada perfil enxerga no menu</p></div>
+      <div class="actions ro-hide"><input class="field" id="np" placeholder="Novo perfil" value=${np} onInput=${e=>setNp(e.target.value)} style=${{width:"160px"}}/><button class="btn" onClick=${()=>{ const x=np.trim(); if(!x||perfis[x]) return; setP(ps=>({...ps,[x]:{edita:false,mods:["inicio"]}})); setNp(""); }}>${I.plus}Criar</button></div></div>
+      <div class="tablewrap planilha" style=${{maxHeight:"none"}}><table><thead><tr><th>Módulo</th>${nomes.map(p=>html`<th key=${p} class="r" style=${{minWidth:"110px"}}>${p}</th>`)}</tr></thead><tbody>
+        <tr><td style=${{padding:"8px"}}><b>Pode editar</b></td>${nomes.map(p=>html`<td key=${p} class="r"><input type="checkbox" aria-label=${p+" pode editar"} checked=${!!perfis[p].edita} disabled=${p==="Administrador"} onChange=${()=>setP(ps=>({...ps,[p]:{...ps[p],edita:!ps[p].edita}}))} style=${{accentColor:"var(--red)",width:"16px",height:"16px"}}/></td>`)}</tr>
+        ${grupos.map(([g,it])=>[html`<tr key=${"g"+g}><td colspan=${nomes.length+1} class="eyebrow" style=${{padding:"10px 8px 4px",color:"var(--mute)"}}>${g}</td></tr>`,...it.map(([k,l])=>html`<tr key=${k}><td style=${{padding:"6px 8px"}}>${l}</td>${nomes.map(p=>html`<td key=${p} class="r"><input type="checkbox" aria-label=${p+" vê "+l} checked=${podeVer(st,p,k)} disabled=${p==="Administrador"||k==="inicio"} onChange=${()=>toggle(p,k)} style=${{accentColor:"var(--red)",width:"16px",height:"16px"}}/></td>`)}</tr>`)])}
+      </tbody></table></div></div>
+    <div class="card"><div class="card-h"><div><h2>Visualizar como</h2><p>Veja o app exatamente como outro perfil vê. Vale só neste aparelho.</p></div></div>
+      <div class="seg" style=${{flexWrap:"wrap"}}>${["",...nomes].map(p=>html`<button key=${p||"eu"} class=${(verComo||"")===p?"on":""} onClick=${()=>setVerComo(p)}>${p||"Meu perfil"}</button>`)}</div></div>
   </div>`;
 }
 
@@ -2235,10 +2687,12 @@ function planilhas0(st){
   const bench = st.bench.map(t=>({"Clube":t.nome,"Ano":t.ano,"Jogadores utilizados":n(t.usados),"Idade média":n(t.idade),"+50% minutos":n(t.tit),"25-50% minutos":n(t.rot),">30% participação":n(t.p30),"Total elenco":n(t.total),"Pontos":n(t.pts),"Gols marcados":n(t.gf),"Gols sofridos":n(t.ga),"xG":n(t.xg),"xGA":n(t.xga)}));
   const alvos = st.alvos.map(a=>({"Atleta":a.nome,"Posição":POSN[a.pos]?.s||a.pos,"Nascimento":n(a.nasc),"Idade em 2027":idade(a,2027),"Clube atual":a.clube,"Salário (R$)":n(a.salario),"Prioridade":a.prioridade,"Situação":a.status,"Observação":a.obs}));
   const comissao = st.comissao.map(c=>({"Profissional":c.nome,"Função":c.funcao,"Área":AREA(c.funcao),"Nascimento":n(c.nasc),"Idade":idade(c,ano),"Desde":n(c.desde),"Contrato até":n(c.contrato),"Salário (R$)":n(c.salario),"Situação 2027":c.sit2027,"Observação":c.obs}));
-  const ROT={psr:"PSR (bem-estar)",pse:"PSE (carga)",cmj:"CMJ",gps:"GPS",atend:"Atendimentos fisio",lesoes:"Lesões",sessoes:"Sessões de treino",nutri:"Composição corporal",hidrat:"Hidratação",planos:"Planos alimentares",tarefas:"Tarefas",relatorios:"Relatórios de jogo",adversarios:"Adversários",jogos:"Jogos",arbitros:"Árbitros",cartoes:"Cartões",metas:"Metas",fin:"Financeiro",eventos:"Eventos"};
+  const ROT={psr:"PSR (bem-estar)",pse:"PSE (carga)",cmj:"CMJ",gps:"GPS",atend:"Atendimentos fisio",lesoes:"Lesões",sessoes:"Sessões de treino",nutri:"Composição corporal",hidrat:"Hidratação",planos:"Planos alimentares",tarefas:"Tarefas",relatorios:"Relatórios de jogo",adversarios:"Adversários",jogos:"Jogos",arbitros:"Árbitros",cartoes:"Cartões",metas:"Metas",fin:"Financeiro",eventos:"Eventos",treinos:"Treinos",relScout:"Relatórios de scout"};
   const extras=Object.entries(ROT).map(([k,t])=>[t,(st[k]||[]).map(r=>{ const o={}; Object.entries(r).forEach(([c,v])=>{ if(c==="id"||c==="escudo"||(v&&typeof v==="object")) return; o[c==="atleta"?"Atleta":c]=c==="atleta"?nomeA(st,v):v; }); return o; })]).filter(([,rows])=>rows.length);
   const lances=st.jogos.slice().sort((a,b)=>(a.data||"").localeCompare(b.data||"")).flatMap(j=>(j.eventos||[]).map((e,i)=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Minuto":e[2],"Equipe":e[0]===1?"Santa Cruz":j.adversario,"Lance":EV_NOME[e[1]]||e[1],"Jogador":e[3],"Detalhe":e[1]==="S"?"sai "+(e[4]||""):e[4]==="banco"?"no banco":"","Assistência":e[0]===1&&ehGol(e[1])?assistDe(j,i):""})));
   if(lances.length) extras.push(["Lances dos jogos",lances]);
+  const atlS=ATLETAS_2026.filter(a=>a.st).map(a=>{ const x=statsAtl(a,""), av=avaliacaoAtl(st,a); return {"Atleta":a.nome,"Posição":a.pos,"Nascimento":a.nasc||"","Jogos":x.appearances,"Titular":x.matchesStarted,"Minutos":x.minutesPlayed,"Nota média (Sofascore)":x.rating!=null?+x.rating.toFixed(2):null,"Gols":x.goals,"Assistências":x.assists,"Finalizações":x.totalShots,"No alvo":x.shotsOnTarget,"Passes certos %":x.passPct!=null?Math.round(x.passPct):null,"Passes decisivos":x.keyPasses,"Dribles":x.successfulDribbles,"Duelos ganhos":x.totalDuelsWon,"Aéreos ganhos":x.aerialDuelsWon,"Recuperações":x.ballRecovery,"Amarelos":x.yellowCards,"Vermelhos":x.redCards,"Defesas":x.saves,"Nível":av.nv!=null?+av.nv.toFixed(1):null,"Potencial":av.pt!=null?+av.pt.toFixed(1):null}; });
+  extras.push(["Scout de atletas",atlS]);
   const jg=porJogador(st.jogos).sort((a,b)=>b.g-a.g||b.a-a.a).map(x=>({"Jogador":x.nome,"Gols":x.g,"Pênaltis":x.pen,"Assistências":x.a,"Amarelos":x.am,"Expulsões":x.v,"Entrou":x.ent,"Saiu":x.sai}));
   if(jg.length) extras.push(["Jogadores (lances)",jg]);
   const est=st.jogos.filter(j=>j.stats).map(j=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Mando":j.mando,"Placar":`${j.gp}-${j.gc}`,"Posse SC %":j.stats.posse?.[0],"Posse adv %":j.stats.posse?.[1],"Finalizações SC":j.stats.fin?.[0],"Finalizações adv":j.stats.fin?.[1],"No alvo SC":j.stats.alvo?.[0],"No alvo adv":j.stats.alvo?.[1],"Árbitro":j.arbitro,"Estádio":j.estadio,"Público":n(j.publico)}));
@@ -2285,6 +2739,7 @@ function Exportar({st,up,toast}){
       <div class="actions">
         <button class="btn" disabled=${busy} onClick=${()=>salvar(`ScoutPro_backup_${hoje}.json`,JSON.stringify(st,null,2))}>${I.export}Baixar backup .json</button>
         <button class="btn" onClick=${()=>fileRef.current.click()}>Restaurar backup</button>
+        <${ImportarPacote} up=${up} toast=${toast} compacto=${false}/>
         <input type="file" id="imp" accept=".json,application/json" ref=${fileRef} hidden onChange=${importar}/>
         ${reset?html`<span class="confirm"><button class="btn primary" onClick=${()=>{up(padrao());setReset(false);toast("Dados do planejamento original restaurados")}}>Apagar edições e restaurar</button><button class="btn ghost" onClick=${()=>setReset(false)}>Cancelar</button></span>`
                :html`<button class="btn ghost" onClick=${()=>setReset(true)}>Restaurar dados do documento</button>`}
@@ -2317,15 +2772,23 @@ const IC = {
   contr: ic("M7 3h8l4 4v14H7zM10 12h6M10 16h6M10 8h2"),
   plano: I.plano,
   export: I.export,
+  live: ic("M12 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM8.5 8.5a5 5 0 0 0 0 7M15.5 8.5a5 5 0 0 1 0 7M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"),
+  treino: ic("M5 20h14M7.5 20 11 5h2l3.5 15M9 13h6"),
+  scout: ic("M10 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM3 20c.8-3.5 3.4-5.5 7-5.5 1.2 0 2.3.2 3.2.6M17.5 13l1.1 2.3 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"),
+  acesso: ic("M12 3l8 3v6c0 4.6-3.4 8-8 9-4.6-1-8-4.4-8-9V6zM12 10.5v3.5M12 8.5h.01"),
 };
 const NAV = [
-  ["Geral",[["inicio","Início",IC.inicio]]],
+  ["Geral",[["inicio","Início",IC.inicio],["ao-vivo","Ao Vivo",IC.live],["treinos","Treinos",IC.treino]]],
   ["Saúde e performance",[["hub-performance","Hub de Performance",IC.hub],["elenco","Elenco",IC.elenco],["fisiologia","Fisiologia",IC.fisio],["fisioterapia","Fisioterapia",IC.fisioter],["preparacao-fisica","Prep. Física",IC.prep],["nutricao","Nutrição",IC.nutri]]],
-  ["Inteligência",[["inteligencia","Painel Intel.",IC.intel],["relatorio-jogo","Rel. de Jogo",IC.rel],["mercado","Mercado",IC.mercado],["analise-desempenho","Análise Desemp.",IC.desemp],["analise-dados","Análise de Dados",IC.dados],["cartoes","Cartões",IC.cartoes],["diagnostico","Diagnóstico Série C",IC.diag]]],
-  ["Gestão",[["gestao","Visão Geral",IC.gestao],["gestao-elenco","Gestão de Elenco",IC.gelenco],["comissao","Comissão técnica",IC.comissao],["financeiro","Financeiro",IC.fin],["contratos","Contratos",IC.contr],["planejamento-2027","Planejamento 2027",IC.plano],["exportar","Planilhas",IC.export]]],
+  ["Inteligência",[["inteligencia","Painel Intel.",IC.intel],["relatorio-jogo","Rel. de Jogo",IC.rel],["mercado","Mercado",IC.mercado],["scout-atletas","Scout de atletas",IC.scout],["analise-desempenho","Análise Desemp.",IC.desemp],["analise-dados","Análise de Dados",IC.dados],["cartoes","Cartões",IC.cartoes],["diagnostico","Diagnóstico Série C",IC.diag]]],
+  ["Gestão",[["gestao","Visão Geral",IC.gestao],["gestao-elenco","Gestão de Elenco",IC.gelenco],["comissao","Comissão técnica",IC.comissao],["financeiro","Financeiro",IC.fin],["contratos","Contratos",IC.contr],["planejamento-2027","Planejamento 2027",IC.plano],["exportar","Planilhas",IC.export],["acessos","Perfis e acessos",IC.acesso]]],
 ];
 const TITULOS = {
   "inicio":["Geral","Início",""],
+  "ao-vivo":["Geral","Ao Vivo","Transmissão ao vivo de jogos e treinos. Sem live, passa o último vídeo gravado."],
+  "treinos":["Geral","Treinos","Sessões de treino com vídeo na íntegra, filtros por período, local e treinador."],
+  "scout-atletas":["Inteligência","Scout de atletas","Perfil, números do Sofascore, nota por jogo, nível, potencial e relatórios de scout de cada atleta."],
+  "acessos":["Gestão","Perfis e acessos","Perfis de usuário e o que cada um pode ver e editar."],
   "hub-performance":["Saúde e performance","Hub de Performance","Monitoramento em tempo real da disponibilidade e da prontidão do elenco."],
   "elenco":["Saúde e performance","Elenco","Disponibilidade, status médico e prontidão de cada atleta."],
   "fisiologia":["Saúde e performance","Fisiologia","Bem-estar diário (PSR), carga interna (PSE), salto, GPS e minutagem."],
@@ -2356,13 +2819,18 @@ function useTema(){
 }
 function App(){
   const store=useStore();
-  const {state:st, sync, modo, user, entrar, sair, podeEditar}=store;
+  const {state:st, sync, modo, user, entrar, sair, podeEditar:podeEditar0}=store;
+  const meuPerfil=perfilDoUsuario(st,user&&user.nick);
   const [tema,setTema]=useTema();
   const ler=()=>{ let h=(location.hash||"").slice(1); h=ALIAS[h]||h; return TITULOS[h]?h:"inicio"; };
   const celular = () => { try{ return window.matchMedia("(max-width: 860px)").matches; }catch(e){ return false; } };
   const [tab,setTab]=useState(()=>{ if(celular()){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(e){} return "inicio"; } return ler(); });
   const [menu,setMenu]=useState(celular);
   const [fechados,setFechados]=useState({});
+  const [verComo,setVerComo]=useState(()=>{ try{ return sessionStorage.getItem("scoutpro.vercomo")||""; }catch(e){ return ""; } });
+  const setVerComoS=v=>{ setVerComo(v); try{ sessionStorage.setItem("scoutpro.vercomo",v); }catch(e){} };
+  const perfil=(verComo&&meuPerfil==="Administrador"&&perfisDe(st)[verComo])?verComo:meuPerfil;
+  const podeEditar=podeEditar0&&!!((perfisDe(st)[perfil]||{edita:true}).edita);
   const [msg,setMsg]=useState(null); const tm=useRef();
   const toast=useCallback(t=>{ setMsg(t); clearTimeout(tm.current); tm.current=setTimeout(()=>setMsg(null),3200); },[]);
   useEffect(()=>{ const f=()=>{ setTab(ler()); setMenu(false); window.scrollTo(0,0); }; window.addEventListener("hashchange",f); return ()=>window.removeEventListener("hashchange",f); },[]);
@@ -2386,7 +2854,7 @@ function App(){
   const [e,t,s]=TITULOS[tab];
   const nome=USUARIOS[user?.nick]||user?.nick;
   const brand=html`<div class="brand">${LOGO}<div><b>SCOUT<em>PRO</em></b></div></div>`;
-  const nav=html`<nav class="nav">${NAV.map(([g,itens])=>html`<div key=${g} class="nav-g">
+  const nav=html`<nav class="nav">${NAV.map(([g,itens])=>[g,itens.filter(([k])=>podeVer(st,perfil,k))]).filter(([,it])=>it.length).map(([g,itens])=>html`<div key=${g} class="nav-g">
       <button class="nav-gh" aria-expanded=${!fechados[g]} onClick=${()=>setFechados(f=>({...f,[g]:!f[g]}))}><span>${g}</span><span aria-hidden="true">${fechados[g]?"+":"–"}</span></button>
       ${fechados[g]?null:itens.map(([k,l,i])=>html`<a key=${k} href=${"#"+k} class=${tab===k?"on":""}>${i}${l}</a>`)}
     </div>`)}</nav>`;
@@ -2404,14 +2872,17 @@ function App(){
     "analise-dados":html`<${AnaliseDados} ...${P_}/>`, "cartoes":html`<${Cartoes} ...${P_}/>`, "diagnostico":html`<${Painel} st=${st}/>`,
     "gestao":html`<${VisaoGeral} ...${P_}/>`, "gestao-elenco":html`<${GestaoElenco} ...${P_}/>`, "comissao":html`<${Comissao} ...${P_}/>`, "financeiro":html`<${Financeiro} ...${P_}/>`,
     "contratos":html`<${Contratos} ...${P_}/>`, "planejamento-2027":html`<${Plano} ...${P_}/>`, "exportar":html`<${Exportar} ...${P_}/>`,
+    "ao-vivo":html`<${AoVivo} ...${P_}/>`, "treinos":html`<${Treinos} ...${P_}/>`, "scout-atletas":html`<${ScoutAtletas} ...${P_}/>`, "acessos":html`<${Acessos} ...${P_} verComo=${verComo} setVerComo=${setVerComoS}/>`,
   }[tab];
+  const liberado=podeVer(st,perfil,tab);
   return html`<${EDIT.Provider} value=${podeEditar}><div class="shell">
     <aside class="rail">${brand}${nav}${rodape}</aside>
     <div style=${{minWidth:0}}>
       <div class="mhead"><button class="btn sm" aria-label="Abrir menu" aria-expanded=${menu} onClick=${()=>setMenu(true)}>☰ Menu</button>${brand}</div>
       <main class="main">
+        ${perfil!==meuPerfil?html`<div class="alert warn" style=${{marginBottom:"12px"}}><div><b>Visualizando como ${perfil}</b><span>É assim que esse perfil vê o app${perfisDe(st)[perfil]&&!perfisDe(st)[perfil].edita?", somente leitura":""}.</span></div><button class="btn sm" onClick=${()=>setVerComoS("")}>Voltar ao meu perfil</button></div>`:null}
         ${tab!=="inicio"?html`<div class="top"><div><div class="eyebrow">${e}</div><h1>${t}</h1>${s?html`<p class="sub">${s}</p>`:null}</div></div>`:null}
-        ${pagina}
+        ${liberado?pagina:html`<div class="empty">O perfil <b>${perfil}</b> não tem acesso a este módulo. Fale com um administrador.</div>`}
       </main>
     </div>
     ${menu?html`<div class="drawer-bg" onClick=${()=>setMenu(false)}><aside class="drawer" onClick=${ev=>ev.stopPropagation()}>
