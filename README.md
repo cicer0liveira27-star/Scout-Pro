@@ -4,7 +4,7 @@
 
 App web de scout e planejamento de elenco, feito para o Departamento de Análise do **Santa Cruz F.C.** (Recife-PE), a partir do Planejamento Estratégico 2026.
 
-**Acesse:** https://cicer0liveira27-star.github.io/scout-pro/
+**Acesse:** https://cicer0liveira27-star.github.io/Scout-Pro/
 
 ## O que tem
 - **Geral:** Início com calendário de eventos (treino, jogo, médico, folga, reunião, viagem), disponibilidade, distribuição por posição e perfil etário.
