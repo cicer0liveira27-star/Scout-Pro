@@ -586,7 +586,8 @@ body.t-light{
   color-scheme:light;
 }
 body.t-black .card,body.t-black .tablewrap,body.t-black .posbox{border-color:var(--rim)}
-body.t-black th{background:transparent}
+body.t-black th{background:color-mix(in srgb,var(--fg) 4%,#0a0a0c)}
+body.t-black .planilha td:nth-child(2){background:#0a0a0c}
 
 /* ---------- Fundo: refletores do Arruda e listras tricolores ---------- */
 body{font-family:var(--f-body);font-size:14px;letter-spacing:-.006em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;background:var(--bg)}
@@ -760,7 +761,8 @@ body.t-light .abas button.on,body.t-light .seg button.on{background:#fff;box-sha
 
 /* ---------- Tabelas ---------- */
 .tablewrap{overflow:auto}
-th{background:color-mix(in srgb,var(--fg) 3%,transparent);color:var(--mute);border-bottom:1px solid var(--line)}
+th{background:color-mix(in srgb,var(--fg) 3%,var(--panel));color:var(--mute);border-bottom:1px solid var(--line)}
+.planilha tbody tr:hover td:nth-child(2),.planilha tbody tr:hover td.stbar{background:color-mix(in srgb,var(--fg) 4%,var(--panel))}
 tbody tr{transition:background .15s}
 tbody tr:hover td{background:color-mix(in srgb,var(--fg) 4%,transparent)}
 
