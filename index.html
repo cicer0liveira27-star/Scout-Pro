@@ -4038,7 +4038,11 @@ function App(){
       const a=[...nv.children].filter(x=>x.classList.contains("nav-g")).flatMap(g=>[...g.querySelectorAll(":scope > a.on")])[0];
       const sv=nv.style; sv.setProperty("--cw",nv.clientWidth+"px");
       if(!a){ sv.setProperty("--lo",0); return; }
-      sv.setProperty("--lx",a.offsetLeft+"px"); sv.setProperty("--ly",a.offsetTop+"px"); sv.setProperty("--lw",a.offsetWidth+"px"); sv.setProperty("--lh",a.offsetHeight+"px"); sv.setProperty("--lo",1); });
+      // posição real do item ativo dentro da nav (somando os grupos abertos) e da cópia ampliada dentro da lente
+      const pos=(el,ate)=>{ let x=0,y=0,e=el; while(e&&e!==ate){ x+=e.offsetLeft; y+=e.offsetTop; e=e.offsetParent; } return [x,y]; };
+      const [ax,ay]=pos(a,nv); const ci=nv.querySelector(".lens-in"); const ca=ci&&ci.querySelector("a.on"); const [cx,cy]=ca?pos(ca,ci):[ax,ay];
+      sv.setProperty("--lx",ax+"px"); sv.setProperty("--ly",ay+"px"); sv.setProperty("--lw",a.offsetWidth+"px"); sv.setProperty("--lh",a.offsetHeight+"px");
+      sv.setProperty("--rx",(ax-cx)+"px"); sv.setProperty("--ry",(ay-cy)+"px"); sv.setProperty("--lo",1); });
     f(); const ro=new ResizeObserver(f); document.querySelectorAll(".nav").forEach(n=>ro.observe(n)); window.addEventListener("resize",f);
     try{ document.fonts&&document.fonts.ready.then(f); }catch(_){}
     return ()=>{ ro.disconnect(); window.removeEventListener("resize",f); };
