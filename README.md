@@ -2,16 +2,23 @@
 
 # Scout Pro
 
-App web de scout e planejamento de elenco, feito para o Departamento de Análise do **Santa Cruz F.C.** (Recife-PE), a partir do Planejamento Estratégico 2026.
+App web de scout, análise e gestão de elenco para departamentos de análise de futebol. Não fica preso a um clube: o clube atual (nome, sigla, escudo) é definido em **Cadastro › Time › Meu clube**. Em 2026 o clube é o **Santa Cruz F.C.** (Recife-PE). Os dados começam em 2026.
 
 **Acesse:** https://cicer0liveira27-star.github.io/Scout-Pro/
 
-## O que tem
-- **Geral:** Início com calendário de eventos (treino, jogo, médico, folga, reunião, viagem), disponibilidade, distribuição por posição e perfil etário.
-- **Saúde e performance:** Hub de Performance (prontidão por atleta), Elenco (status médico, dor, filtros), Fisiologia (PSR, PSE/carga e ACWR, CMJ, GPS, comparação, minutagem, histórico), Fisioterapia (painel clínico, atendimentos, lesões, estatísticas), Preparação Física (microciclo semanal, base de sessões, transição) e Nutrição (composição corporal, plano alimentar, hidratação, peso).
-- **Inteligência:** Painel de tarefas (kanban), Relatórios de jogo (PDF/vídeo), Mercado (overall por nível da competição, atributos, tags, comparação, equipe sombra), Análise de desempenho (adversários com escudo, jogos, estatísticas), Análise de dados (estudo Série C 2023–2025 e árbitros), Cartões e Diagnóstico do elenco.
-- **Gestão:** Visão geral com metas, Gestão de elenco, Comissão técnica, Financeiro, Contratos com alertas e Planejamento 2027.
-- **Planilhas:** exportação .xlsx de todas as áreas e backup/restauração .json. Temas Auto, Claro, Escuro e All Black.
+## Menu (mesmas abas do WilScout)
+- **Home**
+- **Cadastro:** Usuário, Time, Estádio, Pessoa (jogador, comissão técnica, diretoria, funcionário), Competição, Partida e Anexo (súmula, relatórios do jogo, do adversário e de desempenho, vídeos de transmissão, pré e pós-jogo). Partida do dia manda o link da transmissão para o Ao Vivo.
+- **Ao Vivo:** lives de jogo, treino e banco de reservas (link não listado do YouTube), com quem está no banco. Atualizar e encerrar gravam no banco; encerrar guarda a transmissão no histórico e na partida.
+- **Jogos:** um jogo por caixinha, com vídeos, súmula e relatórios.
+- **Treinos**
+- **Elenco:** atletas (editar dados, melhores momentos por jogo), ranking e plantel. Atleta não é apagado: a saída fica registrada com o motivo.
+- **Mercado:** Dashboard, Equipes Sombras, Relatórios, Comparativo e Busca Inteligente.
+- **Estatísticas**
+- **Análise:** Pré Jogo e Pós Jogo (relatórios de jogo, que aparecem em Jogos e no Ao Vivo).
+- **Fisioterapia:** Dashboard, Queixa / Dor, Lesões, Atendimentos, Recovery, Histórico, Histórico de Jogador, Status e Condutas.
+- **Adm:** Histórico de Login e Painel de Acessos.
+- **Conta:** Minha Conta, Trocar Senha e Sair.
 
 ## Acesso e banco de dados
 O app só abre com login. Cada pessoa entra com o **nickname** ou o **CPF** e a senha. Os dados ficam no **Firebase Firestore** (projeto `scout-pro-736bc`, região São Paulo) e sincronizam em tempo real entre quem está conectado.

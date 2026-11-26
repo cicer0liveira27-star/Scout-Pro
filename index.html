@@ -850,6 +850,14 @@ tbody tr:hover td{background:color-mix(in srgb,var(--fg) 4%,transparent)}
 const {useState,useEffect,useMemo,useRef,useCallback} = React;
 const html = htm.bind(React.createElement);
 const CREST = "data:image/png;base64,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";
+/* Clube do usuário: o app não fica preso a um clube. Padrão Santa Cruz (2026); troca em Cadastro › Time › Meu clube */
+const CLUBE_PADRAO = {nome:"Santa Cruz",nomeCompleto:"Santa Cruz F.C.",sigla:"SC",cidade:"Recife",uf:"PE",escudo:""};
+let CLUBE_ATUAL = CLUBE_PADRAO;
+const clubeDoEstado = st => ({...CLUBE_PADRAO,...(((st||{}).config||{}).clube||{})});
+const clubeAtual = () => CLUBE_ATUAL;
+const NC = () => CLUBE_ATUAL.nome||"Meu clube";
+const SG = () => CLUBE_ATUAL.sigla||siglaDe(NC());
+const CRESTC = () => CLUBE_ATUAL.escudo || (normNome(CLUBE_ATUAL.nome)===normNome(CLUBE_PADRAO.nome)?CREST:(escudoDe({nome:CLUBE_ATUAL.nome})||CREST));
 const LOGO = html`<svg class="logo" viewBox="0 0 406 406" aria-hidden="true">
   <rect width="406" height="406" rx="90" fill="url(#lg-sp)"/>
   <path d="M74 327 L318 148 L406 236 L406 316 Q406 406 316 406 L160 406 Z" fill="url(#lg-sp-s)"/>
@@ -870,11 +878,7 @@ const POS = [
   {k:"ATA", n:"Centroavantes", s:"Centroavante"},
 ];
 const POSN = Object.fromEntries(POS.map(p=>[p.k,p]));
-// Estudo Série C 2023-2025 (12 acessos): jogadores utilizados por posição e idade média (>30% de participação)
-const BENCH_QTD   = {GOL:2.5, LD:2.8, LE:2.9, ZAG:5.6, VOL:5.7, MEI:4.1, EXT:7.4, ATA:4.0};
-const BENCH_IDADE = {GOL:29.4, ZAG:28.7, LE:27.2, ATA:26.9, LD:26.7, VOL:26.6, MEI:26.0, EXT:24.9};
-const BENCH_NUCLEO = {tit:8.9, rot:7.9};
-
+// jogadores utilizados por posição e idade média (>30% de participação)
 const STATUS = {
   "Remanescente":{c:"var(--st-rem)"},
   "Contratado":{c:"var(--st-con)"},
@@ -927,20 +931,7 @@ function elencoPadrao(){ return [
 ].map((j,i)=>({...j,id:"j"+(i+1)}));}
 
 const T = (sigla,nome,ano,usados,idade,tit,rot,p30,total,pts,gf,ga,xg,xga) => ({id:sigla+ano,sigla,nome,ano,usados,idade,tit,rot,p30,total,pts,gf,ga,xg,xga});
-function benchPadrao(){ return [
-  T("AMA","Amazonas",2023,39,27.4,8,10,21,48,48,34,25,32.4,30.6),
-  T("BRU","Brusque",2023,30,28.2,11,5,20,34,45,35,23,35.0,29.8),
-  T("OPE","Operário-PR",2023,40,25.7,7,12,21,44,43,28,19,28.6,21.4),
-  T("PAY","Paysandu",2023,42,27.2,8,11,22,44,39,28,32,34.5,28.8),
-  T("ATH","Athletic",2024,34,26.1,11,4,20,39,50,50,28,31.7,23.1),
-  T("FER","Ferroviária",2024,33,25.1,11,3,21,36,46,34,20,27.6,23.8),
-  T("REM","Remo",2024,38,25.1,9,6,22,39,35,27,28,30.9,34.8),
-  T("VRE","Volta Redonda",2024,41,25.6,9,5,19,48,52,41,32,35.0,27.5),
-  T("LON","Londrina",2025,35,24.8,7,12,23,42,41,33,21,29.0,19.5),
-  T("NAU","Náutico",2025,37,24.7,9,8,24,43,44,30,13,25.5,17.5),
-  T("PON","Ponte Preta",2025,40,27.7,6,13,21,46,53,29,19,25.0,31.3),
-  T("SBE","São Bernardo",2025,35,28.5,11,6,20,36,33,23,18,31.7,19.9),
-];}
+function benchPadrao(){ return []; }
 
 function padrao(){
   const elenco = elencoPadrao();
@@ -983,6 +974,7 @@ function porPos(lista, ano){
 
 /* ---------- Persistência: banco compartilhado (tempo real) com fallback local ---------- */
 const LS_KEY = "scoutpro.estado.v1";
+const ANO_INICIAL = 2026; // nada antes deste ano fica no app
 function lerLocal(){ try{ const s=localStorage.getItem(LS_KEY); return s?JSON.parse(s):null; }catch(e){ return null; } }
 function gravarLocal(s){ try{ localStorage.setItem(LS_KEY, JSON.stringify(s)); }catch(e){} }
 function migrar(s){
@@ -1003,6 +995,8 @@ function migrar(s){
   if(!(s.config&&s.config.sofaSeed)) o.jogos=(o.jogos||[]).map(migrarSofa);
   o.config.sofaSeed=true;
   if(PACOTE()&&(!o.config.wsPacote||(o.config.wsPacoteVersao||1)<(PACOTE().versao||1))){ try{ Object.assign(o,aplicarPacote(o,PACOTE()).s); }catch(e){} }
+  // Corte 2026: registros de 2025 para trás saem do banco (uma vez) e o estudo 2023–2025 deixa de ser usado
+  if(!o.config.corte2026){ Object.keys(o).forEach(k=>{ if(Array.isArray(o[k])) o[k]=o[k].filter(x=>!(x&&typeof x==="object"&&typeof x.data==="string"&&x.data&&x.data<ANO_INICIAL+"-01-01")); }); o.bench=[]; o.config.corte2026=true; }
   o.elenco=o.elenco.map(j=>({vinculo:j.status==="Emprestado"?"Emprestado":"Ativo", saude:"Liberado", dor:false, ...j}));
   return o;
 }
@@ -1078,7 +1072,9 @@ function useStore(){
               let mudou = false; const base = stRef.current;
               const novo = {...base};
               snap.docs.forEach(d => { const v=d.data(); if(!v) return; ultimo[d.id]=v.json; if(v.by===cid.current) return; try{ novo[d.id]=JSON.parse(v.json); mudou=true; }catch(e){} });
-              if(mudou){ const s=migrar(novo); setState(s); gravarLocal(s); }
+              if(mudou){ const s=migrar(novo); setState(s); gravarLocal(s);
+                // banco ainda sem o corte de 2026: grava a versão limpa para todos
+                if(!(novo.config&&novo.config.corte2026)){ pend.current=s; clearTimeout(timer.current); timer.current=setTimeout(()=>flush.current(),1500); } }
               setSync("online");
             }, e => setSync(/permission/i.test((e&&e.code)||"") ? "leitura" : "erro")));
           });
@@ -1178,8 +1174,6 @@ const TABS = [
   {k:"painel", n:"Painel", i:I.painel},
   {k:"elenco", n:"Elenco 2026", m:"Elenco", i:I.elenco},
   {k:"comissao", n:"Comissão técnica", m:"Comissão", i:I.staff},
-  {k:"benchmark", n:"Benchmark Série C", m:"Série C", i:I.bench},
-  {k:"planejamento-2027", n:"Planejamento 2027", m:"2027", i:I.plano, tag:"NOVO"},
   {k:"exportar", n:"Planilhas", i:I.export},
 ];
 
@@ -1198,142 +1192,8 @@ function Delta({a,b,inv,suf=""}){
 }
 
 /* Dumbbell: idade por posição, Santa Cruz vs média dos acessos */
-function IdadeChart({pp}){
-  const W=560, rowH=34, top=26, left=110, right=24, H=top+POS.length*rowH+30;
-  const lo=18, hi=40, x=v=>left+(v-lo)/(hi-lo)*(W-left-right);
-  const ticks=[18,22,26,30,34,38];
-  return html`<svg class="chart" viewBox=${`0 0 ${W} ${H}`} role="img" aria-label="Idade média por posição">
-    ${ticks.map(t=>html`<g key=${t}><line x1=${x(t)} x2=${x(t)} y1=${top-8} y2=${H-24} stroke="var(--line)" stroke-dasharray="2 4"/><text x=${x(t)} y=${H-8} text-anchor="middle" font-size="11" fill="var(--mute)">${t}</text></g>`)}
-    ${POS.map((p,i)=>{ const y=top+i*rowH+rowH/2; const sc=pp[p.k].idade, b=BENCH_IDADE[p.k];
-      const diff = sc===null?0:sc-b; const col = Math.abs(diff)>=3 ? "var(--bad)" : Math.abs(diff)>=1.5 ? "var(--warn)" : "var(--good)";
-      return html`<g key=${p.k}>
-        <text x=${left-12} y=${y+4} text-anchor="end" font-size="12" fill="var(--fg)" font-weight="500">${p.s}</text>
-        ${sc!==null?html`<line x1=${x(b)} x2=${x(sc)} y1=${y} y2=${y} stroke=${col} stroke-width="3" stroke-linecap="round" opacity=".55"/>`:null}
-        <circle cx=${x(b)} cy=${y} r="6" fill="var(--panel)" stroke="var(--mute)" stroke-width="2"/>
-        ${sc!==null?html`<circle cx=${x(sc)} cy=${y} r="7" fill="var(--red)"/>
-        <text x=${x(sc)+(sc>=b?12:-12)} y=${y+4} text-anchor=${sc>=b?"start":"end"} font-size="11" fill=${col} font-family="IBM Plex Mono,monospace">${f1(sc)}</text>`:null}
-      </g>`; })}
-    <text x=${left} y="12" font-size="11" fill="var(--mute)">anos</text>
-  </svg>`;
-}
-
 /* Barras de profundidade por posição com marcador da média dos acessos */
-function ProfChart({pp}){
-  const W=560, rowH=32, top=10, left=110, right=40, H=top+POS.length*rowH+24;
-  const max=Math.max(9,...POS.map(p=>pp[p.k].qtd)); const x=v=>left+v/max*(W-left-right);
-  return html`<svg class="chart" viewBox=${`0 0 ${W} ${H}`} role="img" aria-label="Atletas por posição">
-    ${[0,2,4,6,8].filter(t=>t<=max).map(t=>html`<g key=${t}><line x1=${x(t)} x2=${x(t)} y1=${top} y2=${H-20} stroke="var(--line)"/><text x=${x(t)} y=${H-6} text-anchor="middle" font-size="11" fill="var(--mute)">${t}</text></g>`)}
-    ${POS.map((p,i)=>{ const y=top+i*rowH; const q=pp[p.k].qtd, b=BENCH_QTD[p.k]; const short=q<Math.round(b)-0.01;
-      return html`<g key=${p.k}>
-        <text x=${left-12} y=${y+rowH/2+4} text-anchor="end" font-size="12" fill="var(--fg)" font-weight="500">${p.s}</text>
-        <rect x=${left} y=${y+7} width=${Math.max(0,x(q)-left)} height=${rowH-14} rx="3" fill=${short?"var(--bad)":"var(--red)"} opacity=${short?1:.9}/>
-        <text x=${x(q)+6} y=${y+rowH/2+4} font-size="11" fill="var(--fg)" font-family="IBM Plex Mono,monospace">${q}</text>
-        <line x1=${x(b)} x2=${x(b)} y1=${y+3} y2=${y+rowH-3} stroke="var(--fg)" stroke-width="2"/>
-      </g>`; })}
-  </svg>`;
-}
-
-function Composicao({lista}){
-  const tot=lista.length||1;
-  const parts=Object.keys(STATUS).map(k=>({k,q:lista.filter(j=>j.status===k).length}));
-  return html`<div>
-    <div style=${{display:"flex",height:"14px",borderRadius:"4px",overflow:"hidden",gap:"2px",marginBottom:"12px"}}>
-      ${parts.filter(p=>p.q).map(p=>html`<div key=${p.k} title=${p.k} style=${{flex:p.q,background:STATUS[p.k].c}}></div>`)}
-    </div>
-    <div class="grid" style=${{gridTemplateColumns:"repeat(2,minmax(0,1fr))",gap:"10px"}}>
-      ${parts.map(p=>html`<div key=${p.k} style=${{display:"flex",alignItems:"baseline",gap:"8px"}}>
-        <i style=${{width:"10px",height:"10px",borderRadius:"2px",background:STATUS[p.k].c,flex:"none"}}></i>
-        <span style=${{color:"var(--mute)",fontSize:"12px"}}>${p.k}${p.k==="Emprestado"?"s":"s"}</span>
-        <b class="num" style=${{marginLeft:"auto",fontFamily:"var(--f-display)",fontSize:"22px"}}>${p.q}</b>
-        <span class="num" style=${{color:"var(--mute)",fontSize:"11px",width:"36px",textAlign:"right"}}>${Math.round(p.q/tot*100)}%</span>
-      </div>`)}
-    </div>
-  </div>`;
-}
-
-function Faixas({lista,ano}){
-  const fx=[["≤ 20",0,20],["21–24",21,24],["25–28",25,28],["29–32",29,32],["33+",33,99]];
-  const c=fx.map(f=>lista.filter(j=>{const i=idade(j,ano);return i!==null&&i>=f[1]&&i<=f[2]}).length);
-  const max=Math.max(1,...c); const W=320,H=150,bw=44,gap=(W-fx.length*bw)/(fx.length+1);
-  return html`<svg class="chart" viewBox=${`0 0 ${W} ${H}`} role="img" aria-label="Faixas etárias">
-    <line x1="0" x2=${W} y1=${H-22} y2=${H-22} stroke="var(--line2)"/>
-    ${fx.map((f,i)=>{ const h=c[i]/max*(H-50); const xx=gap+i*(bw+gap);
-      return html`<g key=${i}><rect x=${xx} y=${H-22-h} width=${bw} height=${h} rx="3" fill=${i>=3?"var(--mute)":"var(--red)"} opacity=${i>=3?.6:.9}/>
-      <text x=${xx+bw/2} y=${H-26-h} text-anchor="middle" font-size="12" fill="var(--fg)" font-family="IBM Plex Mono,monospace">${c[i]}</text>
-      <text x=${xx+bw/2} y=${H-6} text-anchor="middle" font-size="11" fill="var(--mute)">${f[0]}</text></g>`; })}
-  </svg>`;
-}
-
 /* ---------- Painel ---------- */
-function Painel({st}){
-  const ano=st.temporada;
-  const aprov = st.elenco.filter(j=>j.aproveitado);
-  const pp = useMemo(()=>porPos(aprov,ano),[st.elenco,ano]);
-  const idadeMed = avg(aprov.map(j=>idade(j,ano)));
-  const altMed = avg(aprov.map(j=>n(j.alt)));
-  const benchIdade = avg(st.bench.map(t=>n(t.idade)));
-  const benchUsados = avg(st.bench.map(t=>n(t.usados)));
-  const folhaAtl = sum(st.elenco.map(j=>j.salario));
-  const folhaCom = sum(st.comissao.map(c=>c.salario));
-  const folha = folhaAtl + folhaCom;
-  const orc = n(st.orc2026);
-  const titulares = st.elenco.filter(j=>n(j.minutos)!==null&&n(j.minutos)>50).length;
-  const rotacao = st.elenco.filter(j=>n(j.minutos)!==null&&n(j.minutos)>=25&&n(j.minutos)<=50).length;
-  const temMin = st.elenco.some(j=>n(j.minutos)!==null);
-  const gols = sum(st.elenco.map(j=>j.gols));
-
-  const alertas = [];
-  POS.forEach(p=>{
-    const q=pp[p.k].qtd, b=BENCH_QTD[p.k], i=pp[p.k].idade, bi=BENCH_IDADE[p.k];
-    if(q < Math.round(b)) alertas.push({t:"bad", h:`${p.n}: ${q} de ${f1(b)} na média`, s:`Faltam ${Math.round(b)-q} atleta(s) para a profundidade dos times que subiram.`});
-    if(i!==null && i-bi>=3) alertas.push({t:"warn", h:`${p.n}: idade ${f1(i)} vs ${f1(bi)}`, s:`${f1(i-bi)} anos acima do perfil dos acessos.`});
-  });
-  if(idadeMed!==null && benchIdade!==null && idadeMed-benchIdade>1) alertas.push({t:"warn", h:`Idade geral ${f1(idadeMed)} vs ${f1(benchIdade)}`, s:"O elenco aproveitado está mais velho que a média dos acessos 2023–2025."});
-  if(!alertas.length) alertas.push({t:"good", h:"Elenco dentro do perfil de acesso", s:"Nenhuma posição abaixo da profundidade ou com idade fora da faixa."});
-
-  return html`<div class="grid" style=${{gap:"16px"}}>
-    <div class="grid g-kpi">
-      <${Kpi} l="Atletas aproveitados" v=${aprov.length} d=${html`de ${st.elenco.length} no elenco · média acesso <b>${f1(benchUsados)}</b> utilizados`}/>
-      <${Kpi} l="Idade média" v=${f1(idadeMed)} u="anos" d=${html`<${Delta} a=${idadeMed} b=${benchIdade} inv=${true}/> vs ${f1(benchIdade)} dos acessos`}/>
-      <${Kpi} l="Altura média" v=${f2(altMed)} u="m" d="atletas aproveitados"/>
-      <${Kpi} cls="money" l="Folha mensal" v=${folha?brl(folha):"—"} d=${folha? html`atletas ${brl(folhaAtl)} · comissão ${brl(folhaCom)}` : "preencha salários no Elenco e na Comissão"}/>
-      <${Kpi} l="Núcleo (+50% min.)" v=${temMin?titulares:"—"} d=${html`acessos: <b>${f1(BENCH_NUCLEO.tit)}</b> titulares + ${f1(BENCH_NUCLEO.rot)} em rotação${temMin?` · SC ${rotacao} em rotação`:""}`}/>
-      <${Kpi} l="Comissão técnica" v=${st.comissao.length||"—"} d=${st.comissao.length?(st.comissao.find(c=>c.funcao==="Técnico")?.nome ? "Técnico: "+st.comissao.find(c=>c.funcao==="Técnico").nome : "técnico não cadastrado") : html`<a href="#comissao" style=${{color:"var(--red-ink)"}}>Cadastrar profissionais</a>`}/>
-      <${Kpi} l="Gols do elenco" v=${gols||"—"} d="soma dos gols lançados"/>
-    </div>
-
-    <div class="grid g-2">
-      <div class="card">
-        <div class="card-h"><div><h2>Idade por posição</h2><p>Santa Cruz (aproveitados, ${ano}) contra a média de quem subiu</p></div>
-          <div class="legend"><span><i style=${{background:"var(--red)",borderRadius:"50%"}}></i>Santa Cruz</span><span><i style=${{border:"2px solid var(--mute)",borderRadius:"50%"}}></i>Média acessos</span></div></div>
-        <${IdadeChart} pp=${pp}/>
-      </div>
-      <div class="card">
-        <div class="card-h"><div><h2>Profundidade</h2><p>Atletas por posição; o traço marca a média utilizada pelos acessos</p></div>
-          <div class="legend"><span><i style=${{background:"var(--red)"}}></i>Dentro</span><span><i style=${{background:"var(--bad)"}}></i>Abaixo</span></div></div>
-        <${ProfChart} pp=${pp}/>
-      </div>
-    </div>
-
-    <div class="grid g-3">
-      <div class="card"><div class="card-h"><div><h2>Composição</h2><p>Origem dos ${st.elenco.length} atletas</p></div></div><${Composicao} lista=${st.elenco}/></div>
-      <div class="card"><div class="card-h"><div><h2>Faixa etária</h2><p>Atletas aproveitados em ${ano}</p></div></div><${Faixas} lista=${aprov} ano=${ano}/></div>
-      <div class="card"><div class="card-h"><div><h2>Alertas</h2><p>Recalculados a cada alteração</p></div><span class="chip">${alertas.filter(a=>a.t!=="good").length}</span></div>
-        <div class="alerts">${alertas.slice(0,6).map((a,i)=>html`<div key=${i} class=${"alert "+(a.t==="bad"?"bad":a.t==="good"?"good":"")}><div><b>${a.h}</b><span>${a.s}</span></div></div>`)}</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-h"><div><h2>Diretrizes do estudo</h2><p>O que levou ao acesso na Série C 2023–2025</p></div></div>
-      <div class="grid g-3" style=${{gap:"12px"}}>
-        <div class="need"><span class="big">0,85</span><div><b>Ataque é o motor do acesso</b><div class="note">Correlação gols marcados × pontos. 11 das 12 campanhas estavam entre os melhores ataques.</div></div></div>
-        <div class="need"><span class="big">~17</span><div><b>Núcleo enxuto decide</b><div class="note">8,9 titulares absolutos + 7,9 em rotação concentram a campanha.</div></div></div>
-        <div class="need"><span class="big">0,24</span><div><b>Defesa pesa menos</b><div class="note">Correlação gols sofridos × pontos. Metade subiu com defesa abaixo da média.</div></div></div>
-      </div>
-    </div>
-  </div>`;
-}
-
 /* ---------- Elenco ---------- */
 function Del({onYes}){
   const ed=React.useContext(EDIT);
@@ -1397,7 +1257,7 @@ function Elenco({st,up,toast}){
       ${!lista.length?html`<div class="empty" style=${{marginTop:"12px"}}>Nenhum atleta com esses filtros.</div>`:null}
       <p class="note">Edite direto na célula: painel, alertas, planejamento 2027 e planilhas recalculam na hora. Desmarque “Aprov.” para tirar o atleta das médias. % Min acima de 50 conta como titular absoluto; entre 25 e 50, rotação.</p>`
     : html`<div class="pitch">${POS.filter(p=>!fp||p.k===fp).map(p=>{ const js=lista.filter(j=>j.pos===p.k); const ia=avg(js.filter(j=>j.aproveitado).map(j=>idade(j,ano)));
-        return html`<section class="posbox" key=${p.k}><header><b>${p.n}</b><span class="note num">${js.length} · ${f1(ia)} anos · média acesso ${f1(BENCH_QTD[p.k])}</span></header>
+        return html`<section class="posbox" key=${p.k}><header><b>${p.n}</b><span class="note num">${js.length} · ${f1(ia)} anos</span></header>
           <ul>${js.map(j=>html`<li key=${j.id} class=${j.aproveitado?"":"dim"}><${AvJ} nome=${j.nome} cor=${STATUS[j.status]?.c}/>
             <div><div class="nm">${j.nome}</div><div class="meta">${n(j.nasc)?String(j.nasc).slice(-2):"—"} · ${idade(j,ano)??"—"} anos · ${n(j.alt)?f2(n(j.alt))+"m":"—"}</div></div>
             <div class="end"><${Badge} txt=${j.status} cor=${STATUS[j.status]?.c||"var(--mute)"}/></div></li>`)}
@@ -1539,10 +1399,10 @@ function CatalogoClubes({st,up,toast}){
       <input class="field grow" id="busca-clubes" placeholder="Buscar clube" value=${q} onInput=${e=>setQ(e.target.value)}/>
       <span class="note">${CLUBES.length} clubes do Brasileiro 2026 · escudos do escudosfc.com.br</span>
     </div>
-    <div class="clubes">${lista.map(c=>html`<div key=${c[1]} class=${"clube"+(c[1]==="Santa Cruz"?" nosso":"")}>
+    <div class="clubes">${lista.map(c=>html`<div key=${c[1]} class=${"clube"+(c[1]===NC()?" nosso":"")}>
       <${EscImg} src=${ESC_BASE+c[2]} alt=${"Escudo "+c[1]} size=${44}/>
       <b>${c[1]}</b><span class="note">Série ${c[0]}</span>
-      ${c[1]==="Santa Cruz"?html`<span class="chip" style=${{color:"var(--red-ink)"}}>Nosso clube</span>`:tem.has(normNome(c[1]))?html`<span class="chip" style=${{color:"var(--good)"}}>Adversário</span>`:html`<button class="btn sm ro-hide" onClick=${()=>add(c)}>${I.plus}Adversário</button>`}
+      ${c[1]===NC()?html`<span class="chip" style=${{color:"var(--red-ink)"}}>Nosso clube</span>`:tem.has(normNome(c[1]))?html`<span class="chip" style=${{color:"var(--good)"}}>Adversário</span>`:html`<button class="btn sm ro-hide" onClick=${()=>add(c)}>${I.plus}Adversário</button>`}
     </div>`)}</div>
   </div>`;
 }
@@ -1625,14 +1485,14 @@ function CalendarioJogos({st,up}){
       <button class="btn ro-hide" onClick=${()=>setEdit(!edit)}>${edit?"Ver calendário":"Editar jogos"}</button>
       <button class="btn primary ro-hide" onClick=${()=>{ jg.add({data:hoje(),hora:"",adversario:"",competicao:comp||"Série C",fase:"",mando:"Casa",gp:"",gc:"",pen:"",xg:"",xga:"",posse:"",fin:""}); setEdit(true); }}>${I.plus}Adicionar jogo</button>
     </div>
-    ${edit?html`<${Tabela} st=${st} rows=${lista} api=${jg} vazio="Nenhum jogo." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"competicao",l:"Competição",t:"select",opts:[...new Set([...COMPS,...st.jogos.map(j=>j.competicao).filter(Boolean)])],w:"130px"},{k:"fase",l:"Fase",w:"60px",ph:"1F"},{k:"_esc",l:"",t:"calc",f:r=>html`<${EscImg} src=${escudoDe(st.adversarios.find(a=>a.nome===r.adversario)||{nome:r.adversario})} size=${22}/>`},{k:"adversario",l:"Adversário",w:"140px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"gp",l:"Gols SC",t:"num",w:"44px"},{k:"gc",l:"Gols adv.",t:"num",w:"44px"},{k:"pen",l:"Pênaltis",w:"60px",ph:"4-2"},{k:"xg",l:"xG",t:"num",w:"48px"},{k:"xga",l:"xGA",t:"num",w:"48px"},{k:"posse",l:"Posse %",t:"num",w:"48px"},{k:"fin",l:"Finaliz.",t:"num",w:"44px"}]}/>`
+    ${edit?html`<${Tabela} st=${st} rows=${lista} api=${jg} vazio="Nenhum jogo." cols=${[{k:"data",l:"Data",t:"date"},{k:"hora",l:"Hora",t:"time"},{k:"competicao",l:"Competição",t:"select",opts:[...new Set([...COMPS,...st.jogos.map(j=>j.competicao).filter(Boolean)])],w:"130px"},{k:"fase",l:"Fase",w:"60px",ph:"1F"},{k:"_esc",l:"",t:"calc",f:r=>html`<${EscImg} src=${escudoDe(st.adversarios.find(a=>a.nome===r.adversario)||{nome:r.adversario})} size=${22}/>`},{k:"adversario",l:"Adversário",w:"140px"},{k:"mando",l:"Mando",t:"select",opts:["Casa","Fora","Neutro"],w:"80px"},{k:"gp",l:"Gols "+SG(),t:"num",w:"44px"},{k:"gc",l:"Gols adv.",t:"num",w:"44px"},{k:"pen",l:"Pênaltis",w:"60px",ph:"4-2"},{k:"xg",l:"xG",t:"num",w:"48px"},{k:"xga",l:"xGA",t:"num",w:"48px"},{k:"posse",l:"Posse %",t:"num",w:"48px"},{k:"fin",l:"Finaliz.",t:"num",w:"44px"}]}/>`
     : grupos.length? grupos.map(g=>{ const js=lista.filter(j=>(j.competicao||"Outros")===g), r=resumoJogos(js), info=COMP_INFO[g];
         return html`<section key=${g} class="card">
           <div class="card-h"><div><h2>${info?info.nome:g}</h2><p>${info?info.status+" · ":""}${r.J} jogos · ${r.V}V ${r.E}E ${r.D}D · ${r.gp}–${r.gc} · ${r.aprov??"—"}% de aproveitamento</p></div><${Forma} f=${r.forma}/></div>
           <div class="jogos">${js.map(j=>html`<${JogoCard} key=${j.id} st=${st} j=${j} up=${up}/>`)}</div>
         </section>`; })
     : html`<div class="empty">Nenhum jogo com esses filtros.</div>`}
-    <p class="note">Jogos de 2026 importados do ogol.com.br; lances, assistências, estatísticas, escalações e notas do Sofascore (30/10/2026). Placar sempre com os gols do Santa Cruz primeiro. Use “Editar jogos” para corrigir, incluir xG e posse ou lançar os próximos jogos.</p>
+    <p class="note">Jogos de 2026 importados do ogol.com.br; lances, assistências, estatísticas, escalações e notas do Sofascore (30/10/2026). Placar sempre com os gols do ${NC()} primeiro. Use “Editar jogos” para corrigir, incluir xG e posse ou lançar os próximos jogos.</p>
   </div>`;
 }
 const advDe = (st,nome) => st.adversarios.find(a=>a.nome===nome)||{nome};
@@ -1670,7 +1530,7 @@ function JogoCard({st,j,up}){
       <span class="chip">${j.competicao}${j.fase?" · "+(FASE_JOGO[j.fase]||j.fase):""}</span><span class="chip">${j.mando==="Casa"?"Casa":"Fora"}</span>
       <div class="jogo-r">${j.pen?html`<span class="note">pên. ${j.pen}</span>`:null}${r?html`<span class="res big" style=${{background:COR_RES[r]}}>${r}</span>`:html`<span class="chip">A jogar</span>`}</div></div>
     <div class="jogo-p">
-      <span class="jogo-t"><img src=${CREST} alt="" width="26" height="26"/><b>Santa Cruz</b></span>
+      <span class="jogo-t"><img src=${CRESTC()} alt="" width="26" height="26"/><b>${NC()}</b></span>
       <span class="placar num">${j.gp===""?"–":j.gp}<i>×</i>${j.gc===""?"–":j.gc}</span>
       <span class="jogo-t adv">${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${26}/>`:html`<span class="club">${siglaDe(j.adversario)}</span>`}<b>${j.adversario||"A definir"}</b></span>
     </div>
@@ -1694,17 +1554,17 @@ function JogoDetalhe({st,j,up}){
     ${!(j.sofa&&SOFA_2026[j.data])&&linhas.length?html`<div class="jstats">${linhas.map(([l,[a,b],u])=>{ const t=(a||0)+(b||0)||1; return html`<div key=${l} class="jst">
       <b class="num">${a}${u||""}</b><span>${l}</span><b class="num r">${b}${u||""}</b>
       <div class="jst-bar"><i style=${{width:(a||0)/t*100+"%"}}></i><i style=${{width:(b||0)/t*100+"%"}}></i></div></div>`; })}</div>`:null}
-    ${golsSC.length?html`<div class="jdet-as"><b class="eyebrow" style=${{color:"var(--mute)"}}>Assistências do Santa Cruz (editar)</b>
+    ${golsSC.length?html`<div class="jdet-as"><b class="eyebrow" style=${{color:"var(--mute)"}}>Assistências do ${NC()} (editar)</b>
       <datalist id=${"dl-"+j.id}>${nomesSC.map(x=>html`<option key=${x} value=${x}/>`)}</datalist>
       ${golsSC.map(g=>html`<label key=${g.i} class="jas"><span>⚽ ${g.e[3]} ${g.e[2]}'</span>
         <input class="cell" id=${"as-"+j.id+"-"+g.i} list=${"dl-"+j.id} placeholder="Quem deu a assistência?" value=${assistDe(j,g.i)} onChange=${e2=>setAssist(g.i,e2.target.value)} disabled=${!up}/></label>`)}
       <span class="note">Assistências vêm do Sofascore; complete ou corrija aqui e elas entram na artilharia.</span></div>`:null}
-    ${!(j.sofa&&SOFA_2026[j.data])&&ev.length?html`<div class="tl"><div class="tl-h"><span>Santa Cruz</span><span></span><span class="r">${j.adversario}</span></div>
+    ${!(j.sofa&&SOFA_2026[j.data])&&ev.length?html`<div class="tl"><div class="tl-h"><span>${NC()}</span><span></span><span class="r">${j.adversario}</span></div>
       ${ev.map(({e,i})=>{ const txt=e[1]==="S"?html`<span><b>${e[3]}</b> <small>sai ${e[4]}</small></span>`:html`<span><b>${e[3]}</b>${e[4]==="banco"?html` <small>(banco)</small>`:null}${ehGol(e[1])?html` <small>${EV_NOME[e[1]]}${e[0]===1&&assistDe(j,i)?" · assist. "+assistDe(j,i):""}</small>`:e[1]==="PP"?html` <small>pênalti perdido</small>`:null}</span>`;
         return html`<div key=${i} class=${"tl-r"+(ehGol(e[1])?" g":"")}>
           <div class="tl-s">${e[0]===1?html`${txt}<${EvIc} t=${e[1]}/>`:null}</div><span class="tl-m num">${e[2]}'</span><div class="tl-a">${e[0]===0?html`<${EvIc} t=${e[1]}/>${txt}`:null}</div></div>`; })}</div>`:null}
     ${j.disp&&j.disp.length?html`<div class="jdet-as"><b class="eyebrow" style=${{color:"var(--mute)"}}>Disputa de pênaltis ${j.pen?"· "+j.pen:""}</b>
-      <div class="note">${j.disp.map((e,k)=>html`<span key=${k} style=${{marginRight:"10px"}}>${e[1]==="GP"?"✓":"✕"} ${e[3]} (${e[0]===1?"SC":"adv."})</span>`)}</div></div>`:null}
+      <div class="note">${j.disp.map((e,k)=>html`<span key=${k} style=${{marginRight:"10px"}}>${e[1]==="GP"?"✓":"✕"} ${e[3]} (${e[0]===1?SG():"adv."})</span>`)}</div></div>`:null}
   </div>`;
 }
 
@@ -1791,7 +1651,7 @@ function SofaDetalhe({st,j}){
 function SofaPlacar({st,j,d}){
   const adv=advDe(st,j.adversario); const xg=(j.stats||{}).xg; const fm=j.fm||[];
   return html`<div class="sf-placar">
-    <div class="sf-time"><img src=${CREST} alt="" width="40" height="40"/><b>Santa Cruz</b><span class="note">${fm[0]||""}</span></div>
+    <div class="sf-time"><img src=${CRESTC()} alt="" width="40" height="40"/><b>${NC()}</b><span class="note">${fm[0]||""}</span></div>
     <div class="sf-res"><b class="num">${d.sc[0]}<i>–</i>${d.sc[1]}</b><span class="note">Intervalo ${d.ht[0]}–${d.ht[1]}${d.pen?` · pên. ${d.pen[0]}–${d.pen[1]}`:""}</span>${xg?html`<span class="sf-xg">xG <b>${f2(xg[0])}</b> × <b>${f2(xg[1])}</b></span>`:null}</div>
     <div class="sf-time">${escudoDe(adv)?html`<${EscImg} src=${escudoDe(adv)} alt="" size=${40}/>`:html`<span class="club">${siglaDe(j.adversario)}</span>`}<b>${j.adversario}</b><span class="note">${fm[1]||""}</span></div>
   </div>`;
@@ -1807,11 +1667,11 @@ function SofaResumo({st,j,d,irPara}){
   const destaque=[["Posse",s.posse,"%"],["xG",s.xg,"",2],["Finalizações",s.fin],["No alvo",s.alvo],["Escanteios",s.esc],["Faltas",s.falt]].filter(x=>x[1]);
   return html`<div class="sf-resumo">
     ${craque?html`<button class="sf-craque" onClick=${()=>irPara("Escalações")}>
-      <${AvJ} nome=${craque.p[1]} size=${46}/><div><span class="eyebrow">Craque do jogo</span><b>${craque.p[1]}</b><span class="note">${craque.lado===1?"Santa Cruz":j.adversario} · ${POS_PT[craque.p[3]]||""}</span></div><${NotaS} r=${pv(craque.p,"rating")} big=${true}/></button>`:null}
+      <${AvJ} nome=${craque.p[1]} size=${46}/><div><span class="eyebrow">Craque do jogo</span><b>${craque.p[1]}</b><span class="note">${craque.lado===1?NC():j.adversario} · ${POS_PT[craque.p[3]]||""}</span></div><${NotaS} r=${pv(craque.p,"rating")} big=${true}/></button>`:null}
     <div class="sf-mini">${destaque.map(([l,[a,b],u,dec])=>{ const t=(a||0)+(b||0)||1; return html`<div key=${l} class="sf-mini-i"><span class="num">${dec?f2(a):a}${u}</span><b>${l}</b><span class="num">${dec?f2(b):b}${u}</span><div class="sf-dual"><i style=${{width:(a||0)/t*100+"%"}}></i><i style=${{width:(b||0)/t*100+"%"}}></i></div></div>`; })}</div>
     ${d.gr?html`<div class="sf-bloco"><div class="sf-bh"><b>Momentum do jogo</b><button class="btn sm ghost" onClick=${()=>irPara("Momentum")}>Ampliar</button></div><${GraficoMomentum} j=${j} d=${d} alto=${90}/></div>`:null}
     <div class="sf-bloco"><div class="sf-bh"><b>Lances</b></div><${LinhaTempo} j=${j} d=${d}/></div>
-    <div class="sf-dest">${[1,0].map(l=>html`<div key=${l} class="sf-bloco"><div class="sf-bh"><b>Melhores · ${l===1?"Santa Cruz":j.adversario}</b></div>
+    <div class="sf-dest">${[1,0].map(l=>html`<div key=${l} class="sf-bloco"><div class="sf-bh"><b>Melhores · ${l===1?NC():j.adversario}</b></div>
       ${top(l).map(x=>html`<div key=${x.p[0]} class="sf-pl"><${AvJ} nome=${x.p[1]} size=${30}/><span><b>${x.p[1]}</b><small>${POS_PT[x.p[3]]||""} · ${pv(x.p,"minutesPlayed")||0}'</small></span><${NotaS} r=${pv(x.p,"rating")}/></div>`)}</div>`)}</div>
   </div>`;
 }
@@ -1837,7 +1697,7 @@ function SofaStats({j,d}){
   const vis=grupos.filter(x=>g==="Todas"||(GRP_PT[x[0]]||x[0])===g);
   return html`<div class="sf-stats">
     <div class="sf-chips">${nomes.map(x=>html`<button key=${x} class=${"chip-b"+(g===x?" on":"")} onClick=${()=>setG(x)}>${x}</button>`)}</div>
-    <div class="sf-st-h"><span><img src=${CREST} alt="" width="18" height="18"/> Santa Cruz</span><span class="r">${j.adversario}</span></div>
+    <div class="sf-st-h"><span><img src=${CRESTC()} alt="" width="18" height="18"/> ${NC()}</span><span class="r">${j.adversario}</span></div>
     ${vis.map(([gn,its])=>html`<section key=${gn} class="sf-grp"><h4>${GRP_PT[gn]||gn}</h4>
       ${its.map(it=>html`<${LinhaStat} key=${gn+it[0]} it=${it}/>`)}</section>`)}
   </div>`;
@@ -1858,7 +1718,7 @@ function GraficoMomentum({j,d,alto=150}){
   const maxM=Math.max(90,...pts.map(p=>p[0])); const W=600,H=alto,mid=H/2; const bw=W/maxM;
   const gols=(j.eventos||[]).filter(e=>ehGol(e[1])).map(e=>({m:minN(e[2]),lado:e[0],e}));
   return html`<div class="sf-mom" onMouseLeave=${()=>setHov(null)}>
-    <svg viewBox=${`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="Momentum da partida: barras acima favorecem o Santa Cruz">
+    <svg viewBox=${`0 0 ${W} ${H}`} preserveAspectRatio="none" role="img" aria-label="Momentum da partida: barras acima favorecem o ${NC()}">
       <rect x="0" y="0" width=${W} height=${H} fill="transparent"/>
       <line x1=${45*bw} x2=${45*bw} y1="0" y2=${H} class="sf-mom-ht"/>
       <line x1="0" x2=${W} y1=${mid} y2=${mid} class="sf-mom-0"/>
@@ -1867,7 +1727,7 @@ function GraficoMomentum({j,d,alto=150}){
       ${gols.map((g,k)=>html`<g key=${k} transform=${`translate(${(g.m-0.5)*bw},${g.lado===1?10:H-10})`}><circle r="7" class=${g.lado===1?"sf-mom-gsc":"sf-mom-gadv"}/><text y="3.5" text-anchor="middle" font-size="9">⚽</text></g>`)}
     </svg>
     <div class="sf-mom-eixo"><span>0'</span><span>45'</span><span>${maxM}'</span></div>
-    <div class="sf-mom-info">${hov?html`<span><b>${hov.p[0]}'</b> · ${hov.p[1]>0?"pressão do Santa Cruz":hov.p[1]<0?"pressão do "+j.adversario:"equilíbrio"} (${Math.abs(hov.p[1])})</span>`:html`<span class="note">Passe o dedo ou o mouse nas barras. Acima: Santa Cruz pressionando · abaixo: ${j.adversario}.</span>`}</div>
+    <div class="sf-mom-info">${hov?html`<span><b>${hov.p[0]}'</b> · ${hov.p[1]>0?"pressão do "+NC():hov.p[1]<0?"pressão do "+j.adversario:"equilíbrio"} (${Math.abs(hov.p[1])})</span>`:html`<span class="note">Passe o dedo ou o mouse nas barras. Acima: ${NC()} pressionando · abaixo: ${j.adversario}.</span>`}</div>
   </div>`;
 }
 function SofaMomentum({j,d}){
@@ -1883,7 +1743,7 @@ function SofaMomentum({j,d}){
       <div class="sf-mini-i"><span class="num">${pico(pts)[0]}'</span><b>Pico de pressão</b><span class="num">${vale(pts)[0]}'</span></div>
     </div>
     <div class="sf-faixas">${faixas.map(f=>html`<div key=${f.l} class="sf-fx"><span class="note">${f.l}</span><div class="sf-fx-b"><i style=${{left:f.v>=0?"50%":(50+f.v/2)+"%",width:Math.abs(f.v)/2+"%"}} class=${f.v>=0?"sc":"adv"}></i></div><b class="num">${f.v>0?"+":""}${f.v}</b></div>`)}</div>
-    <p class="note">Momentum do Sofascore: pressão ofensiva minuto a minuto (de −100 a +100). Faixas mostram a média por período, positivo = Santa Cruz.</p>
+    <p class="note">Momentum do Sofascore: pressão ofensiva minuto a minuto (de −100 a +100). Faixas mostram a média por período, positivo = ${NC()}.</p>
   </div>`;
 }
 /* ---- campo (SVG) ---- */
@@ -1909,7 +1769,7 @@ function SofaEscalacao({j,d}){
   return html`<div class="sf-esc">
     <div class="sf-esc-campo">
       <div class="sf-esc-h"><span>${j.adversario} · ${lu[1].f||""}</span></div>
-      <${CampoSvg} alt=${"Escalações: Santa Cruz embaixo, "+j.adversario+" em cima"}>
+      <${CampoSvg} alt=${"Escalações: "+NC()+" embaixo, "+j.adversario+" em cima"}>
         ${dots.map(({p,t,X,Y})=>{ const lc=lancesJogador(j,ladoDe(t),p[1]); const r=pv(p,"rating"); const on=sel&&sel.p[0]===p[0];
           return html`<g key=${t+"-"+p[0]} transform=${`translate(${X},${Y})`} class=${"sf-dot"+(on?" on":"")} onClick=${()=>setSel({p,t})} tabindex="0" onKeyDown=${e=>{ if(e.key==="Enter") setSel({p,t}); }}>
             <circle r="3.6" fill=${cor(t)} class="c"/><text y="1.3" text-anchor="middle" class="num">${p[2]}</text>
@@ -1920,11 +1780,11 @@ function SofaEscalacao({j,d}){
             ${lc.sai?html`<text x="3" y="4.6" class="ic sai">▼${lc.sai}'</text>`:null}
             <text y="6.6" text-anchor="middle" class="nm">${(p[1]||"").split(" ").slice(-1)[0]}</text></g>`; })}
       <//>
-      <div class="sf-esc-h"><span><img src=${CREST} alt="" width="16" height="16"/> Santa Cruz · ${lu[0].f||""}</span></div>
+      <div class="sf-esc-h"><span><img src=${CRESTC()} alt="" width="16" height="16"/> ${NC()} · ${lu[0].f||""}</span></div>
     </div>
     <div class="sf-esc-lado">
       ${sel?html`<${CartaoJogador} j=${j} sel=${sel} fechar=${()=>setSel(null)}/>`:html`<p class="note">Toque num jogador no campo ou na lista para ver todas as estatísticas dele no jogo.</p>`}
-      ${lu.map((t,ti)=>html`<div key=${ti} class="sf-bloco"><div class="sf-bh"><b>${ti===0?"Santa Cruz":j.adversario}</b><span class="note">Nota média ${f1(t.p.filter(p=>pv(p,"rating")!=null).reduce((s,p,_,a)=>s+pv(p,"rating")/a.length,0))}</span></div>
+      ${lu.map((t,ti)=>html`<div key=${ti} class="sf-bloco"><div class="sf-bh"><b>${ti===0?NC():j.adversario}</b><span class="note">Nota média ${f1(t.p.filter(p=>pv(p,"rating")!=null).reduce((s,p,_,a)=>s+pv(p,"rating")/a.length,0))}</span></div>
         <div class="sf-lista">${[["Titulares",tit(t)],["Reservas",res(t)]].map(([l,ps])=>html`<div key=${l}><span class="eyebrow">${l}</span>
           ${ps.map(p=>{ const lc=lancesJogador(j,ladoDe(ti),p[1]); return html`<button key=${p[0]} class=${"sf-pl"+(sel&&sel.p[0]===p[0]?" on":"")+(p[4]&&!pv(p,"minutesPlayed")?" off":"")} onClick=${()=>setSel({p,t:ti})}>
             <span class="sf-num num">${p[2]}</span><${AvJ} nome=${p[1]} size=${28}/><span><b>${p[1]}${p[5]?html` <small class="cap">C</small>`:null}</b><small>${POS_PT[p[3]]||""}${lc.ent?` · entrou ${lc.ent}'`:""}${lc.sai?` · saiu ${lc.sai}'`:""}${lc.g?" · ⚽".repeat(lc.g):""}${lc.as?` · ${lc.as} assist.`:""}${lc.am?" · 🟨":""}${lc.v?" · 🟥":""}</small></span><${NotaS} r=${pv(p,"rating")}/></button>`; })}</div>`)}</div>
@@ -1937,7 +1797,7 @@ function CartaoJogador({j,sel,fechar}){
   const {p,t}=sel; const r=pv(p,"rating");
   const linhas=[["Minutos",pv(p,"minutesPlayed")],["Gols",pv0(p,"goals")],["Assistências",pv0(p,"goalAssist")],["xG",fmtV(pv(p,"expectedGoals"),2)],["xA",fmtV(pv(p,"expectedAssists"),2)],["Toques",pv(p,"touches")],["Passes certos",fracao(pv0(p,"accuratePass"),pv0(p,"totalPass"))],["Passes decisivos",pv0(p,"keyPass")],["Bolas longas",fracao(pv0(p,"accurateLongBalls"),pv0(p,"totalLongBalls"))],["Cruzamentos",fracao(pv0(p,"accurateCross"),pv0(p,"totalCross"))],["Chutes (no alvo)",`${pv0(p,"onTargetScoringAttempt")+pv0(p,"shotOffTarget")+pv0(p,"blockedScoringAttempt")} (${pv0(p,"onTargetScoringAttempt")})`],["Dribles",fracao(pv0(p,"wonContest"),pv0(p,"totalContest"))],["Duelos ganhos",fracao(pv0(p,"duelWon"),pv0(p,"duelWon")+pv0(p,"duelLost"))],["Aéreos ganhos",fracao(pv0(p,"aerialWon"),pv0(p,"aerialWon")+pv0(p,"aerialLost"))],["Desarmes",pv0(p,"totalTackle")],["Interceptações",pv0(p,"interceptionWon")],["Cortes",pv0(p,"totalClearance")],["Recuperações",pv0(p,"ballRecovery")],["Perdas de posse",pv0(p,"possessionLostCtrl")],["Faltas (sofridas)",`${pv0(p,"fouls")} (${pv0(p,"wasFouled")})`],...(p[3]==="G"?[["Defesas",pv0(p,"saves")],["Gols evitados",fmtV(pv(p,"goalsPrevented"),2)],["Bolas altas",pv0(p,"goodHighClaim")],["Socos",pv0(p,"punches")]]:[])];
   return html`<div class="sf-card">
-    <div class="sf-card-h"><${AvJ} nome=${p[1]} size=${52}/><div><b>${p[1]}</b><span class="note">#${p[2]} · ${POS_PT[p[3]]||""} · ${t===0?"Santa Cruz":j.adversario}</span></div><${NotaS} r=${r} big=${true}/><button class="x" aria-label="Fechar" onClick=${fechar}>✕</button></div>
+    <div class="sf-card-h"><${AvJ} nome=${p[1]} size=${52}/><div><b>${p[1]}</b><span class="note">#${p[2]} · ${POS_PT[p[3]]||""} · ${t===0?NC():j.adversario}</span></div><${NotaS} r=${r} big=${true}/><button class="x" aria-label="Fechar" onClick=${fechar}>✕</button></div>
     ${p[6]?html`<dl class="sf-card-g">${linhas.map(([l,v])=>html`<div key=${l}><dt>${l}</dt><dd class="num">${v==null?"–":v}</dd></div>`)}</dl>`:html`<p class="note">Não entrou em campo.</p>`}
   </div>`;
 }
@@ -1955,7 +1815,7 @@ function SofaChutes({j,d}){
   const S=sel!=null?todos[sel]:null;
   return html`<div class="sf-chutes">
     <div class="sf-chips">
-      <button class=${"chip-b"+(lado===1?" on":"")} onClick=${()=>{setLado(1);setSel(null);}}>Santa Cruz</button><button class=${"chip-b"+(lado===0?" on":"")} onClick=${()=>{setLado(0);setSel(null);}}>${j.adversario}</button>
+      <button class=${"chip-b"+(lado===1?" on":"")} onClick=${()=>{setLado(1);setSel(null);}}>${NC()}</button><button class=${"chip-b"+(lado===0?" on":"")} onClick=${()=>{setLado(0);setSel(null);}}>${j.adversario}</button>
       <span style=${{width:"10px"}}></span>
       ${[["todos","Todos"],["goal","Gols"],["alvo","No alvo"],["miss","Fora"],["block","Bloqueados"],["post","Trave"]].map(([k,l])=>html`<button key=${k} class=${"chip-b"+(tipo===k?" on":"")} onClick=${()=>setTipo(k)}>${l}</button>`)}
     </div>
@@ -2004,7 +1864,7 @@ function SofaJogadores({j,d}){
   const c=cols[ord.c]||cols[0]; const lista=ps.slice().sort((a,b)=>{ const va=c[1](a)??-1, vb=c[1](b)??-1; return ord.desc?vb-va:va-vb; });
   const maxCol=cols.map(col=>Math.max(0,...ps.map(p=>Number(col[1](p))||0)));
   return html`<div class="sf-jog">
-    <div class="sf-chips"><button class=${"chip-b"+(lado===1?" on":"")} onClick=${()=>setLado(1)}>Santa Cruz</button><button class=${"chip-b"+(lado===0?" on":"")} onClick=${()=>setLado(0)}>${j.adversario}</button><span style=${{width:"10px"}}></span>
+    <div class="sf-chips"><button class=${"chip-b"+(lado===1?" on":"")} onClick=${()=>setLado(1)}>${NC()}</button><button class=${"chip-b"+(lado===0?" on":"")} onClick=${()=>setLado(0)}>${j.adversario}</button><span style=${{width:"10px"}}></span>
       ${Object.keys(COLS_J).map(g=>html`<button key=${g} class=${"chip-b"+(grp===g?" on":"")} onClick=${()=>{setGrp(g);setOrd({c:0,desc:true});}}>${g}</button>`)}</div>
     <div class="tablewrap planilha"><table class="sf-tab"><thead><tr><th>Jogador</th>${cols.map((col,i)=>html`<th key=${col[0]} class="r"><button class=${"th-b"+(ord.c===i?" on":"")} onClick=${()=>setOrd({c:i,desc:ord.c===i?!ord.desc:true})}>${col[0]}${ord.c===i?(ord.desc?" ▾":" ▴"):""}</button></th>`)}</tr></thead>
       <tbody>${lista.map(p=>html`<tr key=${p[0]} class=${sel===p[0]?"on":""} onClick=${()=>setSel(sel===p[0]?null:p[0])}><td style=${{padding:"5px 8px",whiteSpace:"nowrap"}}><span style=${{display:"flex",alignItems:"center",gap:"8px"}}><${AvJ} nome=${p[1]} size=${26}/><b>${p[1]}</b><small class="note">${p[3]}</small></span></td>
@@ -2020,14 +1880,14 @@ function SofaPosicoes({j,d}){
     // SC ataca para cima (gol adversário em y=0); adversário ataca para baixo
     const X=ti===0?(100-a[2])/100*68:a[2]/100*68, Y=ti===0?105-a[1]/100*105:a[1]/100*105; return {ti,p,X,Y,n:a[3],res:p[4]}; }).filter(Boolean));
   return html`<div class="sf-pos">
-    <div class="sf-chips">${[[2,"Os dois"],[1,"Santa Cruz"],[0,j.adversario]].map(([k,l])=>html`<button key=${k} class=${"chip-b"+(lado===k?" on":"")} onClick=${()=>setLado(k)}>${l}</button>`)}</div>
+    <div class="sf-chips">${[[2,"Os dois"],[1,NC()],[0,j.adversario]].map(([k,l])=>html`<button key=${k} class=${"chip-b"+(lado===k?" on":"")} onClick=${()=>setLado(k)}>${l}</button>`)}</div>
     <div class="sf-pos-g">
-      <${CampoSvg} alt="Posição média dos jogadores: Santa Cruz atacando para cima">
+      <${CampoSvg} alt="Posição média dos jogadores: ${NC()} atacando para cima">
         ${pts.map(x=>{ const on=sel&&sel.p[0]===x.p[0]; return html`<g key=${x.ti+"-"+x.p[0]} transform=${`translate(${x.X},${x.Y})`} class=${"sf-dot"+(on?" on":"")} onClick=${()=>setSel(x)} opacity=${x.res?0.7:1}>
           <circle r=${x.res?2.6:3.4} fill=${x.ti===0?"var(--red)":"#4b6fd8"} class="c" stroke-dasharray=${x.res?"1 0.8":""}/><text y="1.2" text-anchor="middle" class="num">${x.p[2]}</text></g>`; })}
       <//>
       <div>${sel?html`<div class="sf-card"><div class="sf-card-h"><${AvJ} nome=${sel.p[1]} size=${44}/><div><b>${sel.p[1]}</b><span class="note">#${sel.p[2]} · ${POS_PT[sel.p[3]]||""} · ${sel.n} ações mapeadas${sel.res?" · reserva":""}</span></div><${NotaS} r=${pv(sel.p,"rating")}/></div></div>`:html`<p class="note">Cada número é a posição média do jogador com a bola. Tracejado = entrou durante o jogo. Toque para ver quem é.</p>`}
-        <div class="legend" style=${{marginTop:"8px"}}><span><i style=${{background:"var(--red)"}}></i>Santa Cruz (ataca ↑)</span><span><i style=${{background:"#4b6fd8"}}></i>${j.adversario} (ataca ↓)</span></div></div>
+        <div class="legend" style=${{marginTop:"8px"}}><span><i style=${{background:"var(--red)"}}></i>${NC()} (ataca ↑)</span><span><i style=${{background:"#4b6fd8"}}></i>${j.adversario} (ataca ↓)</span></div></div>
     </div>
   </div>`;
 }
@@ -2149,16 +2009,16 @@ function EstatJogos({st}){
           ${info?html`<span class="note">${info.status}${info.cartoes&&info.cartoes!=="—"?" · cartões: "+info.cartoes:""}</span>`:null}</div>`; })}</div></div>
     </div>
     <div class="grid g-2">
-      <div class="card"><div class="card-h"><div><h2>Gols por jogo</h2><p>Gols do Santa Cruz, cor pelo resultado</p></div></div><${Serie} pts=${r.js.map(j=>({x:fmtD(j.data),y:n(j.gp),cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
+      <div class="card"><div class="card-h"><div><h2>Gols por jogo</h2><p>Gols do ${NC()}, cor pelo resultado</p></div></div><${Serie} pts=${r.js.map(j=>({x:fmtD(j.data),y:n(j.gp),cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
       <div class="card"><div class="card-h"><div><h2>Pontos acumulados</h2><p>${comp||"Todas as competições"}</p></div></div><${Serie} tipo="linha" pts=${pontos} fmt=${v=>Math.round(v)}/></div>
     </div>
     ${comSt.length?html`<div class="grid g-2">
       <div class="card"><div class="card-h"><div><h2>Posse de bola por jogo</h2><p>Linha de 50% como referência</p></div></div><${Serie} pts=${comSt.map(j=>({x:fmtD(j.data),y:j.stats.posse[0],cor:COR_RES[resJ(j)]}))} ymin=${0} ymax=${100} refY=${50} refTxt="50%" fmt=${v=>Math.round(v)+"%"}/></div>
-      <div class="card"><div class="card-h"><div><h2>Finalizações por jogo</h2><p>Do Santa Cruz, cor pelo resultado</p></div></div><${Serie} pts=${comFin.map(j=>({x:fmtD(j.data),y:j.stats.fin[0],cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
+      <div class="card"><div class="card-h"><div><h2>Finalizações por jogo</h2><p>Do ${NC()}, cor pelo resultado</p></div></div><${Serie} pts=${comFin.map(j=>({x:fmtD(j.data),y:j.stats.fin[0],cor:COR_RES[resJ(j)]}))} fmt=${v=>Math.round(v)}/></div>
     </div>`:null}
     ${comXg.length?html`<div class="card"><div class="card-h"><div><h2>xG × gols por jogo</h2><p>Barras: xG criado (vermelho) e cedido (cinza). Número: placar real. Toque para ver o jogo.</p></div></div><${XgJogos} js=${comXg}/></div>`:null}
-    ${arb.length?html`<div class="card"><div class="card-h"><div><h2>Árbitros</h2><p>Resultado do Santa Cruz e cartões em cada apito</p></div></div>
-      <div class="tablewrap"><table><thead><tr><th>Árbitro</th><th class="r">Jogos</th><th class="r">V·E·D</th><th class="r">Aprov.</th><th class="r">Amarelos SC</th><th class="r">Expulsões SC</th><th class="r">Cartões no jogo</th><th class="r">Pênaltis</th></tr></thead><tbody>
+    ${arb.length?html`<div class="card"><div class="card-h"><div><h2>Árbitros</h2><p>Resultado do ${NC()} e cartões em cada apito</p></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Árbitro</th><th class="r">Jogos</th><th class="r">V·E·D</th><th class="r">Aprov.</th><th class="r">Amarelos ${SG()}</th><th class="r">Expulsões ${SG()}</th><th class="r">Cartões no jogo</th><th class="r">Pênaltis</th></tr></thead><tbody>
         ${arb.map(x=>html`<tr key=${x.nome}><td style=${{padding:"8px",fontWeight:600}}>${x.nome}</td><td class="r num">${x.js.length}</td><td class="r num">${x.r.V}·${x.r.E}·${x.r.D}</td><td class="r num">${x.r.aprov??"—"}%</td><td class="r num">${x.am}</td><td class="r num">${x.vm}</td><td class="r num">${f1(x.tot/x.js.length)}/jogo</td><td class="r num">${x.pen}</td></tr>`)}
       </tbody></table></div></div>`:null}
     <div class="card"><div class="card-h"><div><h2>Confrontos</h2><p>Retrospecto contra cada adversário em 2026</p></div></div>
@@ -2201,7 +2061,7 @@ function VideoModal({v,fechar}){
 /* ---------- Ao Vivo ---------- */
 const LIVE_TIPOS = [["jogo","Jogo"],["treino","Treino"],["banco","Banco de reservas"]];
 const jogoDoDia = st => st.jogos.filter(j=>j.data===hoje()).sort((a,b)=>(a.hora||"").localeCompare(b.hora||""))[0]||null;
-const tituloJogo = j => j?`${fmtD(j.data)} · Santa Cruz ${j.gp===""?"":j.gp}×${j.gc===""?"":j.gc} ${j.adversario||""}`.replace("  "," "):"";
+const tituloJogo = j => j?`${fmtD(j.data)} · ${NC()} ${j.gp===""?"":j.gp}×${j.gc===""?"":j.gc} ${j.adversario||""}`.replace("  "," "):"";
 /* Relatórios de jogo (Pós Jogo) ligados a uma partida: pelo vínculo ou pela data + adversário */
 const relsDoJogo = (st,j) => !j?[]:(st.relatorios||[]).filter(r=>r.jogoId===j.id||(!r.jogoId&&r.data===j.data&&normNome(r.adversario)===normNome(j.adversario)));
 function RelsJogo({st,j,setVid}){
@@ -2255,7 +2115,7 @@ function AoVivo({st,up,toast,user}){
         <div class="card-h"><div><h2>${k==="banco"?"Banco de reservas":"Live de "+aba.toLowerCase()}</h2><p>${atual?html`<span class="live-dot" aria-hidden="true"></span>Ao vivo${live[k+"Inicio"]?" desde "+new Date(live[k+"Inicio"]).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}):""}${!live[k]&&doJogo?" · link da partida de hoje":""}`:"Sem transmissão agora · exibindo a última gravada"}</p></div></div>
         <${YT} id=${atual||(backup&&backup.id)} titulo=${atual?(k==="banco"?"Banco de reservas":aba):(backup&&backup.titulo)} auto=${!!atual}/>
         <div class="ro-hide" style=${{marginTop:"12px"}}>
-          <label class="note" for="live-url">${k==="banco"?"Link restrito (não listado) do YouTube do Santa Cruz":"Link do vídeo ao vivo (YouTube)"}</label>
+          <label class="note" for="live-url">${k==="banco"?"Link restrito (não listado) do YouTube do "+NC():"Link do vídeo ao vivo (YouTube)"}</label>
           <div style=${{display:"flex",gap:"8px",marginTop:"4px",flexWrap:"wrap"}}><input class="field grow" id="live-url" value=${txt} onInput=${e=>setTxt(e.target.value)} placeholder="Cole o link da live"/><button class="btn primary" onClick=${salvar}>Atualizar</button>${atual?html`<button class="btn" onClick=${encerrar}>Encerrar</button>`:null}</div>
           <p class="note" style=${{marginTop:"6px"}}>Atualizar grava o link no banco e todos veem na hora${jh&&k!=="treino"?`; ele também entra na partida de hoje (${jh.adversario})`:""}. Encerrar guarda a transmissão no histórico${k==="treino"?" e no treino do dia":" e na partida"}, e o vídeo continua na tela.${k==="banco"?" Use vídeo “Não listado”: vídeo “Privado” não toca fora do YouTube.":""}</p>
         </div>
@@ -2287,6 +2147,7 @@ function arquivoPadrao(){ const p=PACOTE(); return p?(p.arquivo||[]).map(a=>({..
 function treinosPadrao(){ const p=PACOTE(); return p?(p.treinos||[]).map(treinoDoPacote):[]; }
 function aplicarPacote(s,p){
   if(!p||p.tipo!=="scoutpro-pacote-wilscout") throw new Error("Arquivo não é um pacote do WilScout");
+  p={...p,treinos:(p.treinos||[]).filter(t=>(t.data||"")>=ANO_INICIAL+"-01-01"),arquivo:(p.arquivo||[]).filter(t=>(t.data||"")>=ANO_INICIAL+"-01-01"),jogos:Object.fromEntries(Object.entries(p.jogos||{}).filter(([d])=>d>=ANO_INICIAL+"-01-01"))};
   const tem=new Set((s.treinos||[]).map(t=>ytId(t.video)||t.data+t.hora));
   const comp=Object.fromEntries((p.treinos||[]).filter(t=>t.compacto).map(t=>[ytId(t.video),t.compacto]));
   const antigos=(s.treinos||[]).map(t=>!t.compacto&&comp[ytId(t.video)]?{...t,compacto:comp[ytId(t.video)]}:t);
@@ -2298,7 +2159,7 @@ function aplicarPacote(s,p){
 }
 function ImportarPacote({up,toast,compacto}){
   const ref=useRef();
-  const ler=e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const p=JSON.parse(r.result); let info=null; up(s=>{ const x=aplicarPacote(s,p); info=x; return x.s; }); setTimeout(()=>toast&&toast(info?`Pacote importado: ${info.novos} treinos novos, mídias de ${info.jogos} jogos do Santa Cruz e ${info.arquivo} jogos no arquivo`:"Pacote importado"),50); }catch(err){ toast&&toast(err.message||"Não foi possível ler o arquivo"); } }; r.readAsText(f); e.target.value=""; };
+  const ler=e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const p=JSON.parse(r.result); let info=null; up(s=>{ const x=aplicarPacote(s,p); info=x; return x.s; }); setTimeout(()=>toast&&toast(info?`Pacote importado: ${info.novos} treinos novos, mídias de ${info.jogos} jogos do ${NC()} e ${info.arquivo} jogos no arquivo`:"Pacote importado"),50); }catch(err){ toast&&toast(err.message||"Não foi possível ler o arquivo"); } }; r.readAsText(f); e.target.value=""; };
   return html`<span class="ro-hide"><button class=${"btn "+(compacto?"sm":"primary")} onClick=${()=>ref.current.click()}>Importar pacote do WilScout</button><input type="file" accept=".json,application/json" ref=${ref} hidden onChange=${ler}/></span>`;
 }
 function Treinos({st,up,toast}){
@@ -2390,10 +2251,10 @@ function ArquivoJogos({st,up,toast}){
   const lista=all.filter(a=>(!temp||a.temporada===temp)&&(!comp||(a.competicao||"Amistoso / jogo-treino")===comp)&&(!q||normNome(a.mandante+" "+a.visitante+" "+(a.estadio||"")).includes(normNome(q)))&&(!soVid||temVid(a))).sort((a,b)=>(b.data+(b.hora||"")).localeCompare(a.data+(a.hora||"")));
   const ab=(a,k,l)=>{ const id=ytId((a.pos||{})[k]||(k==="video"?(a.pre||{}).video:"")); return id?html`<button class="btn sm" onClick=${()=>setVid({id,titulo:`${l} · ${a.mandante} × ${a.visitante} · ${fmtD(a.data)}/${a.data.slice(2,4)}`})}>▶ ${l}</button>`:null; };
   const placar=a=>a.gm!==""&&a.gm!=null&&a.gv!==""&&a.gv!=null?`${a.gm} × ${a.gv}`:"– × –";
-  if(!all.length) return html`<div class="empty"><p style=${{marginTop:0}}>O arquivo de jogos do WilScout ainda não foi importado.</p><p class="note">São todos os jogos cadastrados lá (Santa Cruz e jogos observados de outros clubes), com transmissão, câmera aberta, súmula, análises e escalações. Use o pacote mais recente.</p><${ImportarPacote} up=${up} toast=${toast}/></div>`;
+  if(!all.length) return html`<div class="empty"><p style=${{marginTop:0}}>O arquivo de jogos do WilScout ainda não foi importado.</p><p class="note">São todos os jogos cadastrados lá (${NC()} e jogos observados de outros clubes), com transmissão, câmera aberta, súmula, análises e escalações. Use o pacote mais recente.</p><${ImportarPacote} up=${up} toast=${toast}/></div>`;
   return html`<div class="grid" style=${{gap:"14px"}}>
     <div class="grid g-kpi">
-      <${Kpi} l="Jogos no arquivo" v=${all.length} d=${all.filter(a=>/santa cruz/i.test(a.mandante+a.visitante)).length+" do Santa Cruz"}/>
+      <${Kpi} l="Jogos no arquivo" v=${all.length} d=${all.filter(a=>normNome(a.mandante+" "+a.visitante).includes(normNome(NC()))).length+" do "+NC()}/>
       <${Kpi} l="Com vídeo" v=${all.filter(temVid).length}/>
       <${Kpi} l="Com súmula" v=${all.filter(a=>(a.pos||{}).sumula).length}/>
       <${Kpi} l="Competições" v=${comps.length} d=${temps.join(" · ")}/>
@@ -2407,7 +2268,7 @@ function ArquivoJogos({st,up,toast}){
       <span class="note">${lista.length} jogo(s)</span>
     </div></div>
     ${lista.length?html`<div class="jogos">${lista.slice(0,lim).map(a=>{ const e=a.esc||{}; const ex=aberto===a.id; const pre=a.pre||{}, po=a.pos||{};
-      return html`<div key=${a.id} class="jogo" style=${{borderLeftColor:/santa cruz/i.test(a.mandante+a.visitante)?"var(--red)":"var(--line2)"}}>
+      return html`<div key=${a.id} class="jogo" style=${{borderLeftColor:normNome(a.mandante+" "+a.visitante).includes(normNome(NC()))?"var(--red)":"var(--line2)"}}>
         <div class="jogo-top"><div class="jogo-d"><b>${fmtD(a.data)}</b><span>${a.data.slice(0,4)}${a.hora?" · "+a.hora:""}</span></div><span class="chip">${a.competicao||"Amistoso / jogo-treino"}</span>${a.rodada?html`<span class="chip">${a.rodada}</span>`:null}</div>
         <div class="jogo-p"><span class="jogo-t">${escudoDe({nome:a.mandante})?html`<${EscImg} src=${escudoDe({nome:a.mandante})} size=${24}/>`:html`<span class="club">${siglaDe(a.mandante)}</span>`}<b>${a.mandante}</b></span><span class="placar num">${placar(a)}</span><span class="jogo-t adv">${escudoDe({nome:a.visitante})?html`<${EscImg} src=${escudoDe({nome:a.visitante})} size=${24}/>`:html`<span class="club">${siglaDe(a.visitante)}</span>`}<b>${a.visitante}</b></span></div>
         ${a.estadio?html`<span class="note">${a.estadio}${(a.acrescimos||[]).some(x=>x&&x!=="0")?` · acréscimos ${a.acrescimos[0]||0}' e ${a.acrescimos[1]||0}'`:""}</span>`:null}
@@ -2425,7 +2286,7 @@ function ArquivoJogos({st,up,toast}){
 
 
 /* ---------- Súmulas guardadas no Scout Pro ---------- */
-const SUMULAS_OK = new Set("116,242158se,242161se,242184se,242218se,342109se,34215se,34239se,3429se,39779,41381,41394,42202,42214,42394,42454se,43347,43467,43471,44085,45692,45694,45698,45699,45702,45704,45706,45710,45711,45712,45720,45722,45724,45725,45731,45733,45739,45741,46128,46144,50794,50797,50799,50805,50810,50812,50815,51409,51411,51501,51504,52,53,54,542322se,542353se,542370se,542449se,542460se,542462se,542465se,542476se,542478se,542485se,542493se,542499se,542503se,55,55694,56".split(","));
+const SUMULAS_OK = new Set("34215se,34239se,3429se,42454se,50794,50797,50799,50805,50810,50812,50815,51409,51411,51501,51504".split(","));
 const SUMULA_BASE = "https://cicer0liveira27-star.github.io/Scout-Pro/sumulas/";
 const sumulaUrl = u => { const m=String(u||"").match(/sumula\/([\w.-]+)\.pdf$/i); return m&&SUMULAS_OK.has(m[1])?SUMULA_BASE+m[1]+".pdf":u; };
 
@@ -2759,7 +2620,7 @@ function FormPartida({st,j,fechar,salvar,foco}){
         <${Campo_} l="Mando"><select class="field" id="fp-mando" value=${f.mando} onChange=${e=>set("mando",e.target.value)}><option>Casa</option><option>Fora</option><option>Neutro</option></select><//>
         <${Campo_} l="Adversário *"><input class="field" id="fp-adv" list="dl-times" value=${f.adversario} onInput=${e=>set("adversario",e.target.value)}/><//>
         <${Campo_} l="Estádio"><input class="field" id="fp-est" list="dl-est" value=${f.estadio||""} onInput=${e=>set("estadio",e.target.value)}/><//>
-        <${Campo_} l="Gols Santa Cruz"><input class="field" id="fp-gp" inputmode="numeric" value=${f.gp} onInput=${e=>set("gp",e.target.value.replace(/\D/g,""))}/><//>
+        <${Campo_} l=${"Gols "+NC()}><input class="field" id="fp-gp" inputmode="numeric" value=${f.gp} onInput=${e=>set("gp",e.target.value.replace(/\D/g,""))}/><//>
         <${Campo_} l="Gols adversário"><input class="field" id="fp-gc" inputmode="numeric" value=${f.gc} onInput=${e=>set("gc",e.target.value.replace(/\D/g,""))}/><//>
         <${Campo_} l="Pênaltis"><input class="field" id="fp-pen" value=${f.pen||""} onInput=${e=>set("pen",e.target.value)} placeholder="4-2"/><//>
         <${Campo_} l="Acréscimo 1ºT"><input class="field" id="fp-a1" inputmode="numeric" value=${f.acr1||""} onInput=${e=>set("acr1",e.target.value)}/><//>
@@ -2774,9 +2635,9 @@ function FormPartida({st,j,fechar,salvar,foco}){
     </form><//>`;
 }
 function pessoasTodas(st){
-  return [...st.elenco.map(j=>({id:j.id,orig:"elenco",tipo:"Jogador",apelido:j.nome,sub:(POSN[j.pos]||{}).s||j.pos,nasc:j.nascData||(j.nasc?String(j.nasc):""),contato:j.telefone||j.email||"",clube:"Santa Cruz",r:j})),
-    ...(st.comissao||[]).map(c=>({id:c.id,orig:"comissao",tipo:"Comissão técnica",apelido:c.nome||c.funcao,sub:c.funcao,nasc:c.nascData||(c.nasc?String(c.nasc):""),contato:c.telefone||c.email||"",clube:"Santa Cruz",r:c})),
-    ...(st.pessoas||[]).map(p=>({id:p.id,orig:"pessoas",tipo:p.tipo,apelido:p.apelido||p.nome,sub:p.subtipo,nasc:p.nascData||"",contato:p.telefone||p.email||"",clube:p.clube||"Santa Cruz",r:p}))];
+  return [...st.elenco.map(j=>({id:j.id,orig:"elenco",tipo:"Jogador",apelido:j.nome,sub:(POSN[j.pos]||{}).s||j.pos,nasc:j.nascData||(j.nasc?String(j.nasc):""),contato:j.telefone||j.email||"",clube:NC(),r:j})),
+    ...(st.comissao||[]).map(c=>({id:c.id,orig:"comissao",tipo:"Comissão técnica",apelido:c.nome||c.funcao,sub:c.funcao,nasc:c.nascData||(c.nasc?String(c.nasc):""),contato:c.telefone||c.email||"",clube:NC(),r:c})),
+    ...(st.pessoas||[]).map(p=>({id:p.id,orig:"pessoas",tipo:p.tipo,apelido:p.apelido||p.nome,sub:p.subtipo,nasc:p.nascData||"",contato:p.telefone||p.email||"",clube:p.clube||NC(),r:p}))];
 }
 function FormPessoa({p,fechar,salvar}){
   const [f,setF]=useState(p); const set=(k,v)=>setF(x=>({...x,[k]:v}));
@@ -2805,7 +2666,7 @@ function FormPessoa({p,fechar,salvar}){
         <${Campo_} l="Nacionalidade"><input class="field" id="pp-nac" value=${f.nacionalidade||"Brasil"} onInput=${e=>set("nacionalidade",e.target.value)}/><//>
         <${Campo_} l="Estado"><select class="field" id="pp-uf" value=${f.uf||""} onChange=${e=>set("uf",e.target.value)}><option value="">—</option>${UFS.map(u=>html`<option key=${u}>${u}</option>`)}</select><//>
         <${Campo_} l="Cidade"><input class="field" id="pp-cid" value=${f.cidade||""} onInput=${e=>set("cidade",e.target.value)}/><//>
-        <${Campo_} l="Clube"><input class="field" id="pp-clube" value=${f.clube||"Santa Cruz"} onInput=${e=>set("clube",e.target.value)}/><//>
+        <${Campo_} l="Clube"><input class="field" id="pp-clube" value=${f.clube||NC()} onInput=${e=>set("clube",e.target.value)}/><//>
       </div>
       <div style=${{display:"flex",justifyContent:"flex-end",gap:"8px"}}><button type="button" class="btn" onClick=${fechar}>Cancelar</button><button class="btn primary" type="submit" disabled=${!ok}>Salvar pessoa</button></div>
     </form><//>`;
@@ -2860,7 +2721,19 @@ function Cadastros({st,up,toast,user,sub}){
   if(sub==="Time"){
     const ad=crud(up,"adversarios"); const lista=st.adversarios.filter(a=>match(a.nome)||match(a.nomeCompleto||""));
     const setEsc=a=>(img,erro)=>{ if(erro){toast(erro);return;} ad.set(a.id,"escudo",img); };
+    const cl=clubeDoEstado(st); const setCl=(k,v)=>up(x=>({...x,config:{...x.config,clube:{...clubeDoEstado(x),[k]:v}}}));
     return html`<div class="grid" style=${{gap:"14px"}}>
+      <div class="card"><div class="card-h"><div><h2>Meu clube</h2><p>O clube em que você trabalha agora. Nome, sigla e escudo aparecem no app todo (placar, jogos, estatísticas). Se mudar de clube, troque aqui.</p></div></div>
+        <div style=${{display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap"}}>
+          <${ClubMark} t=${{id:"meu-clube",nome:cl.nome,sigla:cl.sigla||siglaDe(cl.nome),escudo:CRESTC()}} onSet=${(img,erro)=>{ if(erro){toast(erro);return;} setCl("escudo",img); }}/>
+          <div class="rs-grid" style=${{flex:1,minWidth:"260px"}}>
+            <${Campo_} l="Nome popular"><input class="field" id="mc-nome" value=${cl.nome} onChange=${e=>setCl("nome",e.target.value.trim()||CLUBE_PADRAO.nome)}/><//>
+            <${Campo_} l="Nome completo"><input class="field" id="mc-comp" value=${cl.nomeCompleto} onChange=${e=>setCl("nomeCompleto",e.target.value)}/><//>
+            <${Campo_} l="Sigla"><input class="field" id="mc-sig" value=${cl.sigla} onChange=${e=>setCl("sigla",e.target.value.toUpperCase().slice(0,4))}/><//>
+            <${Campo_} l="Cidade"><input class="field" id="mc-cid" value=${cl.cidade} onChange=${e=>setCl("cidade",e.target.value)}/><//>
+            <${Campo_} l="Estado"><select class="field" id="mc-uf" value=${cl.uf} onChange=${e=>setCl("uf",e.target.value)}><option value="">—</option>${UFS.map(u=>html`<option key=${u}>${u}</option>`)}</select><//>
+          </div></div>
+        <p class="note" style=${{margin:"8px 0 0"}}>Toque no escudo para trocar a imagem. Os jogos, atletas e relatórios já lançados continuam guardados.</p></div>
       <div class="toolbar" style=${{marginBottom:0}}>${busca("Buscar time")}<button class="btn primary ro-hide" onClick=${()=>{ ad.add({nome:"",nomeCompleto:"",sigla:"",escudo:"",serie:"",estadio:"",uf:"",zz:"",sistema:"",fortes:"",fracos:"",obs:""}); toast("Novo time no topo da lista"); }}>${I.plus}Novo time</button><${ImportarEscudos} up=${up} toast=${toast}/></div>
       <div class="tablewrap"><table><thead><tr><th>Escudo</th><th>Nome popular</th><th>Nome completo</th><th>Estádio</th><th>Estado</th><th>Série</th><th>ZeroZero/oGol</th><th></th></tr></thead><tbody>
         ${lista.map(a=>html`<tr key=${a.id}><td style=${{padding:"6px 8px"}}><${ClubMark} t=${{...a,sigla:a.sigla||siglaDe(a.nome)}} onSet=${setEsc(a)}/></td>
@@ -2887,7 +2760,7 @@ function Cadastros({st,up,toast,user,sub}){
   }
   if(sub==="Pessoa"){
     const lista=pessoasTodas(st).filter(p=>(!ft||p.tipo===ft)&&(match(p.apelido)||match(p.sub||"")));
-    const abrir=p=>setForm(p?{...p.r,id:p.id,tipo:p.tipo,apelido:p.apelido,subtipo:p.orig==="elenco"?p.r.pos:p.orig==="comissao"?p.r.funcao:p.r.subtipo,nascData:p.r.nascData||"",alt:p.r.alt,r:p.r}:{tipo:"Jogador",subtipo:"MEI",apelido:"",nacionalidade:"Brasil",clube:"Santa Cruz"});
+    const abrir=p=>setForm(p?{...p.r,id:p.id,tipo:p.tipo,apelido:p.apelido,subtipo:p.orig==="elenco"?p.r.pos:p.orig==="comissao"?p.r.funcao:p.r.subtipo,nascData:p.r.nascData||"",alt:p.r.alt,r:p.r}:{tipo:"Jogador",subtipo:"MEI",apelido:"",nacionalidade:"Brasil",clube:NC()});
     return html`<div class="grid" style=${{gap:"14px"}}>
       <div class="grid g-kpi">${TIPOS_PESSOA.map(t=>html`<${Kpi} key=${t} l=${t} v=${pessoasTodas(st).filter(p=>p.tipo===t).length}/>`)}</div>
       <div class="toolbar" style=${{marginBottom:0}}>${busca("Buscar pessoa")}<select class="field" id="cp-ft" style=${{width:"auto"}} value=${ft} onChange=${e=>setFt(e.target.value)}><option value="">Todos os tipos</option>${TIPOS_PESSOA.map(t=>html`<option key=${t}>${t}</option>`)}</select><button class="btn primary ro-hide" onClick=${()=>abrir(null)}>${I.plus}Nova pessoa</button></div>
@@ -2915,7 +2788,7 @@ function Cadastros({st,up,toast,user,sub}){
       <div class="toolbar" style=${{marginBottom:0}}>${busca("Buscar adversário ou estádio")}<select class="field" id="cpa-c" style=${{width:"auto"}} value=${ft} onChange=${e=>setFt(e.target.value)}><option value="">Todas as competições</option>${compsDe(st).map(c=>html`<option key=${c}>${c}</option>`)}</select><button class="btn primary ro-hide" onClick=${()=>setForm(novaPartida(st))}>${I.plus}Nova partida</button></div>
       <div class="tablewrap"><table><thead><tr><th>Data</th><th>Mandante</th><th class="r">Placar</th><th>Visitante</th><th>Competição</th><th>Estádio</th><th>Anexos</th><th></th></tr></thead><tbody>
         ${lista.map(j=>{ const casa=j.mando!=="Fora"; const n_=ANEXOS.filter(([g,k])=>(j[g]||{})[k]).length; return html`<tr key=${j.id} class=${j.data===hoje()?"hoje-row":""}><td class="num" style=${{padding:"8px",whiteSpace:"nowrap"}}>${fmtD(j.data)}/${j.data.slice(2,4)}${j.hora?" "+j.hora:""}</td>
-          <td><b>${casa?"Santa Cruz":j.adversario}</b></td><td class="r num"><b>${casa?(j.gp||"–")+" × "+(j.gc||"–"):(j.gc||"–")+" × "+(j.gp||"–")}</b></td><td><b>${casa?j.adversario:"Santa Cruz"}</b></td>
+          <td><b>${casa?NC():j.adversario}</b></td><td class="r num"><b>${casa?(j.gp||"–")+" × "+(j.gc||"–"):(j.gc||"–")+" × "+(j.gp||"–")}</b></td><td><b>${casa?j.adversario:NC()}</b></td>
           <td>${j.competicao}${j.fase?" · "+(FASE_JOGO[j.fase]||j.fase):""}</td><td class="note">${j.estadio||"—"}</td><td><span class="chip">${n_}</span></td>
           <td class="ro-hide"><button class="btn sm ghost" onClick=${()=>setForm(j)}>Editar</button></td></tr>`; })}
       </tbody></table></div>
@@ -3001,7 +2874,7 @@ function AnalisePos({st,up,toast}){
 function BuscaInteligente({st,go}){
   const [q,setQ]=useState(""); const [pos,setPos]=useState(""); const [imin,setImin]=useState(""); const [imax,setImax]=useState(""); const [pe,setPe]=useState(""); const [orig,setOrig]=useState("");
   const ano=st.temporada;
-  const base=[...atletasScout(st).map(a=>({nome:a.nome,pos:PERFIL_POS[a.pos]||a.pos,idade:a.nasc?ano-+String(a.nasc).slice(0,4):null,pe:a.pe,clube:a.extra?"Passou pelo elenco":"Santa Cruz",orig:"Elenco (scout)",k:atlKey(a)})),
+  const base=[...atletasScout(st).map(a=>({nome:a.nome,pos:PERFIL_POS[a.pos]||a.pos,idade:a.nasc?ano-+String(a.nasc).slice(0,4):null,pe:a.pe,clube:a.extra?"Passou pelo elenco":NC(),orig:"Elenco (scout)",k:atlKey(a)})),
     ...st.alvos.map(a=>({nome:a.nome||"(sem nome)",pos:a.pos,idade:n(a.nasc)?ano-n(a.nasc):null,pe:"",clube:a.clube||"—",orig:"Mercado",ov:overall(a)})),
     ...(st.exAtletas||[]).map(j=>({nome:j.nome,pos:j.pos,idade:idade(j,ano),pe:j.pe||"",clube:(j.saida||{}).destino||"—",orig:"Saiu do elenco"}))];
   const termos=normNome(q).split(" ").filter(Boolean);
@@ -3201,201 +3074,6 @@ function ImportarEscudos({up,toast}){
     setTimeout(()=>toast(`${lidos.length} escudos lidos · ${nb} no estudo da Série C · ${na} adversários atualizados · ${nn} adversários criados`),50);
   };
   return html`<span class="ro-hide"><button class="btn" disabled=${busy} onClick=${()=>ref.current.click()}>${I.export}${busy?"Lendo…":"Importar escudos"}</button><input type="file" id="imp-escudos" accept="image/*" multiple hidden ref=${ref} onChange=${pick}/></span>`;
-}
-
-/* ---------- Benchmark ---------- */
-function Scatter({data,xl,yl,invY}){
-  const W=560,H=340,L=46,R=16,Tp=16,B=40;
-  const xs=data.map(d=>d.x), ys=data.map(d=>d.y);
-  const pad=(a,b)=>{const r=(b-a)||1;return [a-r*.12,b+r*.12]};
-  const [x0,x1]=pad(Math.min(...xs),Math.max(...xs)), [y0,y1]=pad(Math.min(...ys),Math.max(...ys));
-  const X=v=>L+(v-x0)/(x1-x0)*(W-L-R), Y=v=> invY ? Tp+(v-y0)/(y1-y0)*(H-Tp-B) : H-B-(v-y0)/(y1-y0)*(H-Tp-B);
-  const reg=regress(xs,ys);
-  const nice=(a,b)=>{const st=Math.pow(10,Math.floor(Math.log10((b-a)/4)));const s=[1,2,5,10].map(m=>m*st).find(s=>(b-a)/s<=6)||st*10;const o=[];for(let v=Math.ceil(a/s)*s;v<=b;v+=s)o.push(+v.toFixed(2));return o;};
-  const mx=avg(xs), my=avg(ys);
-  return html`<svg class="chart" viewBox=${`0 0 ${W} ${H}`} role="img" aria-label=${xl+" por "+yl}>
-    ${nice(x0,x1).map(t=>html`<g key=${"x"+t}><line x1=${X(t)} x2=${X(t)} y1=${Tp} y2=${H-B} stroke="var(--line)"/><text x=${X(t)} y=${H-B+16} text-anchor="middle" font-size="11" fill="var(--mute)">${t}</text></g>`)}
-    ${nice(y0,y1).map(t=>html`<g key=${"y"+t}><line x1=${L} x2=${W-R} y1=${Y(t)} y2=${Y(t)} stroke="var(--line)"/><text x=${L-8} y=${Y(t)+4} text-anchor="end" font-size="11" fill="var(--mute)">${t}</text></g>`)}
-    <line x1=${X(mx)} x2=${X(mx)} y1=${Tp} y2=${H-B} stroke="var(--mute)" stroke-dasharray="4 4" opacity=".6"/>
-    <line x1=${L} x2=${W-R} y1=${Y(my)} y2=${Y(my)} stroke="var(--mute)" stroke-dasharray="4 4" opacity=".6"/>
-    <line x1=${X(x0)} y1=${Y(reg.i+reg.s*x0)} x2=${X(x1)} y2=${Y(reg.i+reg.s*x1)} stroke="var(--red)" stroke-width="2" opacity=".8"/>
-    ${data.map(d=>html`<g key=${d.label}>${d.esc
-      ? html`<circle cx=${X(d.x)} cy=${Y(d.y)} r="13" fill="var(--panel)" stroke="var(--line2)"/><image href=${d.esc} x=${X(d.x)-10} y=${Y(d.y)-10} width="20" height="20" preserveAspectRatio="xMidYMid meet"><title>${d.label}</title></image>`
-      : html`<circle cx=${X(d.x)} cy=${Y(d.y)} r="6.5" fill="var(--fg)" stroke="var(--panel)" stroke-width="2"/>
-      <text x=${X(d.x)+9} y=${Y(d.y)-7} font-size="10.5" fill="var(--fg)" font-weight="600" style=${{fontFamily:"Barlow Condensed,Arial Narrow,sans-serif",letterSpacing:".04em"}}>${d.label}</text>`}</g>`)}
-    <text x=${(L+W-R)/2} y=${H-6} text-anchor="middle" font-size="12" fill="var(--mute)">${xl}</text>
-    <text transform=${`translate(12 ${(Tp+H-B)/2}) rotate(-90)`} text-anchor="middle" font-size="12" fill="var(--mute)">${yl}</text>
-  </svg>`;
-}
-
-function UsoChart({bench}){
-  const W=560,H=230,L=34,B=38,Tp=10; const bw=(W-L-10)/bench.length;
-  const max=Math.max(50,...bench.map(t=>n(t.usados)||0)); const Y=v=>H-B-v/max*(H-B-Tp);
-  const media=avg(bench.map(t=>n(t.usados)));
-  return html`<svg class="chart" viewBox=${`0 0 ${W} ${H}`} role="img" aria-label="Uso do elenco por clube">
-    ${[0,10,20,30,40,50].map(t=>html`<g key=${t}><line x1=${L} x2=${W} y1=${Y(t)} y2=${Y(t)} stroke="var(--line)"/><text x=${L-6} y=${Y(t)+4} text-anchor="end" font-size="10.5" fill="var(--mute)">${t}</text></g>`)}
-    ${bench.map((t,i)=>{ const x=L+i*bw+bw*.15, w=bw*.7; const u=n(t.usados)||0, ti=n(t.tit)||0, ro=n(t.rot)||0;
-      return html`<g key=${t.id}>
-        <rect x=${x} y=${Y(u)} width=${w} height=${H-B-Y(u)} rx="2" fill="var(--panel2)" stroke="var(--line2)"/>
-        <rect x=${x} y=${Y(ti+ro)} width=${w} height=${H-B-Y(ro)} rx="0" fill="var(--mute)" opacity=".7"/>
-        <rect x=${x} y=${Y(ti)} width=${w} height=${H-B-Y(ti)} rx="0" fill="var(--red)"/>
-        ${escudoDe(t)?html`<image href=${escudoDe(t)} x=${x+w/2-8} y=${H-B+3} width="16" height="16" preserveAspectRatio="xMidYMid meet"/>`
-          :html`<text x=${x+w/2} y=${H-B+14} text-anchor="middle" font-size="10.5" fill="var(--fg)" style=${{fontFamily:"Barlow Condensed,Arial Narrow,sans-serif",fontWeight:700}}>${t.sigla}</text>`}
-        <text x=${x+w/2} y=${H-B+27} text-anchor="middle" font-size="9.5" fill="var(--mute)">${String(t.ano).slice(-2)}</text>
-      </g>`; })}
-    ${media?html`<line x1=${L} x2=${W} y1=${Y(media)} y2=${Y(media)} stroke="var(--fg)" stroke-dasharray="5 4"/><text x=${W-4} y=${Y(media)-5} text-anchor="end" font-size="11" fill="var(--fg)">média ${f1(media)}</text>`:null}
-  </svg>`;
-}
-
-const PARES = [
-  {k:"gf", x:"gf", y:"pts", xl:"Gols marcados", yl:"Pontos (1ª fase)"},
-  {k:"ga", x:"ga", y:"pts", xl:"Gols sofridos", yl:"Pontos (1ª fase)"},
-  {k:"xg", x:"xg", y:"xga", xl:"xG (gols esperados)", yl:"xGA (gols esperados contra)", invY:true},
-  {k:"idade", x:"idade", y:"pts", xl:"Idade média", yl:"Pontos (1ª fase)"},
-  {k:"usados", x:"usados", y:"pts", xl:"Jogadores utilizados", yl:"Pontos (1ª fase)"},
-];
-
-function Benchmark({st,up,toast}){
-  const edB=React.useContext(EDIT);
-  const [par,setPar]=useState("gf"); const [fa,setFa]=useState("");
-  const pr=PARES.find(p=>p.k===par);
-  const bench=st.bench.filter(t=>!fa||String(t.ano)===fa);
-  const pts=bench.map(t=>({x:n(t[pr.x]),y:n(t[pr.y]),label:t.sigla,esc:escudoDe(t)})).filter(d=>d.x!==null&&d.y!==null);
-  const r=pearson(pts.map(d=>d.x),pts.map(d=>d.y));
-  const set=(id,k,v)=>up(s=>({...s, bench:s.bench.map(t=>t.id===id?{...t,[k]:v}:t)}));
-  const setEsc=t=>(img,erro)=>{ if(erro){toast(erro);return;} up(s=>({...s, bench:s.bench.map(b=>b.nome===t.nome?{...b,escudo:img}:b)})); toast("Escudo do "+t.nome+" salvo"); };
-  const comEsc=new Set(st.bench.filter(t=>escudoDe(t)).map(t=>t.nome)).size, clubes=new Set(st.bench.map(t=>t.nome)).size;
-  const cols=[["usados","Utiliz."],["idade","Idade"],["tit","+50%"],["rot","25–50%"],["p30",">30%"],["total","Total"],["pts","Pts"],["gf","GM"],["ga","GS"],["xg","xG"],["xga","xGA"]];
-  const medias=Object.fromEntries(cols.map(([k])=>[k,avg(bench.map(t=>n(t[k])))]));
-  return html`<div class="grid" style=${{gap:"16px"}}>
-    <div class="toolbar" style=${{marginBottom:0}}>
-      <div class="seg">${["","2023","2024","2025"].map(a=>html`<button key=${a} class=${fa===a?"on":""} onClick=${()=>setFa(a)}>${a||"2023–2025"}</button>`)}</div>
-      <${ImportarEscudos} up=${up} toast=${toast}/>
-      <span class="note">${bench.length} campanhas de acesso · valores editáveis na tabela · escudos ${comEsc}/${clubes}: toque na sigla do clube para enviar a imagem</span>
-    </div>
-    <div class="grid g-2">
-      <div class="card">
-        <div class="card-h"><div><h2>Correlações</h2><p>Recalculadas a partir da tabela abaixo</p></div>
-          <span class="chip">r = ${r===null?"—":r.toLocaleString("pt-BR",{maximumFractionDigits:3})} · ${rTxt(r)}</span></div>
-        <div class="seg" style=${{marginBottom:"10px",flexWrap:"wrap"}}>${PARES.map(p=>html`<button key=${p.k} class=${par===p.k?"on":""} onClick=${()=>setPar(p.k)}>${p.xl.split(" (")[0]}${p.k==="xg"?" × xGA":""}</button>`)}</div>
-        ${pts.length>=2?html`<${Scatter} data=${pts} xl=${pr.xl} yl=${pr.yl} invY=${pr.invY}/>`:html`<div class="empty">Dados insuficientes</div>`}
-        <p class="note">${pr.invY?"Eixo vertical invertido: quanto mais alto, menos chances concedidas. ":""}Linha vermelha: tendência; tracejado: médias do grupo.</p>
-      </div>
-      <div class="card">
-        <div class="card-h"><div><h2>Uso do elenco</h2><p>Utilizados na temporada, titulares absolutos e rotação</p></div>
-          <div class="legend"><span><i style=${{background:"var(--red)"}}></i>+50% min</span><span><i style=${{background:"var(--mute)"}}></i>25–50%</span><span><i style=${{background:"var(--panel2)",border:"1px solid var(--line2)"}}></i>Total</span></div></div>
-        <${UsoChart} bench=${bench}/>
-        <div class="grid" style=${{gridTemplateColumns:"repeat(3,minmax(0,1fr))",gap:"10px",marginTop:"8px"}}>
-          <div><div class="note">Titulares abs.</div><b class="num" style=${{fontFamily:"var(--f-display)",fontSize:"24px"}}>${f1(medias.tit)}</b></div>
-          <div><div class="note">Rotação</div><b class="num" style=${{fontFamily:"var(--f-display)",fontSize:"24px"}}>${f1(medias.rot)}</b></div>
-          <div><div class="note">Idade média</div><b class="num" style=${{fontFamily:"var(--f-display)",fontSize:"24px"}}>${f1(medias.idade)}</b></div>
-        </div>
-      </div>
-    </div>
-    <div class="tablewrap"><table>
-      <thead><tr><th>Clube</th><th class="r">Ano</th>${cols.map(([k,l])=>html`<th class="r" key=${k}>${l}</th>`)}<th class="r">Aprov.</th></tr></thead>
-      <tbody>${bench.map(t=>html`<tr key=${t.id}>
-        <td><div style=${{display:"flex",gap:"8px",alignItems:"center"}}><${ClubMark} t=${t} onSet=${edB?setEsc(t):null}/><span style=${{fontWeight:600,whiteSpace:"nowrap"}}>${t.nome}</span>${t.escudo?html`<button class="x ro-hide" title="Remover escudo" aria-label="Remover escudo" onClick=${()=>up(s=>({...s,bench:s.bench.map(b=>b.nome===t.nome?{...b,escudo:""}:b)}))}>×</button>`:null}</div></td>
-        <td class="r num">${t.ano}</td>
-        ${cols.map(([k])=>html`<td class="r" key=${k}><input class="cell n" id=${"b-"+k+"-"+t.id} style=${{width:"54px"}} value=${t[k]} onInput=${e=>set(t.id,k,e.target.value)}/></td>`)}
-        <td class="r num">${n(t.p30)&&n(t.total)?f1(n(t.p30)/n(t.total)*100)+"%":"—"}</td>
-      </tr>`)}
-      <tr><td><b>Média</b></td><td></td>${cols.map(([k])=>html`<td class="r num" key=${k} style=${{padding:"8px 12px",fontWeight:600}}>${f1(medias[k])}</td>`)}<td></td></tr>
-      </tbody></table></div>
-    <p class="note">Fonte: estudo do Departamento de Análise (Série C 2023–2025). Pontos, gols e xG da primeira fase, lidos dos gráficos do estudo; ajuste na tabela se tiver os números exatos. Utiliz. = jogadores usados; +50% e 25–50% = faixas de minutagem; >30% = atletas com mais de 30% de participação.</p>
-  </div>`;
-}
-
-/* ---------- Planejamento 2027 ---------- */
-function Plano({st,up,toast}){
-  const ano=2027;
-  const dec=id=>st.decisoes[id]||"Avaliar";
-  const setDec=(id,v)=>up(s=>({...s, decisoes:{...s.decisoes,[id]:v}}));
-  const setA=(id,k,v)=>up(s=>({...s, alvos:s.alvos.map(a=>a.id===id?{...a,[k]:v}:a)}));
-  const addA=pos=>{ up(s=>({...s, alvos:[...s.alvos,{id:uid("a"),nome:"",pos:pos||"ATA",nasc:"",clube:"",salario:"",prioridade:"Alta",status:"Monitorando",obs:""}]})); toast("Alvo adicionado"); };
-  const delA=id=>up(s=>({...s, alvos:s.alvos.filter(a=>a.id!==id)}));
-
-  const ficam = st.elenco.filter(j=>FICA_2027.has(dec(j.id)));
-  const abertos = st.elenco.filter(j=>dec(j.id)==="Avaliar");
-  const saem = st.elenco.filter(j=>!FICA_2027.has(dec(j.id)) && dec(j.id)!=="Avaliar");
-  const chegam = st.alvos.filter(a=>a.status==="Fechado" || (st.incluirNeg && a.status==="Em negociação"));
-  const proj = [...ficam, ...chegam.map(a=>({...a, nasc:a.nasc}))];
-  const pp = porPos(proj,ano);
-  const idadeProj = avg(proj.map(j=>idade(j,ano)));
-  const benchIdade = avg(st.bench.map(t=>n(t.idade)));
-  const comFica = st.comissao.filter(c=>FICA_2027.has(c.sit2027));
-  const folha = sum(ficam.map(j=>j.salario)) + sum(chegam.map(a=>a.salario)) + sum(comFica.map(c=>c.salario));
-  const orc = n(st.orc2027);
-  const vencem = st.elenco.filter(j=>n(j.contrato)!==null && n(j.contrato)<=2026);
-
-  const necessidades = POS.map(p=>{ const alvo=Math.round(BENCH_QTD[p.k]); const tem=pp[p.k].qtd; const mon=st.alvos.filter(a=>a.pos===p.k&&a.status!=="Descartado"&&!chegam.includes(a)).length;
-    return {p, alvo, tem, falta:Math.max(0,alvo-tem), mon, idade:pp[p.k].idade}; });
-  const totalFalta = necessidades.reduce((s,x)=>s+x.falta,0);
-
-  return html`<div class="grid" style=${{gap:"16px"}}>
-    <div class="grid g-kpi">
-      <${Kpi} l="Elenco projetado" v=${proj.length} d=${html`${ficam.length} ficam · ${chegam.length} chegam · ${abertos.length} em avaliação`}/>
-      <${Kpi} l="Idade em 2027" v=${f1(idadeProj)} u="anos" d=${html`<${Delta} a=${idadeProj} b=${benchIdade} inv=${true}/> vs perfil de acesso`}/>
-      <${Kpi} l="Vagas a preencher" v=${totalFalta} d="para a profundidade média dos acessos"/>
-      <${Kpi} cls="money" l="Folha projetada" v=${folha?brl(folha):"—"} d=${html`${orc?html`<span class=${folha>orc?"up":"ok"}>${Math.round(folha/orc*100)}%</span> do teto · `:""}inclui ${comFica.length} da comissão`}/>
-    </div>
-
-    <div class="card">
-      <div class="card-h"><div><h2>Parâmetros 2027</h2><p>Mudam a projeção na hora</p></div></div>
-      <div class="grid" style=${{gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))"}}>
-        <label><span class="note">Competição</span><select class="field" id="comp2027" value=${st.comp2027} onChange=${e=>up(s=>({...s,comp2027:e.target.value}))}>${["Série C","Série B"].map(c=>html`<option key=${c}>${c}</option>`)}</select></label>
-        <label class="money"><span class="note">Teto da folha mensal (R$)</span><input class="field num" id="orc2027" inputmode="decimal" value=${st.orc2027} onInput=${e=>up(s=>({...s,orc2027:e.target.value}))} placeholder="ex.: 1500000"/></label>
-        <label style=${{display:"flex",alignItems:"center",gap:"8px",paddingTop:"18px"}}><input type="checkbox" id="incneg" checked=${!!st.incluirNeg} onChange=${e=>up(s=>({...s,incluirNeg:e.target.checked}))} style=${{accentColor:"var(--red)",width:"16px",height:"16px"}}/><span>Contar negociações na projeção</span></label>
-      </div>
-      ${orc?html`<div class="money" style=${{marginTop:"14px"}}><div class=${"bar"+(folha>orc?" over":"")}><i style=${{width:Math.min(100,folha/orc*100)+"%"}}></i></div><p class="note">${brl(folha)} de ${brl(orc)} · saldo ${brl(orc-folha)}</p></div>`:null}
-      ${st.comp2027==="Série B"?html`<p class="note" style=${{marginTop:"8px"}}>As referências de profundidade e idade vêm do estudo da Série C; para a Série B, use-as como piso.</p>`:null}
-    </div>
-
-    <div class="card">
-      <div class="card-h"><div><h2>Necessidades por posição</h2><p>Projeção 2027 contra a média utilizada pelos acessos</p></div></div>
-      <div class="grid" style=${{gridTemplateColumns:"repeat(auto-fill,minmax(min(100%,230px),1fr))",gap:"10px"}}>
-        ${necessidades.map(x=>html`<div class="need" key=${x.p.k} style=${{borderLeft:`3px solid ${x.falta?"var(--bad)":"var(--good)"}`}}>
-          <span class="big" style=${{color:x.falta?"var(--red-ink)":"var(--good)"}}>${x.falta?"+"+x.falta:"OK"}</span>
-          <div style=${{minWidth:0,flex:1}}><b>${x.p.n}</b><div class="note num">${x.tem}/${x.alvo} · ${f1(x.idade)} anos (ref. ${f1(BENCH_IDADE[x.p.k])}) · ${x.mon} alvo(s)</div></div>
-          ${x.falta?html`<button class="btn sm ro-hide" onClick=${()=>addA(x.p.k)} title=${"Novo alvo: "+x.p.s}>${I.plus}</button>`:null}
-        </div>`)}
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-h"><div><h2>Mercado · alvos</h2><p>Atletas monitorados para 2027. “Fechado” entra na projeção.</p></div><button class="btn primary ro-hide" onClick=${()=>addA()}>${I.plus}Alvo</button></div>
-      ${st.alvos.length? html`<div class="tablewrap"><table>
-        <thead><tr><th>Atleta</th><th>Posição</th><th class="r">Nasc.</th><th class="r">Idade 27</th><th>Clube atual</th><th class="r money">Salário (R$)</th><th>Prioridade</th><th>Situação</th><th>Observação</th><th></th></tr></thead>
-        <tbody>${st.alvos.map(a=>html`<tr key=${a.id}>
-          <td><input class="cell w-name" id=${"an-"+a.id} placeholder="Nome do atleta" value=${a.nome} onInput=${e=>setA(a.id,"nome",e.target.value)}/></td>
-          <td><select class="cell" id=${"ap-"+a.id} value=${a.pos} onChange=${e=>setA(a.id,"pos",e.target.value)}>${POS.map(p=>html`<option key=${p.k} value=${p.k}>${p.k}</option>`)}</select></td>
-          <td class="r"><input class="cell n" id=${"anas-"+a.id} style=${{width:"60px"}} value=${a.nasc} onInput=${e=>setA(a.id,"nasc",e.target.value)}/></td>
-          <td class="r num">${idade(a,ano)??"—"}</td>
-          <td><input class="cell" id=${"ac-"+a.id} style=${{minWidth:"110px"}} value=${a.clube} onInput=${e=>setA(a.id,"clube",e.target.value)}/></td>
-          <td class="r money"><input class="cell n" id=${"as-"+a.id} style=${{width:"92px"}} value=${a.salario} onInput=${e=>setA(a.id,"salario",e.target.value)}/></td>
-          <td><select class="cell" id=${"apr-"+a.id} value=${a.prioridade} onChange=${e=>setA(a.id,"prioridade",e.target.value)}>${["Alta","Média","Baixa"].map(x=>html`<option key=${x}>${x}</option>`)}</select></td>
-          <td><select class="cell" id=${"ast-"+a.id} value=${a.status} onChange=${e=>setA(a.id,"status",e.target.value)} style=${{color:ALVO_COR[a.status],fontWeight:600}}>${ALVO_ST.map(x=>html`<option key=${x}>${x}</option>`)}</select></td>
-          <td><input class="cell" id=${"ao-"+a.id} style=${{minWidth:"160px"}} value=${a.obs} onInput=${e=>setA(a.id,"obs",e.target.value)}/></td>
-          <td><${Del} onYes=${()=>delA(a.id)}/></td>
-        </tr>`)}</tbody></table></div>`
-      : html`<div class="empty">Nenhum alvo cadastrado ainda. Use “+ Alvo” ou o botão “+” de uma posição com vaga em aberto.</div>`}
-    </div>
-
-    <div class="card">
-      <div class="card-h"><div><h2>Decisão por atleta</h2><p>Manter e Renovar seguem para 2027; idade já projetada para a próxima temporada</p></div>
-        <div class="legend">${["Manter","Renovar","Avaliar","Liberar"].map(d=>html`<span key=${d}><i style=${{background:DEC_COR[d]}}></i>${st.elenco.filter(j=>dec(j.id)===d).length} ${d}</span>`)}</div></div>
-      ${vencem.length?html`<div class="alert" style=${{marginBottom:"12px"}}><div><b>${vencem.length} contrato(s) terminam até o fim de 2026</b><span>${vencem.map(j=>j.nome).join(", ")}</span></div></div>`:null}
-      <div class="pitch">${POS.map(p=>{ const js=st.elenco.filter(j=>j.pos===p.k);
-        return html`<section class="posbox" key=${p.k}><header><b>${p.n}</b><span class="note num">${js.filter(j=>FICA_2027.has(dec(j.id))).length} ficam</span></header>
-          <ul>${js.map(j=>{ const d=dec(j.id); return html`<li key=${j.id} class=${FICA_2027.has(d)||d==="Avaliar"?"":"dim"}>
-            <${AvJ} nome=${j.nome} cor=${DEC_COR[d]}/>
-            <div style=${{minWidth:0}}><div class="nm">${j.nome}</div><div class="meta">${idade(j,ano)??"—"} anos em 27${n(j.contrato)?" · até "+j.contrato:""}</div></div>
-            <select class="cell end" id=${"dec-"+j.id} style=${{width:"auto",maxWidth:"130px",color:DEC_COR[d],fontWeight:600}} value=${d} onChange=${e=>setDec(j.id,e.target.value)}>${DECISOES.map(x=>html`<option key=${x}>${x}</option>`)}</select>
-          </li>`; })}
-          ${!js.length?html`<li class="note">Sem atletas</li>`:null}</ul></section>`; })}</div>
-      ${saem.length?html`<p class="note" style=${{marginTop:"10px"}}>Saem: ${saem.map(j=>j.nome).join(", ")}.</p>`:null}
-    </div>
-  </div>`;
 }
 
 /* ---------- Base para os módulos ---------- */
@@ -3964,18 +3642,6 @@ function AnaliseDesemp({st,up,toast}){
 }
 
 /* ---------- Análise de dados ---------- */
-function AnaliseDados({st,up,toast}){
-  const [aba,setAba]=useAba("dados","Times (Série C)"); const ar=crud(up,"arbitros");
-  return html`<div class="grid" style=${{gap:"14px"}}>
-    <${Abas} tabs=${["Times (Série C)","Árbitros"]} v=${aba} set=${setAba}/>
-    ${aba==="Times (Série C)"?html`<${Benchmark} st=${st} up=${up} toast=${toast}/>`:null}
-    ${aba==="Árbitros"?html`<div class="grid" style=${{gap:"10px"}}>
-      <div class="toolbar" style=${{marginBottom:0}}><button class="btn primary ro-hide" onClick=${()=>ar.add({nome:"",fed:"",jogos:"",amarelos:"",vermelhos:"",penaltis:"",obs:""})}>${I.plus}Adicionar árbitro</button></div>
-      <${Tabela} st=${st} rows=${st.arbitros} api=${ar} vazio="Nenhum árbitro cadastrado." cols=${[{k:"nome",l:"Árbitro",w:"160px"},{k:"fed",l:"Federação",w:"70px"},{k:"jogos",l:"Jogos",t:"num",w:"48px"},{k:"amarelos",l:"Amarelos",t:"num",w:"52px"},{k:"vermelhos",l:"Vermelhos",t:"num",w:"52px"},{k:"penaltis",l:"Pênaltis",t:"num",w:"52px"},{k:"_m",l:"Cartões/jogo",t:"calc",f:r=>n(r.jogos)?f2((sum([r.amarelos,r.vermelhos]))/n(r.jogos)):"—"},{k:"obs",l:"Perfil",w:"200px"}]}/>
-    </div>`:null}
-  </div>`;
-}
-
 /* ---------- Cartões ---------- */
 function Cartoes({st,up}){
   const ct=crud(up,"cartoes"); const lim=n(st.config.limiteAmarelos)||3; const comp=st.config.competicao||"";
@@ -4105,13 +3771,13 @@ function planilhas0(st){
   const ano=st.temporada;
   const elenco = st.elenco.map(j=>({"Atleta":j.nome,"Posição":POSN[j.pos]?.s||j.pos,"Nascimento":n(j.nasc),"Idade":idade(j,ano),"Altura (m)":n(j.alt),"Vínculo":j.status,"Aproveitado":j.aproveitado?"Sim":"Não","Salário (R$)":n(j.salario),"Contrato até":n(j.contrato),"% Minutos":n(j.minutos),"Jogos":n(j.jogos),"Gols":n(j.gols),"Assistências":n(j.assist),"Nota":n(j.nota),"Decisão 2027":st.decisoes[j.id]||"Avaliar"}));
   const pp=porPos(st.elenco.filter(j=>j.aproveitado),ano);
-  const resumo = POS.map(p=>({"Posição":p.s,"Atletas SC":pp[p.k].qtd,"Média acessos":BENCH_QTD[p.k],"Idade SC":pp[p.k].idade!==null?+pp[p.k].idade.toFixed(1):null,"Idade acessos":BENCH_IDADE[p.k],"Diferença idade":pp[p.k].idade!==null?+(pp[p.k].idade-BENCH_IDADE[p.k]).toFixed(1):null}));
-  const bench = st.bench.map(t=>({"Clube":t.nome,"Ano":t.ano,"Jogadores utilizados":n(t.usados),"Idade média":n(t.idade),"+50% minutos":n(t.tit),"25-50% minutos":n(t.rot),">30% participação":n(t.p30),"Total elenco":n(t.total),"Pontos":n(t.pts),"Gols marcados":n(t.gf),"Gols sofridos":n(t.ga),"xG":n(t.xg),"xGA":n(t.xga)}));
+  const resumo = POS.map(p=>({"Posição":p.s,"Atletas":pp[p.k].qtd,"Idade média":pp[p.k].idade!==null?+pp[p.k].idade.toFixed(1):null}));
+  const bench = [];
   const alvos = st.alvos.map(a=>({"Atleta":a.nome,"Posição":POSN[a.pos]?.s||a.pos,"Nascimento":n(a.nasc),"Idade em 2027":idade(a,2027),"Clube atual":a.clube,"Salário (R$)":n(a.salario),"Prioridade":a.prioridade,"Situação":a.status,"Observação":a.obs}));
   const comissao = st.comissao.map(c=>({"Profissional":c.nome,"Função":c.funcao,"Área":AREA(c.funcao),"Nascimento":n(c.nasc),"Idade":idade(c,ano),"Desde":n(c.desde),"Contrato até":n(c.contrato),"Salário (R$)":n(c.salario),"Situação 2027":c.sit2027,"Observação":c.obs}));
   const ROT={psr:"PSR (bem-estar)",pse:"PSE (carga)",cmj:"CMJ",gps:"GPS",atend:"Atendimentos fisio",lesoes:"Lesões",sessoes:"Sessões de treino",nutri:"Composição corporal",hidrat:"Hidratação",planos:"Planos alimentares",tarefas:"Tarefas",relatorios:"Relatórios de jogo",adversarios:"Adversários",jogos:"Jogos",arbitros:"Árbitros",cartoes:"Cartões",metas:"Metas",fin:"Financeiro",eventos:"Eventos",treinos:"Treinos",relScout:"Relatórios de scout",arquivoJogos:"Arquivo de jogos (WilScout)"};
   const extras=Object.entries(ROT).map(([k,t])=>[t,(st[k]||[]).map(r=>{ const o={}; Object.entries(r).forEach(([c,v])=>{ if(c==="id"||c==="escudo"||(v&&typeof v==="object")) return; o[c==="atleta"?"Atleta":c]=c==="atleta"?nomeA(st,v):v; }); return o; })]).filter(([,rows])=>rows.length);
-  const lances=st.jogos.slice().sort((a,b)=>(a.data||"").localeCompare(b.data||"")).flatMap(j=>(j.eventos||[]).map((e,i)=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Minuto":e[2],"Equipe":e[0]===1?"Santa Cruz":j.adversario,"Lance":EV_NOME[e[1]]||e[1],"Jogador":e[3],"Detalhe":e[1]==="S"?"sai "+(e[4]||""):e[4]==="banco"?"no banco":"","Assistência":e[0]===1&&ehGol(e[1])?assistDe(j,i):""})));
+  const lances=st.jogos.slice().sort((a,b)=>(a.data||"").localeCompare(b.data||"")).flatMap(j=>(j.eventos||[]).map((e,i)=>({"Data":j.data,"Competição":j.competicao,"Adversário":j.adversario,"Minuto":e[2],"Equipe":e[0]===1?NC():j.adversario,"Lance":EV_NOME[e[1]]||e[1],"Jogador":e[3],"Detalhe":e[1]==="S"?"sai "+(e[4]||""):e[4]==="banco"?"no banco":"","Assistência":e[0]===1&&ehGol(e[1])?assistDe(j,i):""})));
   if(lances.length) extras.push(["Lances dos jogos",lances]);
   const atlS=ATLETAS_2026.filter(a=>a.st).map(a=>{ const x=statsAtl(a,""), av=avaliacaoAtl(st,a); return {"Atleta":a.nome,"Posição":a.pos,"Nascimento":a.nasc||"","Jogos":x.appearances,"Titular":x.matchesStarted,"Minutos":x.minutesPlayed,"Nota média (Sofascore)":x.rating!=null?+x.rating.toFixed(2):null,"Gols":x.goals,"Assistências":x.assists,"Finalizações":x.totalShots,"No alvo":x.shotsOnTarget,"Passes certos %":x.passPct!=null?Math.round(x.passPct):null,"Passes decisivos":x.keyPasses,"Dribles":x.successfulDribbles,"Duelos ganhos":x.totalDuelsWon,"Aéreos ganhos":x.aerialDuelsWon,"Recuperações":x.ballRecovery,"Amarelos":x.yellowCards,"Vermelhos":x.redCards,"Defesas":x.saves,"Nível":av.nv!=null?+av.nv.toFixed(1):null,"Potencial":av.pt!=null?+av.pt.toFixed(1):null}; });
   extras.push(["Scout de atletas",atlS]);
@@ -4141,11 +3807,10 @@ function Exportar({st,up,toast}){
   };
   const hoje=new Date().toISOString().slice(0,10);
   const itens=[
-    {t:"Relatório completo", d:"Todas as áreas do app em abas separadas: elenco, comissão, fisiologia, fisioterapia, nutrição, mercado, jogos, cartões, financeiro e mais.", go:()=>xlsx(`ScoutPro_SantaCruz_${hoje}.xlsx`,[["Elenco 2026",p.elenco],["Comissão técnica",p.comissao],["Resumo por posição",p.resumo],["Benchmark Série C",p.bench],["Mercado e alvos",p.alvos],...p.extras]), main:true},
+    {t:"Relatório completo", d:"Todas as áreas do app em abas separadas: elenco, comissão, fisiologia, fisioterapia, nutrição, mercado, jogos, cartões, financeiro e mais.", go:()=>xlsx(`ScoutPro_SantaCruz_${hoje}.xlsx`,[["Elenco 2026",p.elenco],["Comissão técnica",p.comissao],["Resumo por posição",p.resumo],["Mercado e alvos",p.alvos],...p.extras]), main:true},
     {t:"Comissão técnica", d:`${p.comissao.length} profissional(is) com função, contrato, salário e situação 2027.`, go:()=>xlsx(`Comissao_SantaCruz_${hoje}.xlsx`,[["Comissão técnica",p.comissao]])},
     {t:"Elenco 2026", d:`${p.elenco.length} atletas com idade, vínculo, salário, minutagem e decisão 2027.`, go:()=>xlsx(`Elenco2026_SantaCruz_${hoje}.xlsx`,[["Elenco 2026",p.elenco]])},
     {t:"Planejamento 2027", d:`Decisões por atleta e ${p.alvos.length} alvo(s) de mercado.`, go:()=>xlsx(`Planejamento2027_SantaCruz_${hoje}.xlsx`,[["Decisões",p.elenco.map(r=>({"Atleta":r["Atleta"],"Posição":r["Posição"],"Idade em 2027":r["Idade"]!==null?r["Idade"]+1:null,"Contrato até":r["Contrato até"],"Decisão 2027":r["Decisão 2027"]}))],["Alvos 2027",p.alvos],["Comissão 2027",p.comissao.map(c=>({"Profissional":c["Profissional"],"Função":c["Função"],"Contrato até":c["Contrato até"],"Situação 2027":c["Situação 2027"]}))]])},
-    {t:"Benchmark Série C", d:"As 12 campanhas de acesso de 2023 a 2025.", go:()=>xlsx(`BenchmarkSerieC_${hoje}.xlsx`,[["Benchmark Série C",p.bench]])},
   ];
   const importar=e=>{ const f=e.target.files&&e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const s=JSON.parse(r.result); if(!s.elenco) throw 0; up(migrar(s)); toast("Backup restaurado"); }catch(err){ toast("Arquivo inválido: use um backup .json do Scout Pro"); } }; r.readAsText(f); e.target.value=""; };
   const [reset,setReset]=useState(false);
@@ -4292,7 +3957,7 @@ const TITULOS = {
   "cad-estadio":["Cadastro","Estádio","Estádios com capacidade e localização."],
   "cad-pessoa":["Cadastro","Pessoa","Jogadores, comissão técnica, diretoria e funcionários."],
   "cad-competicao":["Cadastro","Competição","Competições com categoria, país e temporada."],
-  "cad-partida":["Cadastro","Partida","Partidas do Santa Cruz. No dia do jogo, o link da transmissão vai para o Ao Vivo."],
+  "cad-partida":["Cadastro","Partida","Partidas do seu clube. No dia do jogo, o link da transmissão vai para o Ao Vivo."],
   "cad-anexo":["Cadastro","Anexo","Súmula, relatórios do jogo, do adversário e de desempenho, e vídeos de transmissão, pré e pós-jogo."],
   "ao-vivo":["Ao Vivo","Ao Vivo","Transmissão do jogo, do treino e do banco de reservas. Atualizar e encerrar salvam no banco."],
   "jogos":["Jogos","Jogos","Um jogo por caixinha, com transmissão, câmera, banco, súmula e relatórios."],
@@ -4321,7 +3986,7 @@ const TITULOS = {
   "conta-senha":["Conta","Trocar Senha",""],
   "conta-sair":["Conta","Sair",""],
 };
-const ALIAS = {"scout-atletas":"elenco","gestao-elenco":"elenco","relatorio-jogo":"analise-pos","mercado":"mercado-dashboard","fisioterapia":"fisio-dashboard","acessos":"adm-acessos","analise-desempenho":"analise-pre","arquivo-jogos":"jogos","hub-performance":"fisio-dashboard"};
+const ALIAS = {"fisiologia":"fisio-dashboard","contratos":"elenco","scout-atletas":"elenco","gestao-elenco":"elenco","relatorio-jogo":"analise-pos","mercado":"mercado-dashboard","fisioterapia":"fisio-dashboard","acessos":"adm-acessos","analise-desempenho":"analise-pre","arquivo-jogos":"jogos","hub-performance":"fisio-dashboard"};
 const TEMAS=[{k:"auto",n:"Auto",c:"linear-gradient(90deg,#fff 50%,#16191c 50%)"},{k:"light",n:"Claro",c:"#fff"},{k:"dark",n:"Escuro",c:"#16191c"},{k:"black",n:"All black",c:"#000"}];
 function useTema(){
   const [t,setT]=useState(()=>{ try{ return localStorage.getItem("scoutpro.tema")||"black"; }catch(e){ return "black"; } });
@@ -4332,6 +3997,7 @@ function App(){
   const store=useStore();
   useLupa();
   const {state:st, sync, modo, user, entrar, sair, podeEditar:podeEditar0}=store;
+  CLUBE_ATUAL=clubeDoEstado(st);
   const meuPerfil=perfilDoUsuario(st,user&&user.nick);
   const [tema,setTema]=useTema();
   const ler=()=>{ let h=(location.hash||"").slice(1); h=ALIAS[h]||h; return TITULOS[h]?h:"inicio"; };
@@ -4394,7 +4060,7 @@ function App(){
     </div>`; });
   const nav=html`<nav class="nav">${navGrupos(false)}<div class="lens" aria-hidden="true"><div class="lens-in">${navGrupos(true)}</div></div></nav>`;
   const rodape=html`<div class="rail-foot">
-      <div class="client"><img src=${CREST} alt=""/><div><span>Clube</span><b>Santa Cruz F.C. · Recife</b></div></div>
+      <div class="client"><img src=${CRESTC()} alt=""/><div><span>Clube</span><b>${clubeAtual().nomeCompleto}${clubeAtual().cidade?" · "+clubeAtual().cidade:""}</b></div></div>
       <${SyncPill} s=${modo==="nuvem"&&sync==="online"?"nuvem":sync}/>
       <div class="themes" role="group" aria-label="Tema">${TEMAS.map(x=>html`<button key=${x.k} class=${tema===x.k?"on":""} aria-pressed=${tema===x.k} onClick=${()=>setTema(x.k)}><i style=${{background:x.c}}></i>${x.n}</button>`)}</div>
       ${modo==="nuvem"&&user?html`<div class="user"><span class="av" style=${{background:"var(--red)",color:"#fff",borderColor:"var(--red)"}}>${iniciais(nome)}</span><div style=${{minWidth:0}}><b>${nome}</b><span>${user.nick}</span></div><button class="btn sm ghost" onClick=${()=>sair()}>Sair</button></div>`:null}
